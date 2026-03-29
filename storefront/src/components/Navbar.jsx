@@ -137,83 +137,109 @@ export default function Navbar() {
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[150] md:hidden">
+          {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/30"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
+          {/* Panel */}
           <div
-            className="absolute top-0 left-0 w-[min(288px,90vw)] h-full bg-white p-8 flex flex-col gap-8"
+            className="absolute top-0 left-0 w-[min(340px,85vw)] h-full bg-white flex flex-col overflow-y-auto"
             style={{ animation: 'slideInLeft 0.3s ease forwards' }}
           >
-            <div className="flex items-center justify-between">
+            {/* Header — Logo + Close */}
+            <div className="flex items-center justify-between px-8 py-6 border-b border-[#ECEAE7]">
               <Link
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="font-serif text-[22px] font-light tracking-[0.08em] text-black no-underline"
+                className="font-serif text-[24px] font-light tracking-[0.08em] text-black no-underline flex flex-col items-start leading-none"
               >
                 ALMAS
+                <span className="text-[14px] mt-0.5" style={{ fontFamily: 'serif' }}>الماس</span>
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-black"
+                className="text-black w-10 h-10 flex items-center justify-center"
                 aria-label="Close menu"
               >
                 <X size={20} strokeWidth={1.5} />
               </button>
             </div>
-            <div className="flex flex-col gap-5">
+
+            {/* Primary nav — large serif links */}
+            <div className="flex flex-col gap-5 px-8 py-8">
+              {[
+                { to: '/shop', label: 'Shop' },
+                { to: '/shop/men', label: 'For Him' },
+                { to: '/shop/women', label: 'For Her' },
+                { to: '/shop/unisex', label: 'Unisex' },
+              ].map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-serif text-[28px] font-light text-[#0A0A0A] no-underline transition-opacity hover:opacity-60"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-[#ECEAE7] mx-8" />
+
+            {/* Secondary nav */}
+            <div className="flex flex-col gap-4 px-8 py-6">
+              {[
+                { to: '/our-story', label: 'Our Story' },
+                { to: '/subscribe', label: 'Subscribe' },
+                { to: '/scent-finder', label: 'Scent Finder' },
+                { to: '/contact', label: 'Contact' },
+              ].map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-sans text-[13px] tracking-[0.1em] uppercase text-[#9A948D] no-underline transition-colors hover:text-[#0A0A0A]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-[#ECEAE7] mx-8" />
+
+            {/* Utility links */}
+            <div className="flex flex-col gap-4 px-8 py-6">
               <Link
-                to="/shop"
+                to="/account"
                 onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
+                className="font-sans text-[13px] text-[#0A0A0A] no-underline flex items-center gap-3"
               >
-                Shop
-              </Link>
-              <Link
-                to="/shop/men"
-                onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
-              >
-                For Him
-              </Link>
-              <Link
-                to="/shop/women"
-                onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
-              >
-                For Her
-              </Link>
-              <Link
-                to="/our-story"
-                onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
-              >
-                Our Story
-              </Link>
-              <Link
-                to="/subscribe"
-                onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
-              >
-                Subscribe
+                <User size={16} strokeWidth={1.5} />
+                Account
               </Link>
               <Link
                 to="/wishlist"
                 onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
+                className="font-sans text-[13px] text-[#0A0A0A] no-underline flex items-center gap-3"
               >
+                <Heart size={16} strokeWidth={1.5} />
                 Wishlist
                 {wishlistCount > 0 && (
-                  <span className="ml-2 text-[10px] text-warm-gray">({wishlistCount})</span>
+                  <span className="ml-auto text-[11px] text-[#9A948D]">{wishlistCount}</span>
                 )}
               </Link>
-              <Link
-                to="/account"
-                onClick={() => setMobileMenuOpen(false)}
-                className={navLinkClass}
-              >
-                Account
-              </Link>
+            </div>
+
+            {/* Bottom — socials + copyright */}
+            <div className="mt-auto px-8 py-6 border-t border-[#ECEAE7]">
+              <div className="flex gap-6 mb-4">
+                <span className="text-[11px] tracking-[0.1em] uppercase text-[#9A948D]">Instagram</span>
+                <span className="text-[11px] tracking-[0.1em] uppercase text-[#9A948D]">TikTok</span>
+              </div>
+              <p className="text-[10px] text-[#D4CFC8]">&copy; 2026 ALMAS. All rights reserved.</p>
             </div>
           </div>
         </div>

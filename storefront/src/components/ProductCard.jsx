@@ -167,7 +167,7 @@ export default function ProductCard({ product }) {
 
         {/* Fragrance Notes — Top / Heart / Base */}
         {product.notes && (
-          <div className="grid grid-cols-3 gap-1 sm:gap-2 pt-2 border-t border-[#ECEAE7]">
+          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#ECEAE7]">
             <div>
               <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Top</p>
               <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
