@@ -35,10 +35,10 @@ export function AuthProvider({ children }) {
     return true;
   }, []);
 
-  const register = useCallback((name, email, password) => {
+  const register = useCallback(({ firstName, lastName, email, password }) => {
     const userData = {
       id: Date.now(),
-      name,
+      name: `${firstName} ${lastName}`,
       email,
       createdAt: new Date().toISOString(),
     };

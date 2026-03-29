@@ -4,9 +4,13 @@ import { Droplets, Heart as HeartIcon, Wind, Clock, Sun } from 'lucide-react'
 import products from '../data/products'
 import ProductCard from '../components/ProductCard'
 import AccordBar from '../components/AccordBar'
+import ScentRadar from '../components/ScentRadar'
+import ScentSilhouette from '../components/ScentSilhouette'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import { useToast } from '../context/ToastContext'
+import { useProductImage } from '../hooks/useProductImage'
+import { getDominantGradient, getAccentColor, getBottleShadowColor, getCategoryDisplay, getScentFamilyStyles, hexToRgba } from '../utils/scentTheme'
 
 /* ── Helpers ── */
 const STARS = [1, 2, 3, 4, 5]
@@ -69,6 +73,31 @@ function Accordion({ title, defaultOpen = false, children }) {
       >
         {children}
       </div>
+    </div>
+  )
+}
+
+/* ── Performance Metric Components ── */
+function LongevityBar({ longevity }) {
+  const match = longevity.match(/(\d+)/)
+  const hours = match ? parseInt(match[1]) : 6
+  return (
+    <div className="flex gap-0.5">
+      {Array.from({ length: 12 }, (_, i) => (
+        <div key={i} className={`w-2 h-4 rounded-[1px] ${i < hours ? 'bg-black' : 'bg-stone/30'}`} />
+      ))}
+    </div>
+  )
+}
+
+function SillageBar({ sillage }) {
+  const levels = { 'Soft': 1, 'Moderate': 2, 'Moderate-Strong': 3, 'Strong': 4 }
+  const level = levels[sillage] || 2
+  return (
+    <div className="flex items-end gap-0.5">
+      {[1,2,3,4].map(i => (
+        <div key={i} className={`w-2 rounded-[1px] ${i <= level ? 'bg-black' : 'bg-stone/30'}`} style={{ height: `${8 + i * 4}px` }} />
+      ))}
     </div>
   )
 }
@@ -168,6 +197,12 @@ export default function ProductPage() {
   const subscriptionPrice = Math.round(currentPrice * 0.85 * 100) / 100
   const displayPrice = isSubscription ? subscriptionPrice : currentPrice
 
+  // Themed values
+  const accentColor = getAccentColor(product)
+  const categoryInfo = getCategoryDisplay(product.category)
+  const scentBadgeStyles = getScentFamilyStyles(product)
+  const bottleShadow = getBottleShadowColor(product.accords)
+
   // Ratings calculation
   const avgRating = reviews.length > 0
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
@@ -237,12 +272,6 @@ export default function ProductPage() {
     showToast('Review submitted successfully', 'success')
   }
 
-  const categoryLabel = product.category === 'men'
-    ? 'For Him'
-    : product.category === 'women'
-      ? 'For Her'
-      : 'Unisex'
-
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
@@ -253,29 +282,28 @@ export default function ProductPage() {
           <Link to="/shop" className="hover:text-black transition-colors">Shop</Link>
           <span>/</span>
           <Link to={`/shop/${product.category}`} className="hover:text-black transition-colors">
-            {categoryLabel}
+            {categoryInfo.label}
           </Link>
           <span>/</span>
           <span className="text-black">{product.name}</span>
         </div>
       </div>
 
-      {/* Product Hero: Two-Column Layout */}
-      <section className="px-6 md:px-12 py-12 md:py-16">
+      {/* Product Hero: Two-Column Layout — themed background */}
+      <section
+        className="px-6 md:px-12 py-12 md:py-16"
+        style={{ background: `linear-gradient(180deg, ${hexToRgba(getAccentColor(product), 0.06)} 0%, transparent 50%)` }}
+      >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Left: Product Display — exact brand imagery layout */}
+          {/* Left: Product Display */}
           <div className="sticky top-24">
-            {/* Main product card matching the reference image */}
+            {/* Main product card */}
             <div className="bg-white rounded-sm border border-stone/20 overflow-hidden">
               {/* Top area: Bottle left, Notes right */}
               <div className="flex items-start p-8">
-                {/* Bottle */}
+                {/* Bottle with themed shadow */}
                 <div className="w-[50%] relative pr-4">
-                  <img
-                    src="/images/hero-bottle.png"
-                    alt={product.name}
-                    className="w-full h-auto object-contain drop-shadow-xl"
-                  />
+                  <ProductBottleImage product={product} bottleShadow={bottleShadow} />
                 </div>
 
                 {/* Notes pills — right side */}
@@ -304,57 +332,70 @@ export default function ProductPage() {
               )}
             </div>
 
-            {/* Fragrance Details Box */}
+            {/* Fragrance Pyramid */}
             <div className="bg-light-gray rounded-sm p-6 mt-4">
-              <h3 className="text-[11px] tracking-[0.2em] uppercase text-warm-gray font-medium mb-5">Fragrance Breakdown</h3>
+              <h3 className="text-[11px] tracking-[0.2em] uppercase text-warm-gray font-medium mb-6">
+                Fragrance Pyramid
+              </h3>
 
-              {/* Notes — 3 Column (Top / Heart / Base) */}
-              <div className="grid grid-cols-3 gap-6 mb-5">
-                <div>
-                  <div className="text-[10px] tracking-[0.1em] uppercase text-warm-gray flex items-center gap-1.5 mb-3 font-medium">
-                    <Droplets size={12} /> Top Notes
-                  </div>
-                  <div className="space-y-1.5">
-                    {product.notes?.top?.map((note, i) => (
-                      <div key={i} className="text-[13px] text-black">{note}</div>
-                    ))}
-                  </div>
+              {/* Top Notes - narrowest */}
+              <div className="max-w-[65%] mx-auto mb-4">
+                <div className="flex items-center gap-2 mb-2" style={{ borderLeft: `3px solid ${accentColor}30`, paddingLeft: '12px' }}>
+                  <Droplets size={14} className="text-warm-gray" />
+                  <span className="text-[10px] tracking-[0.1em] uppercase text-warm-gray font-medium">Top Notes</span>
                 </div>
-                <div>
-                  <div className="text-[10px] tracking-[0.1em] uppercase text-warm-gray flex items-center gap-1.5 mb-3 font-medium">
-                    <HeartIcon size={12} /> Heart Notes
-                  </div>
-                  <div className="space-y-1.5">
-                    {product.notes?.heart?.map((note, i) => (
-                      <div key={i} className="text-[13px] text-black">{note}</div>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-1.5 pl-7">
+                  {product.notes?.top?.map((note, i) => (
+                    <span key={i} className="px-2.5 py-1 text-[12px] bg-white border border-stone/30 rounded-sm">{note}</span>
+                  ))}
                 </div>
-                <div>
-                  <div className="text-[10px] tracking-[0.1em] uppercase text-warm-gray flex items-center gap-1.5 mb-3 font-medium">
-                    <Wind size={12} /> Base Notes
-                  </div>
-                  <div className="space-y-1.5">
-                    {product.notes?.base?.map((note, i) => (
-                      <div key={i} className="text-[13px] text-black">{note}</div>
-                    ))}
-                  </div>
+              </div>
+
+              {/* Heart Notes - medium width */}
+              <div className="max-w-[82%] mx-auto mb-4">
+                <div className="flex items-center gap-2 mb-2" style={{ borderLeft: `3px solid ${accentColor}45`, paddingLeft: '12px' }}>
+                  <HeartIcon size={14} className="text-warm-gray" />
+                  <span className="text-[10px] tracking-[0.1em] uppercase text-warm-gray font-medium">Heart Notes</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pl-7">
+                  {product.notes?.heart?.map((note, i) => (
+                    <span key={i} className="px-2.5 py-1 text-[12px] bg-white border border-stone/30 rounded-sm">{note}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Base Notes - full width */}
+              <div className="max-w-full mb-4">
+                <div className="flex items-center gap-2 mb-2" style={{ borderLeft: `3px solid ${accentColor}65`, paddingLeft: '12px' }}>
+                  <Wind size={14} className="text-warm-gray" />
+                  <span className="text-[10px] tracking-[0.1em] uppercase text-warm-gray font-medium">Base Notes</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pl-7">
+                  {product.notes?.base?.map((note, i) => (
+                    <span key={i} className="px-2.5 py-1 text-[12px] bg-white border border-stone/30 rounded-sm">{note}</span>
+                  ))}
                 </div>
               </div>
 
               <div className="h-px bg-stone-dark/30 my-5" />
 
-              {/* Performance */}
+              {/* Performance with visual gauges */}
               <div className="grid grid-cols-4 gap-4">
                 <div className="text-center">
                   <Clock size={18} className="mx-auto mb-1.5 text-warm-gray" />
-                  <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-0.5">Longevity</div>
-                  <div className="text-[13px] font-medium text-black">{product.longevity}</div>
+                  <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-1.5">Longevity</div>
+                  <div className="flex justify-center mb-1">
+                    <LongevityBar longevity={product.longevity || '6 hours'} />
+                  </div>
+                  <div className="text-[11px] text-warm-gray">{product.longevity}</div>
                 </div>
                 <div className="text-center">
                   <Wind size={18} className="mx-auto mb-1.5 text-warm-gray" />
-                  <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-0.5">Sillage</div>
-                  <div className="text-[13px] font-medium text-black">{product.sillage}</div>
+                  <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-1.5">Sillage</div>
+                  <div className="flex justify-center mb-1">
+                    <SillageBar sillage={product.sillage || 'Moderate'} />
+                  </div>
+                  <div className="text-[11px] text-warm-gray">{product.sillage}</div>
                 </div>
                 <div className="text-center">
                   <Sun size={18} className="mx-auto mb-1.5 text-warm-gray" />
@@ -368,13 +409,22 @@ export default function ProductPage() {
                 </div>
               </div>
             </div>
+
+            {/* Scent Radar Chart */}
+            <div className="bg-light-gray rounded-sm p-6 mt-4">
+              <h3 className="text-[11px] tracking-[0.2em] uppercase text-warm-gray font-medium mb-4">
+                Scent Profile
+              </h3>
+              <ScentRadar accords={product.accords} product={product} />
+            </div>
           </div>
 
           {/* Right: Product Info */}
           <div>
-            {/* Category */}
+            {/* Category with icon */}
             <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-3">
-              {categoryLabel}
+              <span className="mr-1.5">{categoryInfo.icon}</span>
+              {categoryInfo.label}
             </p>
 
             {/* Name */}
@@ -490,9 +540,16 @@ export default function ProductPage() {
               {wishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
             </button>
 
-            {/* Scent Family Badge */}
+            {/* Scent Family Badge — themed */}
             <div className="mt-6 flex items-center gap-2">
-              <span className="px-3 py-1.5 bg-light-gray text-[10px] tracking-[0.1em] uppercase text-warm-gray rounded-sm">
+              <span
+                className="px-3 py-1.5 text-[10px] tracking-[0.1em] uppercase rounded-sm border"
+                style={{
+                  borderColor: scentBadgeStyles.borderColor,
+                  color: scentBadgeStyles.color,
+                  backgroundColor: scentBadgeStyles.backgroundColor,
+                }}
+              >
                 {product.scentFamily}
               </span>
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
@@ -520,6 +577,53 @@ export default function ProductPage() {
                   <p>Subscribers get exclusive early access to all new releases.</p>
                 </div>
               </Accordion>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Scent Journey Section */}
+      <section className="px-6 md:px-12 py-16 border-t border-stone/20">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-light text-center mb-12">The Scent Journey</h2>
+
+          <div className="space-y-10">
+            {/* Opens With */}
+            <div className="flex gap-6">
+              <div className="flex flex-col items-center">
+                <span className="text-xl" style={{ color: accentColor }}>&#9650;</span>
+                <div className="w-px flex-1 bg-stone/30 mt-2" />
+              </div>
+              <div>
+                <p className="text-[11px] tracking-[0.15em] uppercase text-warm-gray mb-2">Opens With</p>
+                <p className="font-serif text-lg">{product.notes?.top?.join(' & ')}</p>
+                <p className="text-sm text-warm-gray mt-1">The first 15 minutes on skin.</p>
+              </div>
+            </div>
+
+            {/* Evolves Into */}
+            <div className="flex gap-6">
+              <div className="flex flex-col items-center">
+                <span className="text-xl" style={{ color: accentColor }}>&#9670;</span>
+                <div className="w-px flex-1 bg-stone/30 mt-2" />
+              </div>
+              <div>
+                <p className="text-[11px] tracking-[0.15em] uppercase text-warm-gray mb-2">Evolves Into</p>
+                <p className="font-serif text-lg">{product.notes?.heart?.join(' & ')}</p>
+                <p className="text-sm text-warm-gray mt-1">The heart reveals itself after 30 minutes.</p>
+              </div>
+            </div>
+
+            {/* Settles Into */}
+            <div className="flex gap-6">
+              <div className="flex flex-col items-center">
+                <span className="text-xl" style={{ color: accentColor }}>&#9679;</span>
+              </div>
+              <div>
+                <p className="text-[11px] tracking-[0.15em] uppercase text-warm-gray mb-2">Settles Into</p>
+                <p className="font-serif text-lg">{product.notes?.base?.join(' & ')}</p>
+                <p className="text-sm text-warm-gray mt-1">The lasting signature, 2+ hours on skin.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -707,5 +811,28 @@ export default function ProductPage() {
         </section>
       )}
     </div>
+  )
+}
+
+/* ── Product Bottle Image sub-component (uses useProductImage hook) ── */
+function ProductBottleImage({ product, bottleShadow }) {
+  const { src, hasImage, handleError } = useProductImage(product)
+
+  if (!hasImage) {
+    return (
+      <div className="w-full aspect-[3/4]">
+        <ScentSilhouette accords={product.accords} scentFamily={product.scentFamily} />
+      </div>
+    )
+  }
+
+  return (
+    <img
+      src={src}
+      alt={product.name}
+      onError={handleError}
+      className="w-full h-auto object-contain"
+      style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow})` }}
+    />
   )
 }

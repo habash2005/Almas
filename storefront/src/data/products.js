@@ -46,7 +46,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "A bold, sophisticated fragrance that opens with crisp pineapple and bergamot. The smoky birch heart gives way to a powerful musk and oakmoss base that exudes confidence and success.",
-    image: "/products/midnight-aventus.jpg",
+    image: "/products/midnight-aventus.png",
   },
   {
     id: 2,
@@ -73,7 +73,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "An intense, magnetic fragrance that melds raw spice with rugged woodiness. Concentrated and powerful, this elixir pushes the boundaries of modern masculine scent.",
-    image: "/products/sauvage-noir.jpg",
+    image: "/products/sauvage-noir.png",
   },
   {
     id: 3,
@@ -100,7 +100,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A luxurious oud composition that balances exotic oud with warm sandalwood and spice. Sophisticated, deep, and unmistakably refined.",
-    image: "/products/oud-majesty.jpg",
+    image: "/products/oud-majesty.png",
   },
   {
     id: 4,
@@ -127,7 +127,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "All Seasons"],
     description:
       "A timeless, versatile composition that balances citrus brightness with aromatic depth. Refined cedar and sandalwood anchor a scent that works from boardroom to evening.",
-    image: "/products/bleu-eternel.jpg",
+    image: "/products/bleu-eternel.png",
   },
   {
     id: 5,
@@ -154,7 +154,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Date Night"],
     description:
       "A rich, opulent blend of tobacco and vanilla wrapped in warm spices. Intoxicating and addictive, it creates an aura of old-world sophistication and indulgence.",
-    image: "/products/tobacco-royale.jpg",
+    image: "/products/tobacco-royale.png",
   },
   {
     id: 6,
@@ -181,7 +181,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Casual"],
     description:
       "A deep, oceanic freshness that evokes coastal Mediterranean waters. Mineral amber and aquatic notes create a clean, modern masculinity.",
-    image: "/products/acqua-imperiale.jpg",
+    image: "/products/acqua-imperiale.png",
   },
   {
     id: 7,
@@ -208,7 +208,7 @@ export const products = [
     bestFor: ["Spring", "Fall", "Casual"],
     description:
       "A fresh, aromatic powerhouse that celebrates vigor and adventure. Lavender and pepper ignite a trail of vetiver and sandalwood.",
-    image: "/products/viking-conquest.jpg",
+    image: "/products/viking-conquest.png",
   },
   {
     id: 8,
@@ -235,7 +235,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Date Night"],
     description:
       "A smoky-sweet masculine scent that blends Italian elegance with Eastern mystery. Vetiver and vanilla create an addictive, warm base.",
-    image: "/products/noir-absolu.jpg",
+    image: "/products/noir-absolu.png",
   },
   {
     id: 9,
@@ -262,7 +262,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Date Night"],
     description:
       "A warm, amber-drenched composition that captures the magic of dusk. Spice and sweetness interlace over a rich amber and cedar foundation.",
-    image: "/products/golden-hour.jpg",
+    image: "/products/golden-hour.png",
   },
   {
     id: 10,
@@ -289,7 +289,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Casual"],
     description:
       "A futuristic, feel-good fragrance that blends citrus freshness with creamy vanilla. Modern and playful with an unexpectedly addictive character.",
-    image: "/products/phantom-edge.jpg",
+    image: "/products/phantom-edge.png",
   },
   {
     id: 11,
@@ -316,7 +316,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Date Night"],
     description:
       "An explosive spicy fragrance that delivers warmth with every pulse. Concentrated saffron and cinnamon detonate into a creamy tobacco vanilla base.",
-    image: "/products/amber-titan.jpg",
+    image: "/products/amber-titan.png",
   },
   {
     id: 12,
@@ -343,7 +343,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A classic, gentlemanly vetiver composition with crisp citrus and earthy warmth. Timeless elegance that whispers rather than shouts.",
-    image: "/products/vetiver-legend.jpg",
+    image: "/products/vetiver-legend.png",
   },
   {
     id: 13,
@@ -370,7 +370,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A powerful, dramatic oriental fragrance. Smoky incense and peppery spices build into an opulent oud and amber foundation that commands every room.",
-    image: "/products/sultans-throne.jpg",
+    image: "/products/sultans-throne.png",
   },
   {
     id: 14,
@@ -397,7 +397,7 @@ export const products = [
     bestFor: ["Fall", "Office", "Casual"],
     description:
       "A sleek, modern woody-leather composition with minimalist elegance. Dark ebony and vetiver anchor a refined masculinity.",
-    image: "/products/carbon-luxe.jpg",
+    image: "/products/carbon-luxe.png",
   },
   {
     id: 15,
@@ -424,7 +424,7 @@ export const products = [
     bestFor: ["Date Night", "Evening", "Fall"],
     description:
       "A seductive, carnal fragrance built on spice and sweetness. Cardamom and lavender create an irresistible allure over a warm vetiver base.",
-    image: "/products/enclave.jpg",
+    image: "/products/enclave.png",
   },
   {
     id: 16,
@@ -451,7 +451,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Date Night"],
     description:
       "An opulent amber oriental that wraps you in warmth and mystery. Saffron and rose meld with rich vanilla and amber for pure sophistication.",
-    image: "/products/noir-extreme.jpg",
+    image: "/products/noir-extreme.png",
   },
   {
     id: 17,
@@ -478,7 +478,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A bold, unapologetic leather fragrance with raspberry sweetness cutting through raw suede. Powerful, distinctive, and completely unforgettable.",
-    image: "/products/tuscan-suede.jpg",
+    image: "/products/tuscan-suede.png",
   },
   {
     id: 18,
@@ -505,7 +505,7 @@ export const products = [
     bestFor: ["Spring", "Casual", "Office"],
     description:
       "A lush, green aromatic scent evoking rolling Irish countryside. Crisp violet leaf and cool mint create an air of effortless aristocratic charm.",
-    image: "/products/royal-green.jpg",
+    image: "/products/royal-green.png",
   },
   {
     id: 19,
@@ -532,7 +532,7 @@ export const products = [
     bestFor: ["Summer", "Clubbing", "Date Night"],
     description:
       "An energetic, youthful blast of mint and apple that dries down into sweet vanilla. Magnetic and crowd-pleasing, designed to turn heads.",
-    image: "/products/eros-flame.jpg",
+    image: "/products/eros-flame.png",
   },
   {
     id: 20,
@@ -559,7 +559,7 @@ export const products = [
     bestFor: ["Spring", "Fall", "Office"],
     description:
       "An earthy, mineral-rich composition that captures wide open landscapes. Citrus and vetiver meet flint and cedar for a grounded, contemplative fragrance.",
-    image: "/products/nomad-spirit.jpg",
+    image: "/products/nomad-spirit.png",
   },
   {
     id: 21,
@@ -586,7 +586,7 @@ export const products = [
     bestFor: ["Evening", "Special Occasions", "Winter"],
     description:
       "A sharp, tailored fragrance that evokes the precision of a perfectly cut tuxedo. Pepper and patchouli meet incense for black-tie elegance.",
-    image: "/products/velvet-noir.jpg",
+    image: "/products/velvet-noir.png",
   },
   {
     id: 22,
@@ -613,7 +613,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Casual"],
     description:
       "A sun-drenched citrus aquatic that captures Italian coastal breezes. Bright grapefruit and sea salt create an instant vacation vibe.",
-    image: "/products/coastal-drift.jpg",
+    image: "/products/coastal-drift.png",
   },
   {
     id: 23,
@@ -640,7 +640,7 @@ export const products = [
     bestFor: ["Summer", "Sport", "Casual"],
     description:
       "A triumphant, energizing burst of marine freshness and grapefruit. Athletic and confident, the scent of victory.",
-    image: "/products/invincible.jpg",
+    image: "/products/invincible.png",
   },
   {
     id: 24,
@@ -667,7 +667,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A masterful oud experience that speaks of royalty and ancient tradition. Saffron and musk amplify the raw beauty of premium agarwood.",
-    image: "/products/sheikhs-oud.jpg",
+    image: "/products/sheikhs-oud.png",
   },
   {
     id: 25,
@@ -694,7 +694,7 @@ export const products = [
     bestFor: ["Date Night", "Fall", "Evening"],
     description:
       "A refined, iris-centric masculine scent that bridges elegance and strength. Powdery iris and violet rest on a foundation of cedar and vetiver.",
-    image: "/products/iron-forge.jpg",
+    image: "/products/iron-forge.png",
   },
   {
     id: 26,
@@ -721,7 +721,7 @@ export const products = [
     bestFor: ["Evening", "Date Night", "Winter"],
     description:
       "A dangerously sweet and spicy concoction with toffee and bourbon at its heart. Irresistible magnetism in a bottle.",
-    image: "/products/wanted-man.jpg",
+    image: "/products/wanted-man.png",
   },
   {
     id: 27,
@@ -748,7 +748,7 @@ export const products = [
     bestFor: ["Fall", "Evening", "Casual"],
     description:
       "A rugged, rebellious blend of leather and smoke with an earthy soul. For the man who writes his own rules.",
-    image: "/products/dark-rebel.jpg",
+    image: "/products/dark-rebel.png",
   },
   {
     id: 28,
@@ -775,7 +775,7 @@ export const products = [
     bestFor: ["Spring", "Fall", "Office"],
     description:
       "A regal aromatic that balances Italian citrus brightness with herbal depth. Cedar and vetiver create a confident, polished foundation.",
-    image: "/products/monarch.jpg",
+    image: "/products/monarch.png",
   },
   {
     id: 29,
@@ -802,7 +802,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A smoldering saffron-leather composition that bridges East and West. Dark violet and raspberry add unexpected depth to this niche masterpiece.",
-    image: "/products/ember-smoke.jpg",
+    image: "/products/ember-smoke.png",
   },
   {
     id: 30,
@@ -829,7 +829,7 @@ export const products = [
     bestFor: ["Spring", "Fall", "Casual"],
     description:
       "An adventurous, outdoorsy fragrance that captures mountain air and dense forests. Vetiver and leather meet warm cocoa for rugged sophistication.",
-    image: "/products/apex.jpg",
+    image: "/products/apex.png",
   },
   {
     id: 31,
@@ -856,7 +856,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "A dark, boozy oriental that opens with rum-soaked spice and unfolds into rich iris and leather. Bold and brooding sophistication.",
-    image: "/products/centurion.jpg",
+    image: "/products/centurion.png",
   },
   {
     id: 32,
@@ -883,7 +883,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "Spring"],
     description:
       "A crisp, versatile citrus woody that delivers effortless freshness. Clean ginger and mint energize a warm cedar base.",
-    image: "/products/neptune.jpg",
+    image: "/products/neptune.png",
   },
   {
     id: 33,
@@ -910,7 +910,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A lavish oud-vanilla duet that blends Middle Eastern opulence with creamy sweetness. Saffron and rose add depth to this luxurious composition.",
-    image: "/products/opulent-oud.jpg",
+    image: "/products/opulent-oud.png",
   },
   {
     id: 34,
@@ -937,7 +937,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Date Night"],
     description:
       "A sweet, aromatic powerhouse anchored by lavender and vanilla. Creamy orris and leather give depth to this masculine gourmand.",
-    image: "/products/wildfire.jpg",
+    image: "/products/wildfire.png",
   },
   {
     id: 35,
@@ -964,7 +964,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Date Night"],
     description:
       "A magnetic amber composition with refined iris and tonka at its core. Modern sophistication meets raw attractiveness.",
-    image: "/products/obsidian.jpg",
+    image: "/products/obsidian.png",
   },
   {
     id: 36,
@@ -991,7 +991,7 @@ export const products = [
     bestFor: ["All Seasons", "Casual", "Office"],
     description:
       "A cult-classic sandalwood scent with creamy leather and violet undertones. Minimalist, niche, and instantly recognizable.",
-    image: "/products/atlas-cedar.jpg",
+    image: "/products/atlas-cedar.png",
   },
   {
     id: 37,
@@ -1018,7 +1018,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A crisp, Alpine-fresh scent that captures morning mountain air. Green tea and black currant shimmer over a clean musk base.",
-    image: "/products/silver-mirage.jpg",
+    image: "/products/silver-mirage.png",
   },
   {
     id: 38,
@@ -1045,7 +1045,7 @@ export const products = [
     bestFor: ["All Seasons", "Casual", "Daily Wear"],
     description:
       "A raw, magnetic blast of bergamot and pepper over a powerful ambroxan base. The ultimate everyday compliment-getter.",
-    image: "/products/adrenaline-rush.jpg",
+    image: "/products/adrenaline-rush.png",
   },
   {
     id: 39,
@@ -1072,7 +1072,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A dark, sensual oriental that blends black truffle and orchid into a mysterious patchouli-vanilla base. Daring and glamorous.",
-    image: "/products/black-orchid-shadow.jpg",
+    image: "/products/black-orchid-shadow.png",
   },
   {
     id: 40,
@@ -1099,7 +1099,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Sport"],
     description:
       "A dynamic, sporty fragrance that channels athletic elegance. Sea notes and mandarin energize a refined tonka bean dry-down.",
-    image: "/products/heritage.jpg",
+    image: "/products/heritage.png",
   },
   {
     id: 41,
@@ -1126,7 +1126,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Date Night"],
     description:
       "A sweet, spicy masterpiece with a creamy vanilla backbone. Apple and mandarin float over jasmine and sandalwood, universally magnetic.",
-    image: "/products/night-rider.jpg",
+    image: "/products/night-rider.png",
   },
   {
     id: 42,
@@ -1153,7 +1153,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "Spring"],
     description:
       "A clean, reliable aromatic fougere that delivers polished confidence. Lavender and coumarin create a dependable classic.",
-    image: "/products/summit.jpg",
+    image: "/products/summit.png",
   },
   {
     id: 43,
@@ -1180,7 +1180,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Office"],
     description:
       "A sophisticated gentleman's fragrance with iris and lavender grace. Warm vetiver and mate deliver quiet, commanding elegance.",
-    image: "/products/onyx.jpg",
+    image: "/products/onyx.png",
   },
   {
     id: 44,
@@ -1207,7 +1207,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A monumental oriental tapestry woven from incense, honey, and oud. Jubilant and majestic, it tells a story of Arabian grandeur.",
-    image: "/products/sandstorm.jpg",
+    image: "/products/sandstorm.png",
   },
   {
     id: 45,
@@ -1234,7 +1234,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Date Night"],
     description:
       "A creamy, almond-laced amber fragrance that is simultaneously sweet and refined. Sandalwood and vanilla create an irresistibly smooth finish.",
-    image: "/products/tempest.jpg",
+    image: "/products/tempest.png",
   },
 
   // =============================
@@ -1265,7 +1265,7 @@ export const products = [
     bestFor: ["Daily Wear", "Fall", "Spring"],
     description:
       "A joyful, elegant floral-gourmand that celebrates femininity. Iris and praline create a radiant, feel-good aura that lasts all day.",
-    image: "/products/rose-eternelle.jpg",
+    image: "/products/rose-eternelle.png",
   },
   {
     id: 47,
@@ -1292,7 +1292,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "All Seasons"],
     description:
       "A timeless, sophisticated floral chypre that embodies modern femininity. Sparkling citrus, rose, and patchouli in perfect harmony.",
-    image: "/products/velvet-bloom.jpg",
+    image: "/products/velvet-bloom.png",
   },
   {
     id: 48,
@@ -1319,7 +1319,7 @@ export const products = [
     bestFor: ["Evening", "Date Night", "Fall"],
     description:
       "A bold, feminine fragrance that fuses lavender's cool edge with warm vanilla. Daring, sophisticated, and endlessly alluring.",
-    image: "/products/sugar-kiss.jpg",
+    image: "/products/sugar-kiss.png",
   },
   {
     id: 49,
@@ -1346,7 +1346,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Special Occasions"],
     description:
       "A luminous floral bouquet anchored by jasmine and rose. Fruity pear and melon open to a graceful, sunny femininity.",
-    image: "/products/jasmine-whisper.jpg",
+    image: "/products/jasmine-whisper.png",
   },
   {
     id: 50,
@@ -1373,7 +1373,7 @@ export const products = [
     bestFor: ["Date Night", "Fall", "Winter"],
     description:
       "A floral explosion of jasmine, rose, and orchid wrapped in a creamy patchouli-vanilla cocoon. Romantic and utterly captivating.",
-    image: "/products/midnight-pearl.jpg",
+    image: "/products/midnight-pearl.png",
   },
   {
     id: 51,
@@ -1400,7 +1400,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "Spring"],
     description:
       "A velvety musk-floral that wraps the skin in a delicate, sensual whisper. Understated elegance that draws people closer.",
-    image: "/products/aura-blanche.jpg",
+    image: "/products/aura-blanche.png",
   },
   {
     id: 52,
@@ -1427,7 +1427,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "An intoxicating cherry-almond gourmand that is decadent, dark, and deeply addictive. Black cherry and roasted vanilla meld into pure indulgence.",
-    image: "/products/cherry-luxe.jpg",
+    image: "/products/cherry-luxe.png",
   },
   {
     id: 53,
@@ -1454,7 +1454,7 @@ export const products = [
     bestFor: ["Office", "Spring", "Summer"],
     description:
       "A refined, airy reinterpretation of the most iconic floral ever created. Lemon, rose, and sandalwood in luminous, modern balance.",
-    image: "/products/powder-veil.jpg",
+    image: "/products/powder-veil.png",
   },
   {
     id: 54,
@@ -1481,7 +1481,7 @@ export const products = [
     bestFor: ["Evening", "Date Night", "Fall"],
     description:
       "A sultry, dual-natured fragrance that contrasts sweet jasmine with dark cacao. Good and bad in perfect tension.",
-    image: "/products/honey-elixir.jpg",
+    image: "/products/honey-elixir.png",
   },
   {
     id: 55,
@@ -1508,7 +1508,7 @@ export const products = [
     bestFor: ["Daily Wear", "Spring", "Summer"],
     description:
       "A dreamy, cloud-like blend of coconut, praline, and musk. Effortlessly cozy and impossibly addictive, comfort in a bottle.",
-    image: "/products/cashmere-cloud.jpg",
+    image: "/products/cashmere-cloud.png",
   },
   {
     id: 56,
@@ -1535,7 +1535,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Casual"],
     description:
       "A fresh, spirited floral that captures youthful optimism. Strawberry and violet dance over a clean white musk base.",
-    image: "/products/golden-dahlia.jpg",
+    image: "/products/golden-dahlia.png",
   },
   {
     id: 57,
@@ -1562,7 +1562,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A mysterious, solar amber-woody that feels otherworldly. Jasmine sambac and cashmeran create a warm, luminous trail.",
-    image: "/products/amethyst-dream.jpg",
+    image: "/products/amethyst-dream.png",
   },
   {
     id: 58,
@@ -1589,7 +1589,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Daily Wear"],
     description:
       "A delicate, dewy floral that captures a fresh bouquet of peony and rose. Light and romantic, perfect for sunny days.",
-    image: "/products/petal-soft.jpg",
+    image: "/products/petal-soft.png",
   },
   {
     id: 59,
@@ -1616,7 +1616,7 @@ export const products = [
     bestFor: ["Fall", "Evening", "Special Occasions"],
     description:
       "A bold, thorny rose with peppery warmth and earthy patchouli depth. Not your grandmother's rose: modern, edgy, and luxurious.",
-    image: "/products/ember-rose.jpg",
+    image: "/products/ember-rose.png",
   },
   {
     id: 60,
@@ -1643,7 +1643,7 @@ export const products = [
     bestFor: ["Evening", "Date Night", "Winter"],
     description:
       "An addictive coffee-vanilla oriental with rock-and-roll edge. Dark, glamorous, and irresistibly seductive.",
-    image: "/products/satin-nights.jpg",
+    image: "/products/satin-nights.png",
   },
   {
     id: 61,
@@ -1670,7 +1670,7 @@ export const products = [
     bestFor: ["Date Night", "Fall", "Evening"],
     description:
       "A uniquely charismatic feminine scent blending coffee with violet and iris. Sweet yet sophisticated, impossible to ignore.",
-    image: "/products/peach-sorbet.jpg",
+    image: "/products/peach-sorbet.png",
   },
   {
     id: 62,
@@ -1697,7 +1697,7 @@ export const products = [
     bestFor: ["Office", "Spring", "Summer"],
     description:
       "A minimalist, powdery iris scent of refined simplicity. Clean, elegant, and effortlessly chic.",
-    image: "/products/iris-absolute.jpg",
+    image: "/products/iris-absolute.png",
   },
   {
     id: 63,
@@ -1724,7 +1724,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A legendary amber-vanilla oriental of unmatched richness. Citrus sparkle gives way to deep, voluptuous vanilla and incense.",
-    image: "/products/glowing-amber.jpg",
+    image: "/products/glowing-amber.png",
   },
   {
     id: 64,
@@ -1751,7 +1751,7 @@ export const products = [
     bestFor: ["Spring", "Daily Wear", "Brunch"],
     description:
       "A charming, feminine peony bouquet with a blush suede base. Delicate fruity accents add a playful, romantic touch.",
-    image: "/products/silk-peony.jpg",
+    image: "/products/silk-peony.png",
   },
   {
     id: 65,
@@ -1778,7 +1778,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "A layered, multifaceted vanilla that goes far beyond simple sweetness. Brown sugar and amber add depth to a truly gourmet vanilla experience.",
-    image: "/products/vanilla-twilight.jpg",
+    image: "/products/vanilla-twilight.png",
   },
   {
     id: 66,
@@ -1805,7 +1805,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Daily Wear"],
     description:
       "A floral journey of tuberose and jasmine that celebrates connection and discovery. Bright, feminine, and endlessly wearable.",
-    image: "/products/pink-champagne.jpg",
+    image: "/products/pink-champagne.png",
   },
   {
     id: 67,
@@ -1832,7 +1832,7 @@ export const products = [
     bestFor: ["Evening", "Date Night", "Fall"],
     description:
       "A warm, fruity-floral oriental that radiates feminine allure. Litchi and plum over vanilla and amber, instantly enchanting.",
-    image: "/products/scarlet-muse.jpg",
+    image: "/products/scarlet-muse.png",
   },
   {
     id: 68,
@@ -1859,7 +1859,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Garden Party"],
     description:
       "A lush, white floral that transports you to a blooming garden. Tuberose and jasmine in their purest, most intoxicating form.",
-    image: "/products/magnolia-mist.jpg",
+    image: "/products/magnolia-mist.png",
   },
   {
     id: 69,
@@ -1886,7 +1886,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A radiant, solar floral that captures pure feminine confidence. Four white flowers merge into a luminous, unforgettable bouquet.",
-    image: "/products/luxe-gardenia.jpg",
+    image: "/products/luxe-gardenia.png",
   },
   {
     id: 70,
@@ -1913,7 +1913,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A hypnotic, therapeutic musk-oud blend that soothes and seduces. Saffron and rose float above a deep, woody heart.",
-    image: "/products/oud-mystique.jpg",
+    image: "/products/oud-mystique.png",
   },
   {
     id: 71,
@@ -1940,7 +1940,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Date Night"],
     description:
       "A dark, crystalline oriental that shimmers with mystery. Ginger and coconut create an exotic allure over warm amber and musk.",
-    image: "/products/femme-fatale.jpg",
+    image: "/products/femme-fatale.png",
   },
   {
     id: 72,
@@ -1967,7 +1967,7 @@ export const products = [
     bestFor: ["Daily Wear", "Spring", "Summer"],
     description:
       "A vibrant, berry-forward fragrance that captures London energy. Sparkling berries and jasmine over a cocoa-musk base.",
-    image: "/products/blossom-walk.jpg",
+    image: "/products/blossom-walk.png",
   },
   {
     id: 73,
@@ -1994,7 +1994,7 @@ export const products = [
     bestFor: ["Date Night", "Fall", "Winter"],
     description:
       "A warm, jasmine-vanilla romance that wraps you in Italian elegance. Multiple jasmines create a rich, multidimensional floral heart.",
-    image: "/products/dulce-amor.jpg",
+    image: "/products/dulce-amor.png",
   },
   {
     id: 74,
@@ -2021,7 +2021,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "Spring"],
     description:
       "A clean, skin-scent musk that smells like freshly washed warmth. Subtle, intimate, and universally flattering.",
-    image: "/products/crystal-dew.jpg",
+    image: "/products/crystal-dew.png",
   },
   {
     id: 75,
@@ -2048,7 +2048,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Date Night"],
     description:
       "A darkly romantic orchid fragrance veiled in velvet sensuality. Rum and honey give way to an intoxicating floral heart.",
-    image: "/products/orchid-noir.jpg",
+    image: "/products/orchid-noir.png",
   },
   {
     id: 76,
@@ -2075,7 +2075,7 @@ export const products = [
     bestFor: ["Daily Wear", "Spring", "Office"],
     description:
       "A modern, clean floral that represents the confident new generation. Rose and jasmine distilled to their purest, most radiant essence.",
-    image: "/products/rose-gold.jpg",
+    image: "/products/rose-gold.png",
   },
   {
     id: 77,
@@ -2102,7 +2102,7 @@ export const products = [
     bestFor: ["Date Night", "Evening", "Winter"],
     description:
       "A darkly romantic gourmand that twines chocolate and praline with lush orchid. Sinful sweetness at its most sophisticated.",
-    image: "/products/caramel-bliss.jpg",
+    image: "/products/caramel-bliss.png",
   },
   {
     id: 78,
@@ -2129,7 +2129,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A crystalline, aquatic floral that evokes pure water and sunlight. Lotus and lily float on a gentle cedar-musk stream.",
-    image: "/products/lily-grace.jpg",
+    image: "/products/lily-grace.png",
   },
   {
     id: 79,
@@ -2156,7 +2156,7 @@ export const products = [
     bestFor: ["Spring", "Date Night", "Special Occasions"],
     description:
       "A regal, feminine fragrance that crowns rose and litchi with creamy cashmeran. Effortlessly luxurious and romantically bold.",
-    image: "/products/duchess.jpg",
+    image: "/products/duchess.png",
   },
   {
     id: 80,
@@ -2183,7 +2183,7 @@ export const products = [
     bestFor: ["Fall", "Casual", "Daily Wear"],
     description:
       "A whimsical, enchanting gourmand centered on caramelized apple and moonflower. Playful, sweet, and joyfully youthful.",
-    image: "/products/spiced-plum.jpg",
+    image: "/products/spiced-plum.png",
   },
   {
     id: 81,
@@ -2210,7 +2210,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A breezy, romantic floral that embodies feminine grace. Peony and rose in a fresh, powdery embrace, timelessly Parisian.",
-    image: "/products/flair.jpg",
+    image: "/products/flair.png",
   },
   {
     id: 82,
@@ -2237,7 +2237,7 @@ export const products = [
     bestFor: ["Evening", "Spring", "Special Occasions"],
     description:
       "An intensely feminine jasmine scent with woody depth. A golden bouquet that shimmers with warmth and elegance.",
-    image: "/products/moonlit-jasmine.jpg",
+    image: "/products/moonlit-jasmine.png",
   },
   {
     id: 83,
@@ -2264,7 +2264,7 @@ export const products = [
     bestFor: ["Summer", "Beach", "Casual"],
     description:
       "A tropical paradise in a bottle. Juicy mango and coconut whisk you away to sun-drenched shores. Pure summer joy.",
-    image: "/products/mystic-mango.jpg",
+    image: "/products/mystic-mango.png",
   },
   {
     id: 84,
@@ -2291,7 +2291,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A legendary spiced oriental of exotic warmth and mystery. Plum and myrrh weave into a hypnotic amber-vanilla base.",
-    image: "/products/opium-dream.jpg",
+    image: "/products/opium-dream.png",
   },
   {
     id: 85,
@@ -2318,7 +2318,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Brunch"],
     description:
       "A dewy, garden-fresh rose that captures petals at dawn. Litchi sweetness and green notes keep it lively and modern.",
-    image: "/products/whispered-rose.jpg",
+    image: "/products/whispered-rose.png",
   },
   {
     id: 86,
@@ -2345,7 +2345,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "All Seasons"],
     description:
       "A pure, addictive musk that glows against warm skin. Intimate, sensual, and effortlessly sophisticated.",
-    image: "/products/twilight-musk.jpg",
+    image: "/products/twilight-musk.png",
   },
 
   // ===============================
@@ -2376,7 +2376,7 @@ export const products = [
     bestFor: ["All Seasons", "Special Occasions", "Date Night"],
     description:
       "The legendary amber-woody masterpiece that redefined modern perfumery. Saffron, amberwood, and fir resin create an ethereal, crystalline aura that lingers for days.",
-    image: "/products/baccarat-silk.jpg",
+    image: "/products/baccarat-silk.png",
   },
   {
     id: 88,
@@ -2403,7 +2403,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A monumental amber-vanilla that glows with inner warmth. Benzoin and saffron build a mesmerizing, almost meditative trail.",
-    image: "/products/amber-alchemy.jpg",
+    image: "/products/amber-alchemy.png",
   },
   {
     id: 89,
@@ -2430,7 +2430,7 @@ export const products = [
     bestFor: ["All Seasons", "Casual", "Office"],
     description:
       "The cult sandalwood fragrance that launched a thousand imitators. Creamy, leathery, and uniquely addictive.",
-    image: "/products/velvet-santal.jpg",
+    image: "/products/velvet-santal.png",
   },
   {
     id: 90,
@@ -2457,7 +2457,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Daily Wear"],
     description:
       "A pure, luminous rose that celebrates the flower in its most radiant form. Pear and pink pepper add freshness to a velvety rose heart.",
-    image: "/products/desert-rose.jpg",
+    image: "/products/desert-rose.png",
   },
   {
     id: 91,
@@ -2484,7 +2484,7 @@ export const products = [
     bestFor: ["Spring", "Fall", "Casual"],
     description:
       "A bohemian blend of fresh citrus, pine, and warm sandalwood. Free-spirited and romantic, for the wanderer's soul.",
-    image: "/products/sacred-smoke.jpg",
+    image: "/products/sacred-smoke.png",
   },
   {
     id: 92,
@@ -2511,7 +2511,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A divine, boozy gourmand that captures angel's share, the portion of cognac that evaporates into the heavens. Warm, intoxicating, celestial.",
-    image: "/products/white-oud.jpg",
+    image: "/products/white-oud.png",
   },
   {
     id: 93,
@@ -2538,7 +2538,7 @@ export const products = [
     bestFor: ["Evening", "Special Occasions", "All Seasons"],
     description:
       "A lavish, unapologetic blend of leather, almond milk, and sage. Confident, provocative, and absolutely fabulous.",
-    image: "/products/noir-absolut.jpg",
+    image: "/products/noir-absolut.png",
   },
   {
     id: 94,
@@ -2565,7 +2565,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Office"],
     description:
       "A quintessential Italian citrus aromatic of effortless elegance. Lemon, bergamot, and lavender in timeless harmony.",
-    image: "/products/citrus-garden.jpg",
+    image: "/products/citrus-garden.png",
   },
   {
     id: 95,
@@ -2592,7 +2592,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A lavish, honeyed tobacco-lavender composition that channels Mediterranean indulgence. Sweet, warm, and impossibly smooth.",
-    image: "/products/velvet-iris.jpg",
+    image: "/products/velvet-iris.png",
   },
   {
     id: 96,
@@ -2619,7 +2619,7 @@ export const products = [
     bestFor: ["Spring", "Office", "Daily Wear"],
     description:
       "An elegant, soapy-fresh floral that radiates clean sophistication. Jasmine and iris float over a warm sandalwood foundation.",
-    image: "/products/mystic-amber.jpg",
+    image: "/products/mystic-amber.png",
   },
   {
     id: 97,
@@ -2646,7 +2646,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Meditation"],
     description:
       "A transportive incense experience that evokes ancient cathedrals. Myrrh and labdanum create a deeply spiritual, contemplative atmosphere.",
-    image: "/products/incense-ritual.jpg",
+    image: "/products/incense-ritual.png",
   },
   {
     id: 98,
@@ -2673,7 +2673,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A satiny, rose-oud composition of pure oriental elegance. Saffron and violet soften the oud into a warm, enveloping embrace.",
-    image: "/products/saffron-elixir.jpg",
+    image: "/products/saffron-elixir.png",
   },
   {
     id: 99,
@@ -2700,7 +2700,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Casual"],
     description:
       "A photorealistic fig tree scent capturing leaf, fruit, and wood in perfect balance. Mediterranean summer bottled.",
-    image: "/products/fig-reverie.jpg",
+    image: "/products/fig-reverie.png",
   },
   {
     id: 100,
@@ -2727,7 +2727,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "A velvety rose-amber composition of quiet luxury. Turkish rose and saffron glow against a soft woody backdrop.",
-    image: "/products/royal-amber.jpg",
+    image: "/products/royal-amber.png",
   },
   {
     id: 101,
@@ -2754,7 +2754,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Casual"],
     description:
       "A burst of freshly squeezed blood orange sunshine. Juicy, vibrant, and effervescent: pure citrus euphoria.",
-    image: "/products/bergamot-sun.jpg",
+    image: "/products/bergamot-sun.png",
   },
   {
     id: 102,
@@ -2781,7 +2781,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A raw, animalistic leather fragrance with African soul. Cardamom and cumin open to an earthy, untamed leather-oud heart.",
-    image: "/products/tobacco-suede.jpg",
+    image: "/products/tobacco-suede.png",
   },
   {
     id: 103,
@@ -2808,7 +2808,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Vacation"],
     description:
       "A luminous Italian Riviera fragrance that bottles Mediterranean sunshine. Neroli and citrus create an instant escape to coastal paradise.",
-    image: "/products/neroli-dawn.jpg",
+    image: "/products/neroli-dawn.png",
   },
   {
     id: 104,
@@ -2835,7 +2835,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A hauntingly beautiful, dark rose with raspberry-stained petals. Berlin nightlife captured in a bottle: edgy, romantic, unforgettable.",
-    image: "/products/midnight-jasmine.jpg",
+    image: "/products/midnight-jasmine.png",
   },
   {
     id: 105,
@@ -2862,7 +2862,7 @@ export const products = [
     bestFor: ["Office", "Spring", "Fall"],
     description:
       "A sophisticated, grey-toned vetiver with citrus polish. Clean, sharp, and impeccably tailored: the ultimate business fragrance.",
-    image: "/products/vetiver-essence.jpg",
+    image: "/products/vetiver-essence.png",
   },
   {
     id: 106,
@@ -2889,7 +2889,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A silky oud-rose blend fit for a majlis gathering. Saffron and jasmine add regal elegance to this Eastern masterpiece.",
-    image: "/products/rose-oud-majlis.jpg",
+    image: "/products/rose-oud-majlis.png",
   },
   {
     id: 107,
@@ -2916,7 +2916,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Daily Wear"],
     description:
       "A universally beloved clean fragrance that captures the essence of freshly laundered linen. Bright, airy, and effortlessly elegant.",
-    image: "/products/aqua-vitae.jpg",
+    image: "/products/aqua-vitae.png",
   },
   {
     id: 108,
@@ -2943,7 +2943,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A powerful oud-leather combination of raw luxury. Saffron and rose add depth to this dark, commanding composition.",
-    image: "/products/patchouli-luxe.jpg",
+    image: "/products/patchouli-luxe.png",
   },
   {
     id: 109,
@@ -2970,7 +2970,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A palatial amber-oud composition of extraordinary richness. Saffron and cinnamon ignite an amber-vanilla inferno that lasts for days.",
-    image: "/products/vanilla-absolute.jpg",
+    image: "/products/vanilla-absolute.png",
   },
   {
     id: 110,
@@ -2997,7 +2997,7 @@ export const products = [
     bestFor: ["All Seasons", "Daily Wear", "Layering"],
     description:
       "A revolutionary single-molecule fragrance that creates a unique aura on each wearer. Velvety, woody, and utterly personal.",
-    image: "/products/petrichor.jpg",
+    image: "/products/petrichor.png",
   },
   {
     id: 111,
@@ -3024,7 +3024,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Office"],
     description:
       "A contemplative black tea fragrance with smoky vetiver depth. Intellectual, warm, and deeply comforting.",
-    image: "/products/himalayan-cedar.jpg",
+    image: "/products/himalayan-cedar.png",
   },
   {
     id: 112,
@@ -3051,7 +3051,7 @@ export const products = [
     bestFor: ["All Seasons", "Daily Wear", "Layering"],
     description:
       "A radical, minimalist fragrance built on a single ingredient. Clean, musky, and endlessly versatile as a standalone or layering partner.",
-    image: "/products/musk-therapy.jpg",
+    image: "/products/musk-therapy.png",
   },
   {
     id: 113,
@@ -3078,7 +3078,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Date Night"],
     description:
       "A boozy, intoxicating blend of rum, tobacco, and vanilla. The side effects include endless compliments and addictive re-spraying.",
-    image: "/products/oud-platinum.jpg",
+    image: "/products/oud-platinum.png",
   },
   {
     id: 114,
@@ -3105,7 +3105,7 @@ export const products = [
     bestFor: ["Summer", "Spring", "Casual"],
     description:
       "A crisp, nautical fragrance that captures the freedom of open water. Sea salt and driftwood in effortless marine elegance.",
-    image: "/products/ocean-drift.jpg",
+    image: "/products/ocean-drift.png",
   },
   {
     id: 115,
@@ -3132,7 +3132,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Date Night"],
     description:
       "A luscious fruity-floral gourmand that bursts with passion fruit and peach. Sweet, radiant, and utterly charming.",
-    image: "/products/amber-velvet.jpg",
+    image: "/products/amber-velvet.png",
   },
   {
     id: 116,
@@ -3159,7 +3159,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "An aromatic journey through Turkish spice markets. Cardamom and rose dance with oud and leather: exotic and magnificent.",
-    image: "/products/spice-souk.jpg",
+    image: "/products/spice-souk.png",
   },
   {
     id: 117,
@@ -3186,7 +3186,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Casual"],
     description:
       "The scent of rain on lavender fields: clean, green, and deeply calming. A botanical meditation for everyday wear.",
-    image: "/products/lavender-fields.jpg",
+    image: "/products/lavender-fields.png",
   },
   {
     id: 118,
@@ -3213,7 +3213,7 @@ export const products = [
     bestFor: ["Date Night", "Fall", "Winter"],
     description:
       "A shamelessly sweet, romantic gourmand of marshmallow, caramel, and orange blossom. Unapologetically addictive.",
-    image: "/products/dark-honey.jpg",
+    image: "/products/dark-honey.png",
   },
   {
     id: 119,
@@ -3240,7 +3240,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Casual"],
     description:
       "A multi-layered wood symphony that explores every facet of timber. Cedar, guaiac, and sandalwood in avant-garde harmony.",
-    image: "/products/birch-smoke.jpg",
+    image: "/products/birch-smoke.png",
   },
   {
     id: 120,
@@ -3267,7 +3267,7 @@ export const products = [
     bestFor: ["All Seasons", "Office", "Daily Wear"],
     description:
       "A gently warm amber-musk with a silken flow. Coriander and juniper add crisp brightness to a cashmere-soft base.",
-    image: "/products/silk-route.jpg",
+    image: "/products/silk-route.png",
   },
   {
     id: 121,
@@ -3294,7 +3294,7 @@ export const products = [
     bestFor: ["Evening", "Winter", "Special Occasions"],
     description:
       "A magnificent oud-floral composition that weaves precious oud with opulent rose. Eastern grandeur at its most refined.",
-    image: "/products/black-orchid-oud.jpg",
+    image: "/products/black-orchid-oud.png",
   },
   {
     id: 122,
@@ -3321,7 +3321,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Date Night"],
     description:
       "An intoxicating coffee-rose alliance that bridges the cafe and the garden. Rich, creamy, and utterly sophisticated.",
-    image: "/products/coffee-noir.jpg",
+    image: "/products/coffee-noir.png",
   },
   {
     id: 123,
@@ -3348,7 +3348,7 @@ export const products = [
     bestFor: ["Daily Wear", "Office", "Spring"],
     description:
       "A nostalgic barbershop scent of mint, lavender, and clean leather. Crisp, fresh, and perfectly groomed.",
-    image: "/products/wild-mint.jpg",
+    image: "/products/wild-mint.png",
   },
   {
     id: 124,
@@ -3375,7 +3375,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Casual"],
     description:
       "A joyful, sun-kissed woody-floral that captures African warmth and color. Marigold and vetiver dance in golden light.",
-    image: "/products/golden-suede.jpg",
+    image: "/products/golden-suede.png",
   },
   {
     id: 125,
@@ -3402,7 +3402,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A warm, honeyed spice blend with regal bearing. Cinnamon and saffron glow over a rich tonka-vanilla foundation.",
-    image: "/products/tonka-royale.jpg",
+    image: "/products/tonka-royale.png",
   },
   {
     id: 126,
@@ -3429,7 +3429,7 @@ export const products = [
     bestFor: ["All Seasons", "Special Occasions", "Date Night"],
     description:
       "The extrait concentration of the legendary amber masterpiece, amplified, intensified, and even more hypnotic. Almond and jasmine elevate the experience.",
-    image: "/products/jasmine-oud.jpg",
+    image: "/products/jasmine-oud.png",
   },
   {
     id: 127,
@@ -3456,7 +3456,7 @@ export const products = [
     bestFor: ["All Seasons", "Office", "Meditation"],
     description:
       "A meditative, creamy sandalwood of ethereal purity. Cypress and myrtle add a green freshness to the warm, milky heart.",
-    image: "/products/sandalwood-haze.jpg",
+    image: "/products/sandalwood-haze.png",
   },
   {
     id: 128,
@@ -3483,7 +3483,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "An opulent rose-oud from the private collection tradition. Raspberry adds unexpected juiciness to a saffron-rose-oud tapestry.",
-    image: "/products/iris-noir.jpg",
+    image: "/products/iris-noir.png",
   },
   {
     id: 129,
@@ -3510,7 +3510,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Casual"],
     description:
       "A vibrant, green tea-infused composition with tropical undertones. Fresh, energizing, and mindfully modern.",
-    image: "/products/matcha-zen.jpg",
+    image: "/products/matcha-zen.png",
   },
   {
     id: 130,
@@ -3537,7 +3537,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Date Night"],
     description:
       "A hedonistic rum-vanilla composition with dark cedar and spice. Straight to heaven, and everyone around you agrees.",
-    image: "/products/oud-royale.jpg",
+    image: "/products/oud-royale.png",
   },
   {
     id: 131,
@@ -3564,7 +3564,7 @@ export const products = [
     bestFor: ["Spring", "Daily Wear", "Office"],
     description:
       "A pristine, white linen-like freshness with delicate floral facets. Clean, bright, and radiantly pure.",
-    image: "/products/frosted-pine.jpg",
+    image: "/products/frosted-pine.png",
   },
   {
     id: 132,
@@ -3591,7 +3591,7 @@ export const products = [
     bestFor: ["Fall", "Winter", "Evening"],
     description:
       "A rich Arabian gourmand of dates, coffee, and warming spices. Sweet, exotic, and utterly indulgent: a Middle Eastern dessert in fragrance form.",
-    image: "/products/arabian-nights.jpg",
+    image: "/products/arabian-nights.png",
   },
   {
     id: 133,
@@ -3618,7 +3618,7 @@ export const products = [
     bestFor: ["Fall", "Office", "Casual"],
     description:
       "An Italian citrus-leather of impeccable taste. Bright bergamot and refined leather: like a luxury driving glove.",
-    image: "/products/leather-chronicle.jpg",
+    image: "/products/leather-chronicle.png",
   },
   {
     id: 134,
@@ -3645,7 +3645,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "An essential oud stripped to its purest elements. Rose and incense provide a luminous backdrop for the prized agarwood heart.",
-    image: "/products/starlit-oud.jpg",
+    image: "/products/starlit-oud.png",
   },
   {
     id: 135,
@@ -3672,7 +3672,7 @@ export const products = [
     bestFor: ["Daily Wear", "Spring", "Summer"],
     description:
       "A gender-free herbal musk that defies convention. Chamomile and jasmine float in a gentle, memory-evoking haze.",
-    image: "/products/primrose-path.jpg",
+    image: "/products/primrose-path.png",
   },
   {
     id: 136,
@@ -3699,7 +3699,7 @@ export const products = [
     bestFor: ["All Seasons", "Casual", "Daily Wear"],
     description:
       "A ghostly, ethereal woody-floral that captures desert mirage beauty. Sandalwood and violet shimmer in the heat.",
-    image: "/products/ember-ash.jpg",
+    image: "/products/ember-ash.png",
   },
   {
     id: 137,
@@ -3726,7 +3726,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Special Occasions"],
     description:
       "A dark, brooding oud of unapologetic intensity. Rose and saffron barely tame the primal, smoky agarwood at its core.",
-    image: "/products/black-pepper-oud.jpg",
+    image: "/products/black-pepper-oud.png",
   },
   {
     id: 138,
@@ -3753,7 +3753,7 @@ export const products = [
     bestFor: ["Spring", "Summer", "Relaxation"],
     description:
       "The scent of lazy Sunday mornings: freshly pressed sheets, soft skin, and morning light. Intimate, cozy, and blissful.",
-    image: "/products/whispering-suede.jpg",
+    image: "/products/whispering-suede.png",
   },
   {
     id: 139,
@@ -3780,7 +3780,7 @@ export const products = [
     bestFor: ["Evening", "Fall", "Winter"],
     description:
       "A majestic, cardamom-vanilla oriental that bridges Turkish tradition with modern niche. Bold, warm, and deeply satisfying.",
-    image: "/products/elixir-of-night.jpg",
+    image: "/products/elixir-of-night.png",
   },
   {
     id: 140,
@@ -3807,7 +3807,7 @@ export const products = [
     bestFor: ["All Seasons", "Casual", "Daily Wear"],
     description:
       "A light, modern unisex scent that floats between masculine and feminine. Iris and neroli in effortless, airy harmony.",
-    image: "/products/cloud-nine.jpg",
+    image: "/products/cloud-nine.png",
   },
   {
     id: 141,
@@ -3834,7 +3834,7 @@ export const products = [
     bestFor: ["Office", "All Seasons", "Daily Wear"],
     description:
       "A sophisticated musk-centric fragrance with a dark, mysterious edge. Vetiver and myrrh anchor a velvety, skin-close composition.",
-    image: "/products/myrrh-musk.jpg",
+    image: "/products/myrrh-musk.png",
   },
   {
     id: 142,
@@ -3861,7 +3861,7 @@ export const products = [
     bestFor: ["Winter", "Evening", "Meditation"],
     description:
       "A transcendent desert amber that captures the silence and heat of the Sahara. Cade and incense create a profoundly spiritual experience.",
-    image: "/products/cardamom-blaze.jpg",
+    image: "/products/cardamom-blaze.png",
   },
   {
     id: 143,
@@ -3888,7 +3888,7 @@ export const products = [
     bestFor: ["Daily Wear", "All Seasons", "Layering"],
     description:
       "A your-skin-but-better fragrance that enhances your natural scent. Pink pepper and iris root create a warm, magnetic glow that is uniquely you.",
-    image: "/products/ethereal-mist.jpg",
+    image: "/products/ethereal-mist.png",
   },
 ];
 

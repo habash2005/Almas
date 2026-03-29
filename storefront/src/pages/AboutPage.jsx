@@ -49,8 +49,8 @@ export default function AboutPage() {
 
       {/* ===== EDITORIAL BLOCK 1 — Image Left ===== */}
       <section className="grid grid-cols-2 min-h-[70vh]">
-        <div className="bg-stone flex items-center justify-center font-serif text-[28px] text-black/[0.08]">
-          Brand Photography
+        <div className="bg-stone relative overflow-hidden">
+          <img src="/images/lifestyle-spray.png" alt="ALMAS fragrance" className="absolute inset-0 w-full h-full object-cover" />
         </div>
         <div className="flex flex-col justify-center p-20">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
@@ -86,8 +86,8 @@ export default function AboutPage() {
             The result is a fragrance that captures the essence, longevity, and sillage of its inspiration, presented in beautifully designed bottles that reflect the elegance within.
           </p>
         </div>
-        <div className="bg-stone flex items-center justify-center font-serif text-[28px] text-black/[0.08]">
-          Craftsmanship Detail
+        <div className="bg-stone relative overflow-hidden">
+          <img src="/images/ingredients.png" alt="Premium fragrance ingredients" className="absolute inset-0 w-full h-full object-cover" />
         </div>
       </section>
 
@@ -127,8 +127,8 @@ export default function AboutPage() {
 
       {/* ===== EDITORIAL BLOCK 3 — Full Width CTA ===== */}
       <section className="grid grid-cols-2 min-h-[60vh]">
-        <div className="bg-stone flex items-center justify-center font-serif text-[28px] text-black/[0.08]">
-          Collection Photography
+        <div className="bg-stone relative overflow-hidden">
+          <img src="/images/hero-bottle.png" alt="ALMAS collection" className="absolute inset-0 w-full h-full object-cover object-center" />
         </div>
         <div className="flex flex-col justify-center p-20 bg-black text-white">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/50 mb-7 flex items-center gap-3">

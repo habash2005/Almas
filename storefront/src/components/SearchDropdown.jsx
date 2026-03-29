@@ -34,7 +34,7 @@ export default function SearchDropdown({ isOpen, onClose }) {
             p.name.toLowerCase().includes(query.toLowerCase()) ||
             p.inspiredBy.toLowerCase().includes(query.toLowerCase()) ||
             p.scentFamily.toLowerCase().includes(query.toLowerCase()) ||
-            p.categoryLabel.toLowerCase().includes(query.toLowerCase())
+            (p.category === 'men' ? 'for him' : p.category === 'women' ? 'for her' : 'unisex').includes(query.toLowerCase())
         )
         .slice(0, 5)
     : [];

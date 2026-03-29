@@ -68,12 +68,13 @@ export default function LoginPage() {
               <label className="text-[11px] tracking-[0.12em] uppercase text-warm-gray">
                 Password
               </label>
-              <Link
-                to="/forgot-password"
+              <button
+                type="button"
+                onClick={() => alert('Please contact support@almasscent.com to reset your password.')}
                 className="text-[11px] text-warm-gray hover:text-black transition-colors"
               >
                 Forgot Password?
-              </Link>
+              </button>
             </div>
             <input
               type="password"

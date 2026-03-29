@@ -60,7 +60,7 @@ export default function ContactPage() {
       </section>
 
       {/* ===== SPLIT LAYOUT ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
         {/* Left — Contact Form */}
         <div className="p-20">
           <h2 className="font-serif text-[clamp(24px,2.5vw,36px)] font-light mb-2">Send a Message</h2>

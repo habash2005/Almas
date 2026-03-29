@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import products from '../data/products'
@@ -41,11 +41,11 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState('featured')
 
   // Sync URL category param on mount
-  useState(() => {
+  useEffect(() => {
     if (urlCategory && ['men', 'women', 'unisex'].includes(urlCategory)) {
       setActiveCategory(urlCategory)
     }
-  })
+  }, [urlCategory])
 
   const filteredAndSorted = useMemo(() => {
     let result = [...products]

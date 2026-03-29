@@ -14,7 +14,11 @@
       "Bash(cp \"/Users/ahmadhijaz/Downloads/ChatGPT Image Mar 29, 2026, 12_33_02 PM.png\" /Users/ahmadhijaz/Desktop/Almas/storefront/public/images/category-him.png)",
       "Bash(cp \"/Users/ahmadhijaz/Downloads/ChatGPT Image Mar 29, 2026, 12_35_39 PM.png\" /Users/ahmadhijaz/Desktop/Almas/storefront/public/images/category-her.png)",
       "Bash(cp \"/Users/ahmadhijaz/Downloads/ChatGPT Image Mar 29, 2026, 12_36_44 PM.png\" /Users/ahmadhijaz/Desktop/Almas/storefront/public/images/ingredients.png)",
-      "Bash(cp \"/Users/ahmadhijaz/Downloads/ChatGPT Image Mar 29, 2026, 12_40_33 PM.png\" /Users/ahmadhijaz/Desktop/Almas/storefront/public/images/subscription.png)"
+      "Bash(cp \"/Users/ahmadhijaz/Downloads/ChatGPT Image Mar 29, 2026, 12_40_33 PM.png\" /Users/ahmadhijaz/Desktop/Almas/storefront/public/images/subscription.png)",
+      "WebFetch(domain:www.whois.com)",
+      "Bash(pip3 install:*)",
+      "Bash(grep -r \"placeholder\" /Users/ahmadhijaz/Desktop/Almas/storefront/src/pages/*.jsx)",
+      "Bash(grep:*)"
     ]
   }
 }
