@@ -294,20 +294,20 @@ export default function ProductPage() {
         className="px-6 md:px-12 py-12 md:py-16"
         style={{ background: `linear-gradient(180deg, ${hexToRgba(getAccentColor(product), 0.06)} 0%, transparent 50%)` }}
       >
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
           {/* Left: Product Display */}
-          <div className="sticky top-24">
+          <div className="lg:sticky lg:top-24">
             {/* Main product card */}
             <div className="bg-white rounded-sm border border-stone/20 overflow-hidden">
               {/* Top area: Bottle left, Notes right */}
-              <div className="flex items-start p-8">
+              <div className="flex flex-col md:flex-row items-start p-8">
                 {/* Bottle with themed shadow */}
-                <div className="w-[50%] relative pr-4">
+                <div className="w-full md:w-[50%] relative pr-0 md:pr-4">
                   <ProductBottleImage product={product} bottleShadow={bottleShadow} />
                 </div>
 
                 {/* Notes pills — right side */}
-                <div className="w-[50%] pt-6 pl-4">
+                <div className="w-full md:w-[50%] pt-6 pl-0 md:pl-4">
                   <AccordBar accords={product.accords || []} size="large" />
                 </div>
               </div>
@@ -339,7 +339,7 @@ export default function ProductPage() {
               </h3>
 
               {/* Top Notes - narrowest */}
-              <div className="max-w-[65%] mx-auto mb-4">
+              <div className="max-w-full sm:max-w-[65%] mx-auto mb-4">
                 <div className="flex items-center gap-2 mb-2" style={{ borderLeft: `3px solid ${accentColor}30`, paddingLeft: '12px' }}>
                   <Droplets size={14} className="text-warm-gray" />
                   <span className="text-[10px] tracking-[0.1em] uppercase text-warm-gray font-medium">Top Notes</span>
@@ -352,7 +352,7 @@ export default function ProductPage() {
               </div>
 
               {/* Heart Notes - medium width */}
-              <div className="max-w-[82%] mx-auto mb-4">
+              <div className="max-w-full sm:max-w-[82%] mx-auto mb-4">
                 <div className="flex items-center gap-2 mb-2" style={{ borderLeft: `3px solid ${accentColor}45`, paddingLeft: '12px' }}>
                   <HeartIcon size={14} className="text-warm-gray" />
                   <span className="text-[10px] tracking-[0.1em] uppercase text-warm-gray font-medium">Heart Notes</span>
@@ -380,7 +380,7 @@ export default function ProductPage() {
               <div className="h-px bg-stone-dark/30 my-5" />
 
               {/* Performance with visual gauges */}
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="text-center">
                   <Clock size={18} className="mx-auto mb-1.5 text-warm-gray" />
                   <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-1.5">Longevity</div>
@@ -821,18 +821,25 @@ function ProductBottleImage({ product, bottleShadow }) {
     ? accords.reduce((a, b) => a.strength > b.strength ? a : b).color
     : '#C4A882'
 
+  const h = dominantColor.replace('#', '')
+  const r = parseInt(h.substring(0, 2), 16) / 255
+  const g = parseInt(h.substring(2, 4), 16) / 255
+  const b = parseInt(h.substring(4, 6), 16) / 255
+  const max = Math.max(r, g, b), min = Math.min(r, g, b)
+  let hue = 0
+  if (max !== min) {
+    const d = max - min
+    if (max === r) hue = ((g - b) / d + (g < b ? 6 : 0)) * 60
+    else if (max === g) hue = ((b - r) / d + 2) * 60
+    else hue = ((r - g) / d + 4) * 60
+  }
+
   return (
-    <div className="relative">
-      <img
-        src="/images/bottle-transparent.png"
-        alt={product.name}
-        className="w-full h-auto object-contain relative z-[1]"
-        style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow})` }}
-      />
-      <div
-        className="absolute inset-0 z-[2] pointer-events-none mix-blend-multiply opacity-30"
-        style={{ backgroundColor: dominantColor }}
-      />
-    </div>
+    <img
+      src="/images/bottle-transparent.png"
+      alt={product.name}
+      className="w-full h-auto object-contain"
+      style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow}) sepia(0.4) hue-rotate(${Math.round(hue)}deg) saturate(0.8)` }}
+    />
   )
 }

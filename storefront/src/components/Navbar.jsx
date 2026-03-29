@@ -47,7 +47,7 @@ export default function Navbar() {
         {/* Center logo */}
         <Link
           to="/"
-          className="font-serif text-[28px] font-light tracking-[0.08em] text-black flex flex-col items-center leading-none no-underline"
+          className="font-serif text-[22px] sm:text-[28px] font-light tracking-[0.08em] text-black flex flex-col items-center leading-none no-underline"
         >
           ALMAS
           <span className="text-[16px] mt-0.5" style={{ fontFamily: 'serif' }}>
@@ -142,7 +142,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
           />
           <div
-            className="absolute top-0 left-0 w-72 h-full bg-white p-8 flex flex-col gap-8"
+            className="absolute top-0 left-0 w-[min(288px,90vw)] h-full bg-white p-8 flex flex-col gap-8"
             style={{ animation: 'slideInLeft 0.3s ease forwards' }}
           >
             <div className="flex items-center justify-between">

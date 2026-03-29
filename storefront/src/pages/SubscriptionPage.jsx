@@ -74,7 +74,7 @@ export default function SubscriptionPage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <section className="min-h-[60vh] flex items-center justify-center text-center bg-black text-white px-12 py-32 relative overflow-hidden">
+      <section className="min-h-[60vh] flex items-center justify-center text-center bg-black text-white px-6 md:px-12 py-32 relative overflow-hidden">
         {/* Decorative circles */}
         <div className="absolute top-[10%] left-[10%] w-[300px] h-[300px] rounded-full border border-white/[0.04]" />
         <div className="absolute bottom-[10%] right-[15%] w-[200px] h-[200px] rounded-full border border-white/[0.03]" />
@@ -99,14 +99,14 @@ export default function SubscriptionPage() {
       </section>
 
       {/* ===== HOW IT WORKS ===== */}
-      <section className="py-[100px] px-12">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
         <div className="text-center mb-16">
           <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1] mb-3">How It Works</h2>
           <p className="text-sm text-warm-gray max-w-[400px] mx-auto">
             Three simple steps to your perfect fragrance subscription
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-12 max-w-[960px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-[960px] mx-auto">
           {steps.map((step) => (
             <div key={step.number} className="text-center">
               <div className="w-20 h-20 rounded-full border border-black/[0.1] mx-auto mb-6 flex items-center justify-center text-3xl text-warm-gray">
@@ -123,8 +123,8 @@ export default function SubscriptionPage() {
       </section>
 
       {/* ===== BENEFITS ===== */}
-      <section className="py-[100px] px-12 bg-light-gray">
-        <div className="grid grid-cols-2 gap-20 max-w-[960px] mx-auto items-center">
+      <section className="py-16 md:py-[100px] px-6 md:px-12 bg-light-gray">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 max-w-[960px] mx-auto items-center">
           <div>
             <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
               <span className="w-8 h-px bg-warm-gray" />
@@ -156,7 +156,7 @@ export default function SubscriptionPage() {
       </section>
 
       {/* ===== SUBSCRIBABLE PRODUCTS ===== */}
-      <section className="py-[100px] px-12">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
         <div className="flex justify-between items-end mb-14">
           <div>
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">
@@ -173,7 +173,7 @@ export default function SubscriptionPage() {
             View All
           </Link>
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {subscribableProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -181,7 +181,7 @@ export default function SubscriptionPage() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="py-[100px] px-12 bg-light-gray">
+      <section className="py-16 md:py-[100px] px-6 md:px-12 bg-light-gray">
         <div className="max-w-[700px] mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1] mb-3">
@@ -217,14 +217,14 @@ export default function SubscriptionPage() {
       </section>
 
       {/* ===== GIFT SUBSCRIPTION CTA ===== */}
-      <section className="grid grid-cols-2 min-h-[50vh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
         <div className="bg-stone flex items-center justify-center relative overflow-hidden">
           <div className="text-center font-serif">
             <Gift className="w-16 h-16 text-black/[0.12] mx-auto mb-4" strokeWidth={1} />
             <div className="text-xl text-black/[0.15]">The Perfect Gift</div>
           </div>
         </div>
-        <div className="flex flex-col justify-center p-20 bg-black text-white">
+        <div className="flex flex-col justify-center p-8 md:p-20 bg-black text-white">
           <span className="text-[9px] tracking-[0.15em] uppercase border border-white/20 inline-block px-3.5 py-1.5 mb-6 w-fit">
             Gift Subscription
           </span>

@@ -107,7 +107,7 @@ export default function CartPage() {
                   {/* Product Info */}
                   <div className="flex gap-5">
                     <Link to={`/product/${item.product.id}`} className="shrink-0">
-                      <div className="w-24 h-28 bg-light-gray flex items-center justify-center">
+                      <div className="w-16 h-20 sm:w-24 sm:h-28 bg-light-gray flex items-center justify-center">
                         {item.product.image ? (
                           <img
                             src={item.product.image}
@@ -242,7 +242,7 @@ export default function CartPage() {
 
           {/* Cart Summary Sidebar */}
           <div className="mt-12 lg:mt-0">
-            <div className="bg-light-gray p-8 sticky top-32">
+            <div className="bg-light-gray p-8 lg:sticky lg:top-32">
               <h2 className="text-[11px] tracking-[0.15em] uppercase font-medium mb-8">
                 Order Summary
               </h2>

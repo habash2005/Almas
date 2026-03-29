@@ -28,7 +28,7 @@ export default function AboutPage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <section className="min-h-[70vh] flex items-center justify-center text-center bg-light-gray px-12 py-32 relative overflow-hidden">
+      <section className="min-h-[70vh] flex items-center justify-center text-center bg-light-gray px-6 md:px-12 py-32 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center font-serif text-[160px] text-black/[0.03]">
           {'\u25C6'}
         </div>
@@ -48,11 +48,11 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 1 — Image Left ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
         <div className="bg-stone relative overflow-hidden">
           <img src="/images/lifestyle-spray.png" alt="ALMAS fragrance" className="absolute inset-0 w-full h-full object-cover" />
         </div>
-        <div className="flex flex-col justify-center p-20">
+        <div className="flex flex-col justify-center p-8 md:p-20">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
             The Beginning
@@ -70,8 +70,8 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 2 — Image Right ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
-        <div className="flex flex-col justify-center p-20 bg-light-gray">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
+        <div className="flex flex-col justify-center p-8 md:p-20 bg-light-gray">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
             The Process
@@ -92,7 +92,7 @@ export default function AboutPage() {
       </section>
 
       {/* ===== THE DIAMOND NARRATIVE ===== */}
-      <section className="py-[120px] px-12 text-center">
+      <section className="py-[120px] px-6 md:px-12 text-center">
         <div className="max-w-[600px] mx-auto">
           <div className="text-5xl text-stone mb-8">{'\u25C6'}</div>
           <h2 className="font-serif text-[clamp(32px,4vw,52px)] font-light leading-[1.15] mb-6">
@@ -105,14 +105,14 @@ export default function AboutPage() {
       </section>
 
       {/* ===== BRAND VALUES ===== */}
-      <section className="py-[100px] px-12 bg-light-gray">
+      <section className="py-[100px] px-6 md:px-12 bg-light-gray">
         <div className="text-center mb-16">
           <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1] mb-3">Our Values</h2>
           <p className="text-sm text-warm-gray max-w-[400px] mx-auto">
             The principles that guide every bottle we create
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-8 max-w-[900px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-[900px] mx-auto">
           {values.map((value) => (
             <div
               key={value.title}
@@ -126,11 +126,11 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 3 — Full Width CTA ===== */}
-      <section className="grid grid-cols-2 min-h-[60vh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[60vh]">
         <div className="bg-stone relative overflow-hidden">
           <img src="/images/hero-bottle.png" alt="ALMAS collection" className="absolute inset-0 w-full h-full object-cover object-center" />
         </div>
-        <div className="flex flex-col justify-center p-20 bg-black text-white">
+        <div className="flex flex-col justify-center p-8 md:p-20 bg-black text-white">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/50 mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-white/30" />
             140+ Fragrances

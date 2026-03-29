@@ -53,7 +53,7 @@ export default function CartDrawer() {
 
       {/* Drawer */}
       <div
-        className="absolute top-0 right-0 h-full w-full max-w-md bg-white flex flex-col shadow-2xl"
+        className="absolute top-0 right-0 h-full w-full sm:max-w-md bg-white flex flex-col shadow-2xl"
         style={{ animation: 'slideInRight 0.35s ease forwards' }}
       >
         {/* Header */}

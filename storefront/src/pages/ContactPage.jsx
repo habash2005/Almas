@@ -47,7 +47,7 @@ export default function ContactPage() {
   return (
     <>
       {/* ===== HEADER ===== */}
-      <section className="py-20 px-12 text-center bg-light-gray">
+      <section className="py-20 px-6 md:px-12 text-center bg-light-gray">
         <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-6 flex items-center justify-center gap-3">
           <span className="w-8 h-px bg-warm-gray" />
           Get in Touch
@@ -62,7 +62,7 @@ export default function ContactPage() {
       {/* ===== SPLIT LAYOUT ===== */}
       <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
         {/* Left — Contact Form */}
-        <div className="p-20">
+        <div className="p-6 md:p-12 lg:p-20">
           <h2 className="font-serif text-[clamp(24px,2.5vw,36px)] font-light mb-2">Send a Message</h2>
           <p className="text-sm text-warm-gray mb-10">Fill out the form below and we'll get back to you within 24 hours.</p>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -134,7 +134,7 @@ export default function ContactPage() {
         </div>
 
         {/* Right — Contact Info */}
-        <div className="p-20 bg-light-gray flex flex-col justify-center">
+        <div className="p-6 md:p-12 lg:p-20 bg-light-gray flex flex-col justify-center">
           <h2 className="font-serif text-[clamp(24px,2.5vw,36px)] font-light mb-2">Contact Information</h2>
           <p className="text-sm text-warm-gray mb-12">Reach out to us through any of the channels below.</p>
           <div className="space-y-8">

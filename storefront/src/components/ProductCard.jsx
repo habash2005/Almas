@@ -16,10 +16,28 @@ export default function ProductCard({ product }) {
   const sizes = Object.keys(product.prices)
   const accords = (product.accords || []).slice(0, 5)
 
-  // Derive liquid tint from dominant accord color
+  // Derive hue rotation from dominant accord for liquid tint
   const dominantColor = accords.length > 0
     ? accords.reduce((a, b) => a.strength > b.strength ? a : b).color
     : '#C4A882'
+
+  // Convert hex to hue angle for CSS hue-rotate
+  const hexToHue = (hex) => {
+    const h = hex.replace('#', '')
+    const r = parseInt(h.substring(0, 2), 16) / 255
+    const g = parseInt(h.substring(2, 4), 16) / 255
+    const b = parseInt(h.substring(4, 6), 16) / 255
+    const max = Math.max(r, g, b), min = Math.min(r, g, b)
+    let hue = 0
+    if (max !== min) {
+      const d = max - min
+      if (max === r) hue = ((g - b) / d + (g < b ? 6 : 0)) * 60
+      else if (max === g) hue = ((b - r) / d + 2) * 60
+      else hue = ((r - g) / d + 4) * 60
+    }
+    return Math.round(hue)
+  }
+  const hueRotation = hexToHue(dominantColor)
 
   const categoryLabel =
     product.category === 'men' ? 'For Him'
@@ -56,18 +74,31 @@ export default function ProductCard({ product }) {
       {/* ━━━ IMAGE AREA ━━━ */}
       <div className="relative overflow-hidden mb-4">
 
-        {/* Bottle — generous padding, centered, breathes */}
-        <div className="aspect-[3/4] flex items-center justify-center px-10 py-8 relative">
-          <img
-            src="/images/bottle-transparent.png"
-            alt={product.name}
-            className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06] relative z-[1]"
-          />
-          {/* Liquid color tint — blends with the bottle to shift the fluid color */}
-          <div
-            className="absolute inset-0 z-[2] pointer-events-none mix-blend-multiply opacity-30"
-            style={{ backgroundColor: dominantColor }}
-          />
+        {/* Bottle left + Notes right */}
+        <div className="aspect-[3/4] flex">
+          {/* Bottle — left, takes up most of the space */}
+          <div className="w-[65%] flex items-center justify-center p-4 pl-3">
+            <img
+              src="/images/bottle-transparent.png"
+              alt={product.name}
+              className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06]"
+              style={{ filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)` }}
+            />
+          </div>
+          {/* Notes — compact on the right */}
+          <div className="w-[35%] flex flex-col justify-center pr-3 py-6">
+            <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-2.5">
+              <span className="border-b border-[#9A948D]/30 pb-0.5">Notes</span>
+            </p>
+            <div className="flex flex-col gap-2">
+              {accords.map((a) => (
+                <div key={a.name} className="flex items-center gap-1.5">
+                  <span className="text-[9px] text-[#0A0A0A] leading-tight flex-1 truncate">{a.name}</span>
+                  <div className="w-[28px] h-[10px] rounded-full shrink-0" style={{ backgroundColor: a.color }} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Accord color strip — thin bar of product's signature colors at bottom */}
@@ -133,6 +164,30 @@ export default function ProductCard({ product }) {
             </span>
           ))}
         </div>
+
+        {/* Fragrance Notes — Top / Heart / Base */}
+        {product.notes && (
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 pt-2 border-t border-[#ECEAE7]">
+            <div>
+              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Top</p>
+              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
+                {product.notes.top?.slice(0, 2).join(', ')}
+              </p>
+            </div>
+            <div>
+              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Heart</p>
+              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
+                {product.notes.heart?.slice(0, 2).join(', ')}
+              </p>
+            </div>
+            <div>
+              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Base</p>
+              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
+                {product.notes.base?.slice(0, 2).join(', ')}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Price + Sizes */}
         <div className="flex items-center justify-between pt-2 border-t border-[#ECEAE7]">

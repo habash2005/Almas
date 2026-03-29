@@ -148,7 +148,7 @@ export default function AccountPage() {
               <div>
                 <h2 className="font-serif text-2xl font-light mb-8">Profile Details</h2>
                 <form onSubmit={handleSaveProfile} className="max-w-lg space-y-5">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-2">
                         First Name

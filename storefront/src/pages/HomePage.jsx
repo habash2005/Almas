@@ -60,7 +60,7 @@ export default function HomePage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <section className="min-h-[92vh] flex items-center px-12 py-20 bg-light-gray relative overflow-hidden">
+      <section className="min-h-[92vh] flex flex-col md:flex-row items-center px-6 md:px-12 py-20 bg-light-gray relative overflow-hidden">
         <div className="flex-1 max-w-[560px] z-[2]">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-8 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
@@ -94,7 +94,7 @@ export default function HomePage() {
           <div className="relative">
             <div className="absolute -inset-10 border border-black/[0.06] pointer-events-none" />
             <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 w-[200px] h-10 bg-black/[0.04] rounded-full blur-[20px]" />
-            <img src="/images/bottle-transparent.png" alt="ALMAS Eau de Parfum" className="w-[360px] h-auto object-contain relative z-[1]" />
+            <img src="/images/bottle-transparent.png" alt="ALMAS Eau de Parfum" className="w-[240px] md:w-[360px] h-auto object-contain relative z-[1]" />
           </div>
         </div>
       </section>
@@ -115,8 +115,8 @@ export default function HomePage() {
       </div>
 
       {/* ===== SUBSCRIPTION PROMO BANNER ===== */}
-      <section className="pt-20 px-12">
-        <div className="grid grid-cols-2 min-h-[320px] overflow-hidden cursor-pointer">
+      <section className="pt-20 px-6 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[320px] overflow-hidden cursor-pointer">
           {/* Left image */}
           <div className="relative overflow-hidden">
             <img src="/images/subscription.png" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover" />
@@ -145,7 +145,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== CATEGORIES ===== */}
-      <section className="py-[100px] px-12">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
         <div className="flex justify-between items-end mb-14">
           <div>
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">Shop by Category</h2>
@@ -158,7 +158,7 @@ export default function HomePage() {
             View All
           </Link>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {categories.map((cat) => (
             <Link
               key={cat.slug}
@@ -182,7 +182,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== DUAL BANNERS — Row 1 ===== */}
-      <div className="grid grid-cols-2 gap-5 px-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-6 md:px-12">
         {/* Spring Collection */}
         <Link to="/shop" className="relative aspect-video overflow-hidden bg-stone cursor-pointer group no-underline">
           <img src="/images/spring-collection.png" alt="Spring Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -210,7 +210,7 @@ export default function HomePage() {
       </div>
 
       {/* ===== BEST SELLERS ===== */}
-      <section className="py-[100px] px-12">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
         <div className="flex justify-between items-end mb-14">
           <div>
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">Best Sellers</h2>
@@ -223,7 +223,7 @@ export default function HomePage() {
             Shop All
           </Link>
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {bestSellers.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -231,7 +231,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== FULL-WIDTH SCENT FINDER BANNER ===== */}
-      <div className="relative min-h-[400px] flex items-center justify-center text-center overflow-hidden mx-12">
+      <div className="relative min-h-[400px] flex items-center justify-center text-center overflow-hidden mx-6 md:mx-12">
         <img src="/images/ingredients.png" alt="Fragrance Ingredients" className="absolute inset-0 w-full h-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-white/60" />
         <div className="relative z-[2] py-20 px-10">
@@ -251,8 +251,8 @@ export default function HomePage() {
       </div>
 
       {/* ===== SUBSCRIPTION DETAIL SECTION ===== */}
-      <section className="py-[100px] px-12">
-        <div className="grid grid-cols-2 border border-black/[0.08] overflow-hidden">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-black/[0.08] overflow-hidden">
           {/* Left — subscription visual */}
           <div className="bg-black text-white flex flex-col items-center justify-center relative overflow-hidden">
             <img src="/images/subscription.png" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover opacity-80" />
@@ -301,13 +301,13 @@ export default function HomePage() {
       </section>
 
       {/* ===== EDITORIAL — OUR STORY ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
         {/* Left image */}
         <div className="relative overflow-hidden">
           <img src="/images/lifestyle-spray.png" alt="ALMAS Lifestyle" className="absolute inset-0 w-full h-full object-cover" />
         </div>
         {/* Right content */}
-        <div className="flex flex-col justify-center p-20">
+        <div className="flex flex-col justify-center p-8 md:p-20">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
             Our Philosophy
@@ -329,7 +329,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== NEW ARRIVALS ===== */}
-      <section className="py-[100px] px-12 bg-light-gray">
+      <section className="py-16 md:py-[100px] px-6 md:px-12 bg-light-gray">
         <div className="flex justify-between items-end mb-14">
           <div>
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">New Arrivals</h2>
@@ -342,7 +342,7 @@ export default function HomePage() {
             View All
           </Link>
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {newArrivals.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -350,7 +350,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== DUAL BANNERS — Row 2 ===== */}
-      <div className="grid grid-cols-2 gap-5 px-12 pt-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-6 md:px-12 pt-20">
         {/* Discovery Sets */}
         <Link to="/shop" className="relative aspect-video overflow-hidden bg-black cursor-pointer group no-underline">
           <img src="/images/discovery-sets.png" alt="Discovery Sets" className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105" />
@@ -378,12 +378,12 @@ export default function HomePage() {
       </div>
 
       {/* ===== SCENT NOTES ===== */}
-      <section className="bg-black text-white py-[100px] px-12 mt-20">
+      <section className="bg-black text-white py-16 md:py-[100px] px-6 md:px-12 mt-20">
         <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1] text-center mb-3">
           The Art of Composition
         </h2>
         <p className="text-center text-white/35 text-sm">Every fragrance tells a story through its layers</p>
-        <div className="grid grid-cols-3 gap-10 mt-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
           {scentNotes.map((note) => (
             <div key={note.name} className="text-center">
               <div className="w-[72px] h-[72px] rounded-full border border-white/[0.12] mx-auto mb-5 flex items-center justify-center text-2xl">
@@ -397,7 +397,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="py-[100px] px-12">
+      <section className="py-16 md:py-[100px] px-6 md:px-12">
         <div className="flex justify-between items-end mb-14">
           <div>
             <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">What Our Customers Say</h2>
@@ -410,7 +410,7 @@ export default function HomePage() {
             All Reviews
           </Link>
         </div>
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t) => (
             <div
               key={t.author}
@@ -429,13 +429,13 @@ export default function HomePage() {
       </section>
 
       {/* ===== NEWSLETTER ===== */}
-      <section className="bg-light-gray py-[100px] px-12 text-center">
+      <section className="bg-light-gray py-16 md:py-[100px] px-6 md:px-12 text-center">
         <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-light mb-3">Stay in the Know</h2>
         <p className="text-sm text-warm-gray mb-10">
           New releases, exclusive offers, and the art of fragrance — delivered to your inbox.
         </p>
         <form
-          className="flex max-w-[480px] mx-auto border border-black"
+          className="flex flex-col sm:flex-row max-w-[480px] mx-auto border border-black"
           onSubmit={(e) => e.preventDefault()}
         >
           <input

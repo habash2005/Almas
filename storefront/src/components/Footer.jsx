@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="px-6 md:px-12 pt-20 pb-10 border-t border-black/[0.08]">
       {/* Footer grid */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-14">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-10 mb-14">
         {/* Brand column */}
         <div className="col-span-2 md:col-span-1">
           <Link to="/" className="no-underline">

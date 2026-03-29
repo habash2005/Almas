@@ -302,7 +302,7 @@ export default function CheckoutPage() {
               <div>
                 <h2 className="font-serif text-2xl md:text-3xl font-light mb-8">Shipping Address</h2>
                 <div className="space-y-5">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-2">
                         First Name *
@@ -358,7 +358,7 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-2">
                         City *
@@ -389,7 +389,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-2">
                         ZIP / Postal Code *
@@ -464,7 +464,7 @@ export default function CheckoutPage() {
                     {errors.cardNumber && <p className="text-red-500 text-xs mt-1.5">{errors.cardNumber}</p>}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-2">
                         Expiry Date *
@@ -544,7 +544,7 @@ export default function CheckoutPage() {
 
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-2 mt-12 lg:mt-0">
-            <div className="bg-light-gray p-8 sticky top-32">
+            <div className="bg-light-gray p-8 lg:sticky lg:top-32">
               <h3 className="text-[11px] tracking-[0.15em] uppercase font-medium mb-6">
                 Order Summary ({getCartCount()})
               </h3>
