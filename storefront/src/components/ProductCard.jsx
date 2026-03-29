@@ -54,75 +54,72 @@ export default function ProductCard({ product }) {
 
   return (
     <Link to={`/product/${product.id}`} className="group cursor-pointer no-underline block">
-      {/* Product display card */}
-      <div
-        className="product-card-hover relative overflow-hidden rounded-sm"
-        style={{ background: getDominantGradient(product.accords) }}
-      >
+      {/* Product card — bottle fills the card */}
+      <div className="product-card-hover relative overflow-hidden rounded-sm">
         {/* 2px accent line at top */}
         <div className="h-[2px] w-full" style={{ backgroundColor: accentColor }} />
 
-        {/* Main content: Bottle left, Accords right */}
-        <div className="flex items-start p-4 pb-3">
-          {/* Left: Bottle */}
-          <div className="w-[48%] relative">
-            <img
-              src="/images/bottle.png"
-              alt={product.name}
-              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
+        {/* Full-bleed bottle image as card background */}
+        <div
+          className="relative aspect-[3/4] overflow-hidden"
+          style={{ background: getDominantGradient(product.accords) }}
+        >
+          {/* Bottle — fills the card */}
+          <img
+            src="/images/bottle.png"
+            alt={product.name}
+            className="absolute inset-0 w-full h-full object-contain p-6 pt-4 pb-16 transition-transform duration-500 group-hover:scale-105"
+          />
 
-          {/* Right: Accords */}
-          <div className="w-[52%] pt-2 pl-3">
+          {/* Accords overlay — positioned bottom-right */}
+          <div className="absolute top-3 right-3 w-[45%] z-[3]">
             <AccordBar accords={product.accords || []} size="default" />
           </div>
-        </div>
 
-        {/* Inspired By + Designer Bottle — bottom section */}
-        <div className="px-4 pb-3 pt-1 border-t border-stone/20 mx-3">
-          <div className="flex items-center gap-3">
-            <div className="min-w-0 flex-1">
-              <span className="text-[9px] italic text-warm-gray">Inspired by:</span>
-              <span className="text-[11px] font-bold text-black ml-1 truncate block">{product.inspiredBy}</span>
+          {/* Inspired By strip — anchored to bottom */}
+          <div className="absolute bottom-0 left-0 right-0 z-[4] bg-white/85 backdrop-blur-sm px-4 py-2.5 border-t border-stone/15">
+            <div className="flex items-center gap-2.5">
+              <div className="min-w-0 flex-1">
+                <span className="text-[8px] italic text-warm-gray">Inspired by:</span>
+                <span className="text-[11px] font-bold text-black ml-1 truncate block leading-tight">{product.inspiredBy}</span>
+              </div>
+              <img
+                src={`https://fimgs.net/mdimg/perfume/375x500.${product.id + 10000}.jpg`}
+                alt={product.inspiredBy}
+                className="w-7 h-9 object-contain shrink-0 rounded-[2px] opacity-70"
+                onError={(e) => { e.target.style.display = 'none' }}
+              />
             </div>
-            {/* Designer bottle thumbnail */}
-            <img
-              src={`https://fimgs.net/mdimg/perfume/375x500.${product.id + 10000}.jpg`}
-              alt={product.inspiredBy}
-              className="w-7 h-9 object-contain shrink-0 rounded-[2px] opacity-70"
-              onError={(e) => { e.target.style.display = 'none' }}
-            />
           </div>
+
+          {/* Badge */}
+          {product.badge && (
+            <span className="absolute top-3 left-3 font-sans text-[9px] tracking-[0.12em] uppercase bg-black text-white px-2.5 py-[5px] z-[5]">
+              {product.badge}
+            </span>
+          )}
+
+          {/* Wishlist heart */}
+          <button
+            onClick={handleWishlistToggle}
+            className="absolute top-12 right-3 w-[30px] h-[30px] rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm z-[5]"
+            aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart
+              size={13}
+              strokeWidth={1.5}
+              className={wishlisted ? 'fill-black text-black' : 'text-black'}
+            />
+          </button>
+
+          {/* Quick Add bar */}
+          <button
+            onClick={handleQuickAdd}
+            className="absolute bottom-[46px] left-0 right-0 bg-black text-white text-center py-2.5 font-sans text-[10px] tracking-[0.12em] uppercase translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-[5]"
+          >
+            Quick Add
+          </button>
         </div>
-
-        {/* Badge */}
-        {product.badge && (
-          <span className="absolute top-5 left-3 font-sans text-[9px] tracking-[0.12em] uppercase bg-black text-white px-2.5 py-[5px] z-[5]">
-            {product.badge}
-          </span>
-        )}
-
-        {/* Wishlist heart */}
-        <button
-          onClick={handleWishlistToggle}
-          className="absolute top-5 right-3 w-[30px] h-[30px] rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm z-[5]"
-          aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          <Heart
-            size={13}
-            strokeWidth={1.5}
-            className={wishlisted ? 'fill-black text-black' : 'text-black'}
-          />
-        </button>
-
-        {/* Quick Add bar */}
-        <button
-          onClick={handleQuickAdd}
-          className="absolute bottom-0 left-0 right-0 bg-black text-white text-center py-2.5 font-sans text-[10px] tracking-[0.12em] uppercase translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-[5]"
-        >
-          Quick Add
-        </button>
       </div>
 
       {/* Product info below card */}
@@ -132,9 +129,6 @@ export default function ProductCard({ product }) {
         </span>
         <span className="font-serif text-[15px] font-medium text-black line-clamp-1">
           {product.name}
-        </span>
-        <span className="font-sans text-[11px] text-warm-gray italic">
-          Inspired by {product.inspiredBy}
         </span>
         <div className="flex items-center gap-2 mt-0.5">
           <span
