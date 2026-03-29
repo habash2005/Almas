@@ -380,7 +380,7 @@ export default function ProductPage() {
               <div className="h-px bg-stone-dark/30 my-5" />
 
               {/* Performance with visual gauges */}
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
                   <Clock size={18} className="mx-auto mb-1.5 text-warm-gray" />
                   <div className="text-[9px] tracking-[0.1em] uppercase text-warm-gray mb-1.5">Longevity</div>
