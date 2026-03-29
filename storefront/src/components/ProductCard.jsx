@@ -16,6 +16,11 @@ export default function ProductCard({ product }) {
   const sizes = Object.keys(product.prices)
   const accords = (product.accords || []).slice(0, 5)
 
+  // Derive liquid tint from dominant accord color
+  const dominantColor = accords.length > 0
+    ? accords.reduce((a, b) => a.strength > b.strength ? a : b).color
+    : '#C4A882'
+
   const categoryLabel =
     product.category === 'men' ? 'For Him'
     : product.category === 'women' ? 'For Her'
@@ -49,14 +54,19 @@ export default function ProductCard({ product }) {
     <Link to={`/product/${product.id}`} className="group no-underline block">
 
       {/* ━━━ IMAGE AREA ━━━ */}
-      <div className="relative bg-[#F5F3F0] overflow-hidden mb-4">
+      <div className="relative overflow-hidden mb-4">
 
         {/* Bottle — generous padding, centered, breathes */}
-        <div className="aspect-[3/4] flex items-center justify-center px-10 py-8">
+        <div className="aspect-[3/4] flex items-center justify-center px-10 py-8 relative">
           <img
-            src="/images/bottle.png"
+            src="/images/bottle-transparent.png"
             alt={product.name}
-            className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06]"
+            className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06] relative z-[1]"
+          />
+          {/* Liquid color tint — blends with the bottle to shift the fluid color */}
+          <div
+            className="absolute inset-0 z-[2] pointer-events-none mix-blend-multiply opacity-30"
+            style={{ backgroundColor: dominantColor }}
           />
         </div>
 

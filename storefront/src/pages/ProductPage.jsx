@@ -816,12 +816,23 @@ export default function ProductPage() {
 
 /* ── Product Bottle Image sub-component ── */
 function ProductBottleImage({ product, bottleShadow }) {
+  const accords = product.accords || []
+  const dominantColor = accords.length > 0
+    ? accords.reduce((a, b) => a.strength > b.strength ? a : b).color
+    : '#C4A882'
+
   return (
-    <img
-      src="/images/bottle.png"
-      alt={product.name}
-      className="w-full h-auto object-contain"
-      style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow})` }}
-    />
+    <div className="relative">
+      <img
+        src="/images/bottle-transparent.png"
+        alt={product.name}
+        className="w-full h-auto object-contain relative z-[1]"
+        style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow})` }}
+      />
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none mix-blend-multiply opacity-30"
+        style={{ backgroundColor: dominantColor }}
+      />
+    </div>
   )
 }

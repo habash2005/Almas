@@ -94,7 +94,7 @@ export default function HomePage() {
           <div className="relative">
             <div className="absolute -inset-10 border border-black/[0.06] pointer-events-none" />
             <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 w-[200px] h-10 bg-black/[0.04] rounded-full blur-[20px]" />
-            <img src="/images/bottle.png" alt="ALMAS Eau de Parfum" className="w-[360px] h-auto object-contain relative z-[1]" />
+            <img src="/images/bottle-transparent.png" alt="ALMAS Eau de Parfum" className="w-[360px] h-auto object-contain relative z-[1]" />
           </div>
         </div>
       </section>
