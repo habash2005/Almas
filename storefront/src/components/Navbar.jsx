@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Search, User, Heart, ShoppingBag, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -134,8 +135,8 @@ export default function Navbar() {
       {/* Search dropdown */}
       <SearchDropdown isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
-      {/* Mobile menu overlay */}
-      {mobileMenuOpen && (
+      {/* Mobile menu overlay — portalled to body root */}
+      {mobileMenuOpen && createPortal(
         <div className="fixed inset-0 z-[9999] md:hidden">
           {/* Backdrop */}
           <div
@@ -242,7 +243,8 @@ export default function Navbar() {
               <p className="text-[10px] text-[#D4CFC8]">&copy; 2026 ALMAS. All rights reserved.</p>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </nav>
   );
