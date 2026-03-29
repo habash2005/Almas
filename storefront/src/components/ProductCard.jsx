@@ -5,12 +5,9 @@ import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import { useToast } from '../context/ToastContext'
 import AccordBar from './AccordBar'
-import ScentSilhouette from './ScentSilhouette'
-import { useProductImage } from '../hooks/useProductImage'
 import {
   getDominantGradient,
   getAccentColor,
-  getBottleShadowColor,
   getCategoryDisplay,
   getScentFamilyStyles,
 } from '../utils/scentTheme'
@@ -20,7 +17,6 @@ export default function ProductCard({ product }) {
   const { addToCart, setIsCartOpen } = useCart()
   const { toggleWishlist, isInWishlist } = useWishlist()
   const { addToast } = useToast()
-  const { src, hasImage, handleError } = useProductImage(product)
 
   const wishlisted = isInWishlist(product.id)
   const price = product.prices[selectedSize]
@@ -60,42 +56,43 @@ export default function ProductCard({ product }) {
     <Link to={`/product/${product.id}`} className="group cursor-pointer no-underline block">
       {/* Product display card */}
       <div
-        className="product-card-hover bg-white relative overflow-hidden rounded-sm"
+        className="product-card-hover relative overflow-hidden rounded-sm"
         style={{ background: getDominantGradient(product.accords) }}
       >
         {/* 2px accent line at top */}
-        <div
-          className="h-[2px] w-full"
-          style={{ backgroundColor: accentColor }}
-        />
+        <div className="h-[2px] w-full" style={{ backgroundColor: accentColor }} />
 
-        {/* Main content area */}
-        <div className="flex items-start p-4 pb-2">
-          {/* Left: Bottle image or silhouette */}
-          <div className="w-[50%] relative">
-            {hasImage ? (
-              <img
-                src={src}
-                alt={product.name}
-                onError={handleError}
-                className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
-                style={{
-                  filter: `drop-shadow(0 8px 20px ${getBottleShadowColor(product.accords)})`,
-                }}
-              />
-            ) : (
-              <div className="w-full aspect-[3/4]">
-                <ScentSilhouette
-                  accords={product.accords}
-                  scentFamily={product.scentFamily}
-                />
-              </div>
-            )}
+        {/* Main content: Bottle left, Accords right */}
+        <div className="flex items-start p-4 pb-3">
+          {/* Left: Bottle */}
+          <div className="w-[48%] relative">
+            <img
+              src="/images/bottle.png"
+              alt={product.name}
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+            />
           </div>
 
           {/* Right: Accords */}
-          <div className="w-[50%] pt-4 pl-3">
+          <div className="w-[52%] pt-2 pl-3">
             <AccordBar accords={product.accords || []} size="default" />
+          </div>
+        </div>
+
+        {/* Inspired By + Designer Bottle — bottom section */}
+        <div className="px-4 pb-3 pt-1 border-t border-stone/20 mx-3">
+          <div className="flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <span className="text-[9px] italic text-warm-gray">Inspired by:</span>
+              <span className="text-[11px] font-bold text-black ml-1 truncate block">{product.inspiredBy}</span>
+            </div>
+            {/* Designer bottle thumbnail */}
+            <img
+              src={`https://fimgs.net/mdimg/perfume/375x500.${product.id + 10000}.jpg`}
+              alt={product.inspiredBy}
+              className="w-7 h-9 object-contain shrink-0 rounded-[2px] opacity-70"
+              onError={(e) => { e.target.style.display = 'none' }}
+            />
           </div>
         </div>
 
@@ -119,7 +116,7 @@ export default function ProductCard({ product }) {
           />
         </button>
 
-        {/* Quick Add bar — slides up on hover */}
+        {/* Quick Add bar */}
         <button
           onClick={handleQuickAdd}
           className="absolute bottom-0 left-0 right-0 bg-black text-white text-center py-2.5 font-sans text-[10px] tracking-[0.12em] uppercase translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-[5]"
@@ -130,22 +127,15 @@ export default function ProductCard({ product }) {
 
       {/* Product info below card */}
       <div className="pt-3 flex flex-col gap-1">
-        {/* Category */}
         <span className="font-sans text-[10px] tracking-[0.12em] uppercase text-warm-gray">
           {category.icon} {category.label}
         </span>
-
-        {/* Product name */}
         <span className="font-serif text-[15px] font-medium text-black line-clamp-1">
           {product.name}
         </span>
-
-        {/* Inspired by */}
         <span className="font-sans text-[11px] text-warm-gray italic">
           Inspired by {product.inspiredBy}
         </span>
-
-        {/* Scent family badge */}
         <div className="flex items-center gap-2 mt-0.5">
           <span
             className="px-2 py-0.5 text-[9px] tracking-[0.1em] uppercase rounded-sm border"
@@ -154,22 +144,17 @@ export default function ProductCard({ product }) {
             {product.scentFamily}
           </span>
         </div>
-
-        {/* Price + size selector */}
         <div className="flex justify-between items-center mt-2">
-          <span className="font-serif text-lg font-semibold text-black">
-            ${price}
-          </span>
+          <span className="font-serif text-lg font-semibold text-black">${price}</span>
           <div className="flex gap-1.5">
             {sizes.map((size) => (
               <button
                 key={size}
                 onClick={(e) => handleSizeClick(e, size)}
                 className={`font-sans text-[10px] px-2.5 py-1 border tracking-[0.05em] transition-all duration-200
-                  ${
-                    selectedSize === size
-                      ? 'border-black bg-black text-white'
-                      : 'border-stone-dark text-warm-gray hover:border-black'
+                  ${selectedSize === size
+                    ? 'border-black bg-black text-white'
+                    : 'border-stone-dark text-warm-gray hover:border-black'
                   }`}
               >
                 {size}

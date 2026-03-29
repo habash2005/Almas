@@ -814,23 +814,12 @@ export default function ProductPage() {
   )
 }
 
-/* ── Product Bottle Image sub-component (uses useProductImage hook) ── */
+/* ── Product Bottle Image sub-component ── */
 function ProductBottleImage({ product, bottleShadow }) {
-  const { src, hasImage, handleError } = useProductImage(product)
-
-  if (!hasImage) {
-    return (
-      <div className="w-full aspect-[3/4]">
-        <ScentSilhouette accords={product.accords} scentFamily={product.scentFamily} />
-      </div>
-    )
-  }
-
   return (
     <img
-      src={src}
+      src="/images/bottle.png"
       alt={product.name}
-      onError={handleError}
       className="w-full h-auto object-contain"
       style={{ filter: `drop-shadow(0 12px 30px ${bottleShadow})` }}
     />

@@ -18,7 +18,9 @@
       "WebFetch(domain:www.whois.com)",
       "Bash(pip3 install:*)",
       "Bash(grep -r \"placeholder\" /Users/ahmadhijaz/Desktop/Almas/storefront/src/pages/*.jsx)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls /Users/ahmadhijaz/Downloads/*bottle* /Users/ahmadhijaz/Downloads/*ALMAS* /Users/ahmadhijaz/Downloads/*almas*)",
+      "Bash(ls -t /Users/ahmadhijaz/Downloads/*.png)"
     ]
   }
 }
