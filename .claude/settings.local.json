@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:reehdubai.com)",
+      "Read(//Users/ahmadhijaz/Desktop/**)",
+      "Read(//Users/ahmadhijaz/**)",
+      "Bash(open \"/Users/ahmadhijaz/Desktop/Almas/mockups/approach-a-editorial.html\")",
+      "Bash(open \"/Users/ahmadhijaz/Desktop/Almas/mockups/approach-b-dark.html\")",
+      "Bash(open \"/Users/ahmadhijaz/Desktop/Almas/mockups/approach-c-swiss.html\")",
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(cd:*)"
+    ]
+  }
+}

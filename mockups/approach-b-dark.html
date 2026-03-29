@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALMAS — Approach B: Immersive Dark</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0A0A0A;
+            --bg-card: #111111;
+            --bg-elevated: #181818;
+            --white: #F5F5F5;
+            --white-muted: rgba(245,245,245,0.7);
+            --white-subtle: rgba(245,245,245,0.12);
+            --amber: #C4A265;
+            --amber-glow: rgba(196,162,101,0.15);
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--sans); color: var(--white); background: var(--bg);
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 24px 48px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--white-subtle);
+            transition: all 0.4s ease;
+        }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 32px; }
+        .nav-link {
+            font-family: var(--sans); font-size: 11px; font-weight: 400;
+            letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-muted);
+            text-decoration: none; transition: color 0.3s;
+        }
+        .nav-link:hover { color: var(--amber); }
+        .nav-logo {
+            font-family: var(--serif); font-size: 28px; font-weight: 300;
+            letter-spacing: 0.08em; text-decoration: none; color: var(--white);
+            display: flex; flex-direction: column; align-items: center; line-height: 1;
+        }
+        .nav-logo-ar { font-size: 16px; margin-top: 2px; font-family: serif; color: var(--amber); }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icon {
+            width: 18px; height: 18px; stroke: var(--white-muted); stroke-width: 1.5;
+            fill: none; cursor: pointer; transition: stroke 0.3s;
+        }
+        .nav-icon:hover { stroke: var(--amber); }
+        .cart-badge { position: relative; }
+        .cart-badge::after {
+            content: '2'; position: absolute; top: -6px; right: -8px;
+            width: 16px; height: 16px; background: var(--amber); color: var(--bg);
+            border-radius: 50%; font-size: 9px; display: flex; align-items: center;
+            justify-content: center; font-family: var(--sans); font-weight: 500;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 120px 48px 80px; position: relative; overflow: hidden;
+            text-align: center;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px; border-radius: 50%;
+            background: var(--amber-glow); filter: blur(120px);
+            pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero-eyebrow {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--amber); margin-bottom: 40px;
+        }
+        .hero-title {
+            font-family: var(--serif); font-size: clamp(64px, 9vw, 120px);
+            font-weight: 300; line-height: 1; margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .hero-title-ar {
+            font-family: serif; font-size: clamp(28px, 4vw, 48px);
+            color: var(--amber); margin-bottom: 32px; font-weight: 300;
+        }
+        .hero-subtitle {
+            font-size: 15px; line-height: 1.8; color: var(--white-muted);
+            max-width: 500px; margin: 0 auto 56px; font-weight: 300;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--bg); text-decoration: none;
+            padding: 16px 48px; background: var(--amber); transition: all 0.4s ease;
+        }
+        .hero-cta:hover { background: var(--white); }
+        .hero-cta-outline {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--white); text-decoration: none;
+            padding: 16px 48px; border: 1px solid var(--white-subtle);
+            transition: all 0.4s ease; margin-left: 16px;
+        }
+        .hero-cta-outline:hover { border-color: var(--amber); color: var(--amber); }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            height: 1px; background: var(--white-subtle); margin: 0 48px;
+        }
+        .divider-amber {
+            width: 60px; height: 1px; background: var(--amber); margin: 0 auto;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section { padding: 120px 48px; }
+        .section-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 64px;
+        }
+        .section-title {
+            font-family: var(--serif); font-size: clamp(36px, 4vw, 56px);
+            font-weight: 300; line-height: 1.1;
+        }
+        .section-link {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--amber); text-decoration: none;
+            border-bottom: 1px solid var(--amber); padding-bottom: 4px;
+            transition: opacity 0.3s;
+        }
+        .section-link:hover { opacity: 0.6; }
+
+        /* ===== CATEGORIES ===== */
+        .categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .category-card {
+            position: relative; aspect-ratio: 3/4; overflow: hidden;
+            background: var(--bg-card); cursor: pointer;
+        }
+        .category-inner {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            border: 1px solid var(--white-subtle); transition: border-color 0.4s;
+        }
+        .category-card:hover .category-inner { border-color: var(--amber); }
+        .category-number {
+            font-family: var(--serif); font-size: 72px; font-weight: 300;
+            color: var(--white-subtle); margin-bottom: 16px; transition: color 0.4s;
+        }
+        .category-card:hover .category-number { color: var(--amber); }
+        .category-name {
+            font-family: var(--serif); font-size: 28px; font-weight: 400;
+            margin-bottom: 8px;
+        }
+        .category-count {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--white-muted);
+        }
+
+        /* ===== PRODUCT GRID ===== */
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+        .product-card {
+            background: var(--bg-card); cursor: pointer; transition: background 0.3s;
+        }
+        .product-card:hover { background: var(--bg-elevated); }
+        .product-image {
+            aspect-ratio: 3/4; display: flex; align-items: center;
+            justify-content: center; position: relative; overflow: hidden;
+        }
+        .product-glow {
+            position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 120px; border-radius: 50%;
+            background: var(--amber-glow); filter: blur(40px);
+            opacity: 0; transition: opacity 0.5s;
+        }
+        .product-card:hover .product-glow { opacity: 1; }
+        .product-bottle {
+            font-family: var(--serif); font-size: 18px; color: var(--white-muted);
+            text-align: center; position: relative; z-index: 1;
+        }
+        .product-badge {
+            position: absolute; top: 16px; left: 16px;
+            font-family: var(--sans); font-size: 9px; letter-spacing: 0.12em;
+            text-transform: uppercase; background: var(--amber); color: var(--bg);
+            padding: 5px 10px;
+        }
+        .product-wishlist {
+            position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+            border-radius: 50%; border: 1px solid var(--white-subtle);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: all 0.3s; cursor: pointer;
+        }
+        .product-card:hover .product-wishlist { opacity: 1; }
+        .product-wishlist:hover { border-color: var(--amber); }
+        .product-info { padding: 24px; }
+        .product-brand {
+            font-family: var(--sans); font-size: 10px; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--amber); margin-bottom: 6px;
+            display: block;
+        }
+        .product-name {
+            font-family: var(--serif); font-size: 18px; font-weight: 400;
+            display: block; margin-bottom: 4px;
+        }
+        .product-inspired {
+            font-family: var(--sans); font-size: 12px; color: var(--white-muted);
+            font-style: italic; display: block; margin-bottom: 16px;
+        }
+        .product-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .product-price { font-family: var(--sans); font-size: 14px; }
+        .product-add {
+            font-family: var(--sans); font-size: 10px; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--amber); border: 1px solid var(--amber);
+            padding: 8px 16px; background: transparent; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .product-add:hover { background: var(--amber); color: var(--bg); }
+
+        /* ===== FEATURE BANNER ===== */
+        .feature-banner {
+            display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh;
+        }
+        .feature-image {
+            background: var(--bg-card); display: flex; align-items: center;
+            justify-content: center; font-family: var(--serif); font-size: 28px;
+            color: rgba(255,255,255,0.06); position: relative; overflow: hidden;
+        }
+        .feature-image::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 50%, var(--amber-glow));
+            pointer-events: none;
+        }
+        .feature-content {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 80px;
+        }
+        .feature-eyebrow {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--amber); margin-bottom: 32px;
+        }
+        .feature-title {
+            font-family: var(--serif); font-size: clamp(32px, 3.5vw, 48px);
+            font-weight: 300; line-height: 1.15; margin-bottom: 24px;
+        }
+        .feature-text {
+            font-size: 15px; line-height: 1.8; color: var(--white-muted);
+            max-width: 440px; margin-bottom: 40px; font-weight: 300;
+        }
+
+        /* ===== ACCORD DISPLAY ===== */
+        .accords-section { padding: 120px 48px; text-align: center; }
+        .accord-row {
+            display: flex; align-items: center; gap: 24px; max-width: 600px;
+            margin: 0 auto 24px;
+        }
+        .accord-name {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--white-muted); width: 100px;
+            text-align: right;
+        }
+        .accord-bar-track {
+            flex: 1; height: 2px; background: var(--white-subtle); position: relative;
+        }
+        .accord-bar-fill {
+            height: 100%; background: var(--amber); position: absolute; left: 0; top: 0;
+            transition: width 1s ease;
+        }
+
+        /* ===== TESTIMONIAL ===== */
+        .testimonial-section {
+            padding: 120px 48px; text-align: center;
+            border-top: 1px solid var(--white-subtle);
+            border-bottom: 1px solid var(--white-subtle);
+        }
+        .testimonial-quote {
+            font-family: var(--serif); font-size: clamp(24px, 3vw, 40px);
+            font-weight: 300; font-style: italic; line-height: 1.4;
+            max-width: 700px; margin: 0 auto 32px;
+        }
+        .testimonial-author {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--amber);
+        }
+        .testimonial-stars {
+            color: var(--amber); font-size: 14px; letter-spacing: 4px; margin-bottom: 40px;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            padding: 120px 48px; text-align: center;
+        }
+        .newsletter-title {
+            font-family: var(--serif); font-size: clamp(28px, 3vw, 42px);
+            font-weight: 300; margin-bottom: 16px;
+        }
+        .newsletter-text {
+            font-size: 14px; color: var(--white-muted); margin-bottom: 40px;
+        }
+        .newsletter-form {
+            display: flex; max-width: 480px; margin: 0 auto;
+            border: 1px solid var(--white-subtle);
+        }
+        .newsletter-input {
+            flex: 1; padding: 16px 20px; border: none; background: transparent;
+            font-family: var(--sans); font-size: 13px; outline: none; color: var(--white);
+        }
+        .newsletter-input::placeholder { color: var(--white-muted); }
+        .newsletter-btn {
+            padding: 16px 32px; background: var(--amber); color: var(--bg);
+            border: none; font-family: var(--sans); font-size: 11px;
+            letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .newsletter-btn:hover { opacity: 0.8; }
+
+        /* ===== FOOTER ===== */
+        .footer { padding: 80px 48px 40px; border-top: 1px solid var(--white-subtle); }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+            margin-bottom: 60px;
+        }
+        .footer-brand { font-family: var(--serif); font-size: 24px; font-weight: 300; margin-bottom: 4px; }
+        .footer-brand-ar { font-size: 14px; font-family: serif; color: var(--amber); margin-bottom: 16px; }
+        .footer-desc { font-size: 13px; color: var(--white-muted); line-height: 1.7; max-width: 300px; }
+        .footer-heading {
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-bottom: 20px; font-weight: 500; color: var(--amber);
+        }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a { font-size: 13px; color: var(--white-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--amber); }
+        .footer-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 32px; border-top: 1px solid var(--white-subtle);
+        }
+        .footer-copy { font-size: 12px; color: var(--white-muted); }
+        .footer-socials { display: flex; gap: 16px; }
+        .footer-social {
+            width: 36px; height: 36px; border: 1px solid var(--white-subtle);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: var(--white-muted); font-size: 12px;
+            font-family: var(--sans); transition: all 0.3s;
+        }
+        .footer-social:hover { border-color: var(--amber); color: var(--amber); }
+
+        /* ===== MOCKUP LABEL ===== */
+        .mockup-label {
+            position: fixed; bottom: 20px; right: 20px; z-index: 999;
+            background: var(--amber); color: var(--bg); padding: 10px 20px;
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mockup-label">Approach B — Immersive Dark</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="#" class="nav-link">Shop</a>
+        <a href="#" class="nav-link">For Him</a>
+        <a href="#" class="nav-link">For Her</a>
+    </div>
+    <a href="#" class="nav-logo">
+        ALMAS
+        <span class="nav-logo-ar">الماس</span>
+    </a>
+    <div class="nav-right">
+        <a href="#" class="nav-link">Our Story</a>
+        <a href="#" class="nav-link">Scent Finder</a>
+        <div class="nav-icons">
+            <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="cart-badge">
+                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </span>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-eyebrow">Luxury Reimagined</p>
+        <h1 class="hero-title">ALMAS</h1>
+        <p class="hero-title-ar">الماس</p>
+        <p class="hero-subtitle">Where artistry meets aroma. Luxury-inspired fragrances crafted with precision, bottled with soul.</p>
+        <div>
+            <a href="#" class="hero-cta">Explore Collection</a>
+            <a href="#" class="hero-cta-outline">Our Story</a>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section" style="padding-top: 0;">
+    <div class="categories">
+        <div class="category-card">
+            <div class="category-inner">
+                <span class="category-number">01</span>
+                <h3 class="category-name">For Him</h3>
+                <span class="category-count">45 Fragrances</span>
+            </div>
+        </div>
+        <div class="category-card">
+            <div class="category-inner">
+                <span class="category-number">02</span>
+                <h3 class="category-name">For Her</h3>
+                <span class="category-count">41 Fragrances</span>
+            </div>
+        </div>
+        <div class="category-card">
+            <div class="category-inner">
+                <span class="category-number">03</span>
+                <h3 class="category-name">Unisex</h3>
+                <span class="category-count">57 Fragrances</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BEST SELLERS -->
+<section class="section">
+    <div class="section-header">
+        <h2 class="section-title">Best Sellers</h2>
+        <a href="#" class="section-link">View All</a>
+    </div>
+    <div class="products-grid">
+        <div class="product-card">
+            <div class="product-image">
+                <div class="product-glow"></div>
+                <div class="product-bottle">ALMAS<br><span style="font-size: 14px;">الماس</span></div>
+                <span class="product-badge">Best Seller</span>
+                <div class="product-wishlist">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+            </div>
+            <div class="product-info">
+                <span class="product-brand">For Him</span>
+                <span class="product-name">Midnight Aventus</span>
+                <span class="product-inspired">Inspired by Creed Aventus</span>
+                <div class="product-bottom">
+                    <span class="product-price">$120</span>
+                    <button class="product-add">Add to Bag</button>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image">
+                <div class="product-glow"></div>
+                <div class="product-bottle">ALMAS<br><span style="font-size: 14px;">الماس</span></div>
+                <div class="product-wishlist">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+            </div>
+            <div class="product-info">
+                <span class="product-brand">For Her</span>
+                <span class="product-name">Rose Oud Satin</span>
+                <span class="product-inspired">Inspired by MFK Baccarat Rouge</span>
+                <div class="product-bottom">
+                    <span class="product-price">$130</span>
+                    <button class="product-add">Add to Bag</button>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image">
+                <div class="product-glow"></div>
+                <div class="product-bottle">ALMAS<br><span style="font-size: 14px;">الماس</span></div>
+                <span class="product-badge">New</span>
+                <div class="product-wishlist">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+            </div>
+            <div class="product-info">
+                <span class="product-brand">Unisex</span>
+                <span class="product-name">Amber Velvet</span>
+                <span class="product-inspired">Inspired by Tom Ford Oud Wood</span>
+                <div class="product-bottom">
+                    <span class="product-price">$125</span>
+                    <button class="product-add">Add to Bag</button>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image">
+                <div class="product-glow"></div>
+                <div class="product-bottle">ALMAS<br><span style="font-size: 14px;">الماس</span></div>
+                <div class="product-wishlist">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+            </div>
+            <div class="product-info">
+                <span class="product-brand">For Him</span>
+                <span class="product-name">Noir Sauvage</span>
+                <span class="product-inspired">Inspired by Dior Sauvage</span>
+                <div class="product-bottom">
+                    <span class="product-price">$110</span>
+                    <button class="product-add">Add to Bag</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURE BANNER -->
+<section class="feature-banner">
+    <div class="feature-image">Lifestyle Photography</div>
+    <div class="feature-content">
+        <p class="feature-eyebrow">Our Philosophy</p>
+        <h2 class="feature-title">Inspired by the Elegance of Rare Diamonds</h2>
+        <p class="feature-text">Each fragrance is a testament to the art of perfumery — capturing the DNA of the world's most coveted luxury scents.</p>
+        <a href="#" class="hero-cta">Discover More</a>
+    </div>
+</section>
+
+<!-- ACCORDS DISPLAY -->
+<section class="accords-section">
+    <h2 class="section-title" style="margin-bottom: 16px;">Signature Accords</h2>
+    <p style="color: var(--white-muted); font-size: 14px; margin-bottom: 56px;">The building blocks of every ALMAS fragrance</p>
+    <div class="accord-row"><span class="accord-name">Musk</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 85%;"></div></div></div>
+    <div class="accord-row"><span class="accord-name">Amber</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 72%;"></div></div></div>
+    <div class="accord-row"><span class="accord-name">Woody</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 68%;"></div></div></div>
+    <div class="accord-row"><span class="accord-name">Floral</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 55%;"></div></div></div>
+    <div class="accord-row"><span class="accord-name">Oud</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 48%;"></div></div></div>
+    <div class="accord-row"><span class="accord-name">Citrus</span><div class="accord-bar-track"><div class="accord-bar-fill" style="width: 40%;"></div></div></div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section">
+    <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+    <blockquote class="testimonial-quote">"A true gem of a fragrance. Sophisticated and elegant. The longevity is incredible."</blockquote>
+    <p class="testimonial-author">Ahmed K. &mdash; Verified Buyer</p>
+</section>
+
+<!-- SCENT FINDER PROMO -->
+<section class="feature-banner" style="direction: rtl;">
+    <div class="feature-content" style="direction: ltr;">
+        <p class="feature-eyebrow">Personalized</p>
+        <h2 class="feature-title">Find Your Signature Scent</h2>
+        <p class="feature-text">Answer a few questions and our scent finder will match you with your perfect ALMAS fragrance.</p>
+        <a href="#" class="hero-cta">Take the Quiz</a>
+    </div>
+    <div class="feature-image">Quiz Experience</div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+    <div class="divider-amber" style="margin-bottom: 56px;"></div>
+    <h2 class="newsletter-title">Join the Inner Circle</h2>
+    <p class="newsletter-text">Exclusive launches, private offers, and the world of ALMAS — delivered to you.</p>
+    <form class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="Enter your email">
+        <button type="submit" class="newsletter-btn">Subscribe</button>
+    </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <div class="footer-brand">ALMAS</div>
+            <div class="footer-brand-ar">الماس</div>
+            <p class="footer-desc">Luxury-inspired fragrances, crafted to capture the essence of the world's most coveted scents.</p>
+        </div>
+        <div>
+            <h4 class="footer-heading">Shop</h4>
+            <ul class="footer-links">
+                <li><a href="#">All Fragrances</a></li>
+                <li><a href="#">For Him</a></li>
+                <li><a href="#">For Her</a></li>
+                <li><a href="#">Unisex</a></li>
+                <li><a href="#">Best Sellers</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Help</h4>
+            <ul class="footer-links">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Shipping</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Company</h4>
+            <ul class="footer-links">
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Terms</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-copy">&copy; 2026 ALMAS. All rights reserved.</span>
+        <div class="footer-socials">
+            <a href="#" class="footer-social">IG</a>
+            <a href="#" class="footer-social">TK</a>
+            <a href="#" class="footer-social">FB</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

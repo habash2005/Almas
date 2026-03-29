@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALMAS — Approach C: Ultra-Minimal Swiss</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --gray-100: #F8F8F8;
+            --gray-200: #ECECEC;
+            --gray-400: #999999;
+            --gray-600: #666666;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--sans); color: var(--black); background: var(--white);
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 40px;
+            background: var(--white);
+            border-bottom: 1px solid var(--black);
+        }
+        .nav-left { display: flex; align-items: center; gap: 32px; }
+        .nav-link {
+            font-family: var(--sans); font-size: 12px; font-weight: 400;
+            color: var(--black); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--gray-400); }
+        .nav-logo {
+            font-family: var(--serif); font-size: 22px; font-weight: 400;
+            letter-spacing: 0.05em; text-decoration: none; color: var(--black);
+            position: absolute; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo-ar { font-size: 16px; font-family: serif; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .nav-icon {
+            width: 18px; height: 18px; stroke: var(--black); stroke-width: 1.5;
+            fill: none; cursor: pointer;
+        }
+        .cart-count {
+            font-size: 12px; font-family: var(--sans);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            margin-top: 61px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 61px);
+            border-bottom: 1px solid var(--black);
+        }
+        .hero-left {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 80px; border-right: 1px solid var(--black);
+        }
+        .hero-label {
+            font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--gray-400); margin-bottom: 40px;
+        }
+        .hero-title {
+            font-family: var(--serif); font-size: clamp(48px, 6vw, 80px);
+            font-weight: 300; line-height: 1.05; margin-bottom: 32px;
+        }
+        .hero-text {
+            font-size: 14px; line-height: 1.7; color: var(--gray-600);
+            max-width: 380px; margin-bottom: 48px;
+        }
+        .hero-btn {
+            display: inline-block; font-size: 12px; letter-spacing: 0.05em;
+            color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black);
+            padding-bottom: 4px; transition: color 0.2s;
+        }
+        .hero-btn:hover { color: var(--gray-400); border-color: var(--gray-400); }
+        .hero-right {
+            background: var(--gray-100); display: flex; align-items: center;
+            justify-content: center; font-family: var(--serif); font-size: 28px;
+            color: var(--gray-200);
+        }
+
+        /* ===== INFO BAR ===== */
+        .info-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid var(--black);
+        }
+        .info-item {
+            padding: 20px 24px; text-align: center;
+            font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--gray-600); border-right: 1px solid var(--black);
+        }
+        .info-item:last-child { border-right: none; }
+
+        /* ===== GRID SECTIONS ===== */
+        .section-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 40px; border-bottom: 1px solid var(--black);
+        }
+        .section-bar-title {
+            font-family: var(--serif); font-size: 14px; font-weight: 400;
+        }
+        .section-bar-link {
+            font-size: 11px; color: var(--gray-400); text-decoration: none;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .section-bar-link:hover { color: var(--black); }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--black);
+        }
+        .category-card {
+            aspect-ratio: 4/5; display: flex; flex-direction: column;
+            justify-content: flex-end; padding: 32px;
+            border-right: 1px solid var(--black);
+            background: var(--gray-100); cursor: pointer;
+            transition: background 0.3s;
+        }
+        .category-card:last-child { border-right: none; }
+        .category-card:hover { background: var(--black); color: var(--white); }
+        .category-number {
+            font-family: var(--serif); font-size: 48px; font-weight: 300;
+            color: var(--gray-200); margin-bottom: auto; transition: color 0.3s;
+        }
+        .category-card:hover .category-number { color: var(--gray-600); }
+        .category-name {
+            font-family: var(--serif); font-size: 24px; font-weight: 400;
+            margin-bottom: 4px;
+        }
+        .category-count {
+            font-size: 11px; color: var(--gray-400); letter-spacing: 0.05em;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .products-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid var(--black);
+        }
+        .product-card {
+            border-right: 1px solid var(--black); cursor: pointer;
+        }
+        .product-card:nth-child(4n) { border-right: none; }
+        .product-image {
+            aspect-ratio: 3/4; background: var(--gray-100);
+            display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid var(--gray-200);
+            position: relative;
+        }
+        .product-placeholder {
+            font-family: var(--serif); font-size: 18px; color: var(--gray-200);
+            text-align: center;
+        }
+        .product-badge {
+            position: absolute; top: 12px; left: 12px;
+            font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+            border: 1px solid var(--black); padding: 3px 8px;
+        }
+        .product-info { padding: 16px 20px; }
+        .product-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 4px;
+        }
+        .product-name {
+            font-family: var(--serif); font-size: 16px; font-weight: 400;
+        }
+        .product-price { font-size: 13px; }
+        .product-inspired {
+            font-size: 11px; color: var(--gray-400); font-style: italic;
+            margin-bottom: 8px; display: block;
+        }
+        .product-category {
+            font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        /* ===== SPLIT SECTION ===== */
+        .split {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--black);
+        }
+        .split-image {
+            background: var(--gray-100); display: flex; align-items: center;
+            justify-content: center; font-family: var(--serif); font-size: 24px;
+            color: var(--gray-200); min-height: 500px;
+            border-right: 1px solid var(--black);
+        }
+        .split-content {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 64px 80px;
+        }
+        .split-label {
+            font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--gray-400); margin-bottom: 24px;
+        }
+        .split-title {
+            font-family: var(--serif); font-size: clamp(28px, 3vw, 40px);
+            font-weight: 300; line-height: 1.2; margin-bottom: 20px;
+        }
+        .split-text {
+            font-size: 14px; line-height: 1.7; color: var(--gray-600);
+            max-width: 380px; margin-bottom: 32px;
+        }
+
+        /* ===== NOTES TABLE ===== */
+        .notes-table {
+            border-bottom: 1px solid var(--black);
+        }
+        .notes-row {
+            display: grid; grid-template-columns: 200px 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .notes-row:last-child { border-bottom: none; }
+        .notes-cell {
+            padding: 24px 40px; font-size: 13px;
+            border-right: 1px solid var(--gray-200);
+        }
+        .notes-cell:last-child { border-right: none; }
+        .notes-header {
+            font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--gray-400); font-weight: 500;
+        }
+        .notes-label {
+            font-family: var(--serif); font-size: 18px;
+        }
+        .notes-desc { color: var(--gray-600); line-height: 1.5; }
+
+        /* ===== TESTIMONIAL ===== */
+        .testimonial {
+            padding: 100px 40px; text-align: center;
+            border-bottom: 1px solid var(--black);
+        }
+        .testimonial-quote {
+            font-family: var(--serif); font-size: clamp(24px, 3vw, 36px);
+            font-weight: 300; font-style: italic; line-height: 1.4;
+            max-width: 700px; margin: 0 auto 24px;
+        }
+        .testimonial-author {
+            font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--black);
+        }
+        .newsletter-left {
+            padding: 80px; display: flex; flex-direction: column;
+            justify-content: center; border-right: 1px solid var(--black);
+        }
+        .newsletter-title {
+            font-family: var(--serif); font-size: 32px; font-weight: 300;
+            margin-bottom: 12px;
+        }
+        .newsletter-text { font-size: 13px; color: var(--gray-600); }
+        .newsletter-right {
+            padding: 80px; display: flex; align-items: center;
+        }
+        .newsletter-form { width: 100%; }
+        .newsletter-input {
+            width: 100%; padding: 16px 0; border: none;
+            border-bottom: 1px solid var(--black); font-family: var(--sans);
+            font-size: 14px; outline: none; margin-bottom: 24px; background: transparent;
+        }
+        .newsletter-btn {
+            font-size: 12px; letter-spacing: 0.05em; background: none;
+            border: none; border-bottom: 1px solid var(--black); padding-bottom: 4px;
+            cursor: pointer; font-family: var(--sans);
+        }
+        .newsletter-btn:hover { color: var(--gray-400); border-color: var(--gray-400); }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 60px 40px; gap: 40px;
+        }
+        .footer-brand {
+            font-family: var(--serif); font-size: 20px; margin-bottom: 4px;
+        }
+        .footer-brand-ar { font-family: serif; font-size: 14px; color: var(--gray-400); margin-bottom: 16px; }
+        .footer-desc { font-size: 12px; color: var(--gray-600); line-height: 1.6; max-width: 280px; }
+        .footer-heading {
+            font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+            margin-bottom: 16px; font-weight: 500;
+        }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-links a { font-size: 12px; color: var(--gray-600); text-decoration: none; }
+        .footer-links a:hover { color: var(--black); }
+        .footer-bottom-bar {
+            padding: 20px 40px; border-top: 1px solid var(--black);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 11px; color: var(--gray-400);
+        }
+
+        /* ===== MOCKUP LABEL ===== */
+        .mockup-label {
+            position: fixed; bottom: 20px; right: 20px; z-index: 999;
+            background: var(--black); color: var(--white); padding: 10px 20px;
+            font-family: var(--sans); font-size: 11px; letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mockup-label">Approach C — Ultra-Minimal Swiss</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="#" class="nav-link">Shop</a>
+        <a href="#" class="nav-link">For Him</a>
+        <a href="#" class="nav-link">For Her</a>
+        <a href="#" class="nav-link">Unisex</a>
+    </div>
+    <a href="#" class="nav-logo">
+        ALMAS <span class="nav-logo-ar">الماس</span>
+    </a>
+    <div class="nav-right">
+        <a href="#" class="nav-link">Story</a>
+        <a href="#" class="nav-link">Finder</a>
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="cart-count">Bag (2)</span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-left">
+        <p class="hero-label">Eau de Parfum / 001</p>
+        <h1 class="hero-title">The Scent<br>of Precision</h1>
+        <p class="hero-text">140+ luxury-inspired fragrances. Meticulously crafted. Accessibly priced. No compromise.</p>
+        <a href="#" class="hero-btn">Shop Collection</a>
+    </div>
+    <div class="hero-right">
+        <div style="text-align: center;">
+            <div style="font-size: 32px;">ALMAS</div>
+            <div style="font-size: 18px; margin-top: 4px; font-family: serif;">الماس</div>
+        </div>
+    </div>
+</section>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+    <div class="info-item">Free Shipping $100+</div>
+    <div class="info-item">140+ Scents</div>
+    <div class="info-item">Premium Ingredients</div>
+    <div class="info-item">Satisfaction Guaranteed</div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section-bar">
+    <span class="section-bar-title">Categories</span>
+    <a href="#" class="section-bar-link">View All</a>
+</div>
+<div class="categories">
+    <div class="category-card">
+        <span class="category-number">I</span>
+        <h3 class="category-name">For Him</h3>
+        <span class="category-count">45 fragrances</span>
+    </div>
+    <div class="category-card">
+        <span class="category-number">II</span>
+        <h3 class="category-name">For Her</h3>
+        <span class="category-count">41 fragrances</span>
+    </div>
+    <div class="category-card">
+        <span class="category-number">III</span>
+        <h3 class="category-name">Unisex</h3>
+        <span class="category-count">57 fragrances</span>
+    </div>
+</div>
+
+<!-- BEST SELLERS -->
+<div class="section-bar">
+    <span class="section-bar-title">Best Sellers</span>
+    <a href="#" class="section-bar-link">Shop All</a>
+</div>
+<div class="products-grid">
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-placeholder">ALMAS<br>الماس</div>
+            <span class="product-badge">Best Seller</span>
+        </div>
+        <div class="product-info">
+            <div class="product-row">
+                <span class="product-name">Midnight Aventus</span>
+                <span class="product-price">$120</span>
+            </div>
+            <span class="product-inspired">Inspired by Creed Aventus</span>
+            <span class="product-category">For Him &middot; 50ml</span>
+        </div>
+    </div>
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-placeholder">ALMAS<br>الماس</div>
+        </div>
+        <div class="product-info">
+            <div class="product-row">
+                <span class="product-name">Rose Oud Satin</span>
+                <span class="product-price">$130</span>
+            </div>
+            <span class="product-inspired">Inspired by MFK Baccarat Rouge</span>
+            <span class="product-category">For Her &middot; 50ml</span>
+        </div>
+    </div>
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-placeholder">ALMAS<br>الماس</div>
+            <span class="product-badge">New</span>
+        </div>
+        <div class="product-info">
+            <div class="product-row">
+                <span class="product-name">Amber Velvet</span>
+                <span class="product-price">$125</span>
+            </div>
+            <span class="product-inspired">Inspired by Tom Ford Oud Wood</span>
+            <span class="product-category">Unisex &middot; 50ml</span>
+        </div>
+    </div>
+    <div class="product-card">
+        <div class="product-image">
+            <div class="product-placeholder">ALMAS<br>الماس</div>
+        </div>
+        <div class="product-info">
+            <div class="product-row">
+                <span class="product-name">Noir Sauvage</span>
+                <span class="product-price">$110</span>
+            </div>
+            <span class="product-inspired">Inspired by Dior Sauvage</span>
+            <span class="product-category">For Him &middot; 50ml</span>
+        </div>
+    </div>
+</div>
+
+<!-- SPLIT: OUR STORY -->
+<div class="split">
+    <div class="split-image">Lifestyle Photography</div>
+    <div class="split-content">
+        <p class="split-label">Our Philosophy</p>
+        <h2 class="split-title">Inspired by the Elegance of Rare Diamonds</h2>
+        <p class="split-text">Almas — diamond in Arabic. Each fragrance captures the DNA of the world's most beloved luxury scents. No compromise on quality, no excess in presentation.</p>
+        <a href="#" class="hero-btn">Read More</a>
+    </div>
+</div>
+
+<!-- NOTES TABLE -->
+<div class="section-bar">
+    <span class="section-bar-title">The Art of Composition</span>
+</div>
+<div class="notes-table">
+    <div class="notes-row" style="background: var(--gray-100);">
+        <div class="notes-cell notes-header">Layer</div>
+        <div class="notes-cell notes-header">Character</div>
+        <div class="notes-cell notes-header">Common Notes</div>
+        <div class="notes-cell notes-header">Duration</div>
+    </div>
+    <div class="notes-row">
+        <div class="notes-cell"><span class="notes-label">Top</span></div>
+        <div class="notes-cell notes-desc">The first impression — bright, sparkling, immediate</div>
+        <div class="notes-cell notes-desc">Citrus, Bergamot, Saffron, Herbs</div>
+        <div class="notes-cell notes-desc">15–30 minutes</div>
+    </div>
+    <div class="notes-row">
+        <div class="notes-cell"><span class="notes-label">Heart</span></div>
+        <div class="notes-cell notes-desc">The soul — rich, complex, defining</div>
+        <div class="notes-cell notes-desc">Jasmine, Rose, Amber, Spices</div>
+        <div class="notes-cell notes-desc">2–4 hours</div>
+    </div>
+    <div class="notes-row">
+        <div class="notes-cell"><span class="notes-label">Base</span></div>
+        <div class="notes-cell notes-desc">The lasting signature — deep, warm, memorable</div>
+        <div class="notes-cell notes-desc">Musk, Oud, Cedarwood, Vanilla</div>
+        <div class="notes-cell notes-desc">6–12 hours</div>
+    </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+    <blockquote class="testimonial-quote">"Absolutely enchanting. The perfect blend of floral and woody notes."</blockquote>
+    <p class="testimonial-author">Sarah M. &mdash; Verified Buyer</p>
+</section>
+
+<!-- SCENT FINDER -->
+<div class="split" style="direction: rtl;">
+    <div class="split-content" style="direction: ltr;">
+        <p class="split-label">Personalized</p>
+        <h2 class="split-title">Find Your Signature</h2>
+        <p class="split-text">Answer a few questions and discover which ALMAS fragrance matches your personality.</p>
+        <a href="#" class="hero-btn">Take the Quiz</a>
+    </div>
+    <div class="split-image" style="border-right: none; border-left: 1px solid var(--black);">Quiz Experience</div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+    <div class="newsletter-left">
+        <h2 class="newsletter-title">Stay Informed</h2>
+        <p class="newsletter-text">New releases and exclusive offers, directly to your inbox.</p>
+    </div>
+    <div class="newsletter-right">
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Email address">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div>
+        <div class="footer-brand">ALMAS</div>
+        <div class="footer-brand-ar">الماس</div>
+        <p class="footer-desc">Luxury-inspired fragrances. Crafted with precision.</p>
+    </div>
+    <div>
+        <h4 class="footer-heading">Shop</h4>
+        <ul class="footer-links">
+            <li><a href="#">All Fragrances</a></li>
+            <li><a href="#">For Him</a></li>
+            <li><a href="#">For Her</a></li>
+            <li><a href="#">Unisex</a></li>
+            <li><a href="#">Best Sellers</a></li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="footer-heading">Help</h4>
+        <ul class="footer-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+        </ul>
+    </div>
+</footer>
+<div class="footer-bottom-bar">
+    <span>&copy; 2026 ALMAS</span>
+    <span>Instagram &middot; TikTok &middot; Facebook</span>
+</div>
+
+</body>
+</html>
