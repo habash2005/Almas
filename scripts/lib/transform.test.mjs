@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest';
-import {toProductSetInput, slugify} from './transform.mjs';
+import {toProductSetInput, slugify, METAFIELD_DEFINITIONS} from './transform.mjs';
 
 const LEGACY_PRODUCT = {
   id: 1,
@@ -54,5 +54,26 @@ describe('toProductSetInput', () => {
     const input = toProductSetInput({...LEGACY_PRODUCT, badge: undefined, inspiredBy: undefined});
     expect(input.tags).toEqual(['men', 'Woody']);
     expect(input.metafields.find((m) => m.key === 'inspired_by')).toBeUndefined();
+  });
+});
+
+describe('METAFIELD_DEFINITIONS', () => {
+  it('covers exactly the metafield keys produced by toProductSetInput, with matching types', () => {
+    const produced = toProductSetInput(LEGACY_PRODUCT).metafields;
+    const producedByKey = Object.fromEntries(produced.map((m) => [m.key, m]));
+    const definedByKey = Object.fromEntries(METAFIELD_DEFINITIONS.map((d) => [d.key, d]));
+    expect(Object.keys(definedByKey).sort()).toEqual(Object.keys(producedByKey).sort());
+    for (const [key, def] of Object.entries(definedByKey)) {
+      expect(def.type).toBe(producedByKey[key].type);
+      expect(def.namespace).toBe(producedByKey[key].namespace);
+    }
+  });
+
+  it('grants storefront read access on every definition', () => {
+    for (const def of METAFIELD_DEFINITIONS) {
+      expect(def.ownerType).toBe('PRODUCT');
+      expect(def.access).toEqual({storefront: 'PUBLIC_READ'});
+      expect(def.name).toBeTruthy();
+    }
   });
 });
