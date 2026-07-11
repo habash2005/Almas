@@ -22,7 +22,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Orders'}];
+  return [{title: 'Orders — ALMAS'}];
 };
 
 /**
@@ -59,11 +59,30 @@ export default function Orders() {
   const {orders} = customer;
 
   return (
-    <div className="orders">
+    <div>
+      <h2 className="font-serif text-2xl font-light mb-8">Order History</h2>
       <OrderSearchForm currentFilters={filters} />
       <OrdersTable orders={orders} filters={filters} />
     </div>
   );
+}
+
+/**
+ * @param {string | undefined} status
+ */
+function statusColor(status) {
+  switch (status) {
+    case 'PAID':
+    case 'SUCCESS':
+    case 'FULFILLED':
+      return 'bg-green-50 text-green-700';
+    case 'PENDING':
+    case 'IN_PROGRESS':
+    case 'PARTIALLY_FULFILLED':
+      return 'bg-yellow-50 text-yellow-700';
+    default:
+      return 'bg-light-gray text-warm-gray';
+  }
 }
 
 /**
@@ -76,9 +95,15 @@ function OrdersTable({orders, filters}) {
   const hasFilters = !!(filters.name || filters.confirmationNumber);
 
   return (
-    <div className="acccount-orders" aria-live="polite">
+    <div
+      aria-live="polite"
+      className="[&>div>a]:inline-block [&>div>a]:my-6 [&>div>a]:pb-0.5 [&>div>a]:text-[11px] [&>div>a]:tracking-[0.15em] [&>div>a]:uppercase [&>div>a]:border-b [&>div>a]:border-black [&>div>a]:hover:opacity-70 [&>div>a]:transition-opacity"
+    >
       {orders?.nodes.length ? (
-        <PaginatedResourceSection connection={orders}>
+        <PaginatedResourceSection
+          connection={orders}
+          resourcesClassName="space-y-4"
+        >
           {({node: order}) => <OrderItem key={order.id} order={order} />}
         </PaginatedResourceSection>
       ) : (
@@ -93,22 +118,32 @@ function OrdersTable({orders, filters}) {
  */
 function EmptyOrders({hasFilters = false}) {
   return (
-    <div>
+    <div className="text-center py-16 bg-light-gray">
       {hasFilters ? (
         <>
-          <p>No orders found matching your search.</p>
-          <br />
-          <p>
-            <Link to="/account/orders">Clear filters →</Link>
+          <p className="font-serif text-xl mb-2">No Orders Found</p>
+          <p className="text-sm text-warm-gray mb-6">
+            No orders matched your search.
           </p>
+          <Link
+            to="/account/orders"
+            className="text-[11px] tracking-[0.15em] uppercase border-b border-black pb-0.5 hover:opacity-70 transition-opacity"
+          >
+            Clear Filters
+          </Link>
         </>
       ) : (
         <>
-          <p>You haven&apos;t placed any orders yet.</p>
-          <br />
-          <p>
-            <Link to="/collections">Start Shopping →</Link>
+          <p className="font-serif text-xl mb-2">No Orders Yet</p>
+          <p className="text-sm text-warm-gray mb-6">
+            Your order history will appear here.
           </p>
+          <Link
+            to="/collections"
+            className="inline-block bg-black text-white px-8 py-3.5 text-[11px] tracking-[0.15em] uppercase hover:bg-black/85 transition-all"
+          >
+            Start Shopping
+          </Link>
         </>
       )}
     </div>
@@ -121,7 +156,7 @@ function EmptyOrders({hasFilters = false}) {
  * }}
  */
 function OrderSearchForm({currentFilters}) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const isSearching =
     navigation.state !== 'idle' &&
@@ -152,20 +187,22 @@ function OrderSearchForm({currentFilters}) {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="order-search-form"
       aria-label="Search orders"
+      className="mb-8"
     >
-      <fieldset className="order-search-fieldset">
-        <legend className="order-search-legend">Filter Orders</legend>
+      <fieldset>
+        <legend className="block text-[11px] tracking-[0.12em] uppercase text-warm-gray mb-3">
+          Filter Orders
+        </legend>
 
-        <div className="order-search-inputs">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="search"
             name={ORDER_FILTER_FIELDS.NAME}
             placeholder="Order #"
             aria-label="Order number"
             defaultValue={currentFilters.name || ''}
-            className="order-search-input"
+            className="flex-1 px-4 py-3 bg-white border border-stone-dark/50 text-sm outline-none focus:border-black transition-colors"
           />
           <input
             type="search"
@@ -173,12 +210,13 @@ function OrderSearchForm({currentFilters}) {
             placeholder="Confirmation #"
             aria-label="Confirmation number"
             defaultValue={currentFilters.confirmationNumber || ''}
-            className="order-search-input"
+            className="flex-1 px-4 py-3 bg-white border border-stone-dark/50 text-sm outline-none focus:border-black transition-colors"
           />
-        </div>
-
-        <div className="order-search-buttons">
-          <button type="submit" disabled={isSearching}>
+          <button
+            type="submit"
+            disabled={isSearching}
+            className="bg-black text-white px-8 py-3 text-[11px] tracking-[0.15em] uppercase hover:bg-black/85 transition-all disabled:opacity-50"
+          >
             {isSearching ? 'Searching' : 'Search'}
           </button>
           {hasFilters && (
@@ -189,6 +227,7 @@ function OrderSearchForm({currentFilters}) {
                 setSearchParams(new URLSearchParams());
                 formRef.current?.reset();
               }}
+              className="px-8 py-3 border border-stone-dark/50 text-[11px] tracking-[0.15em] uppercase text-warm-gray hover:border-black hover:text-black transition-colors disabled:opacity-50"
             >
               Clear
             </button>
@@ -205,22 +244,49 @@ function OrderSearchForm({currentFilters}) {
 function OrderItem({order}) {
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
   return (
-    <>
-      <fieldset>
-        <Link to={`/account/orders/${btoa(order.id)}`}>
-          <strong>#{order.number}</strong>
+    <div className="border border-stone-dark/30 p-6 hover:border-stone-dark/60 transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            to={`/account/orders/${btoa(order.id)}`}
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
+          >
+            #{order.number}
+          </Link>
+          <span
+            className={`text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 ${statusColor(order.financialStatus)}`}
+          >
+            {order.financialStatus?.replace(/_/g, ' ')}
+          </span>
+          {fulfillmentStatus && (
+            <span
+              className={`text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 ${statusColor(fulfillmentStatus)}`}
+            >
+              {fulfillmentStatus.replace(/_/g, ' ')}
+            </span>
+          )}
+        </div>
+        <span className="text-xs text-warm-gray">
+          {new Date(order.processedAt).toDateString()}
+        </span>
+      </div>
+      {order.confirmationNumber && (
+        <p className="text-sm text-warm-gray mb-4">
+          Confirmation: {order.confirmationNumber}
+        </p>
+      )}
+      <div className="flex justify-between items-center pt-4 border-t border-stone-dark/20">
+        <div className="text-sm font-medium">
+          <Money data={order.totalPrice} />
+        </div>
+        <Link
+          to={`/account/orders/${btoa(order.id)}`}
+          className="text-[11px] tracking-[0.1em] uppercase text-warm-gray hover:text-black transition-colors border-b border-warm-gray hover:border-black pb-0.5"
+        >
+          View Order
         </Link>
-        <p>{new Date(order.processedAt).toDateString()}</p>
-        {order.confirmationNumber && (
-          <p>Confirmation: {order.confirmationNumber}</p>
-        )}
-        <p>{order.financialStatus}</p>
-        {fulfillmentStatus && <p>{fulfillmentStatus}</p>}
-        <Money data={order.totalPrice} />
-        <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
-      </fieldset>
-      <br />
-    </>
+      </div>
+    </div>
   );
 }
 

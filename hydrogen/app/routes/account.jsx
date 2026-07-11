@@ -12,6 +12,13 @@ export function shouldRevalidate() {
 }
 
 /**
+ * @type {Route.MetaFunction}
+ */
+export const meta = () => {
+  return [{title: 'My Account — ALMAS'}];
+};
+
+/**
  * @param {Route.LoaderArgs}
  */
 export async function loader({context}) {
@@ -42,44 +49,53 @@ export default function AccountLayout() {
 
   const heading = customer
     ? customer.firstName
-      ? `Welcome, ${customer.firstName}`
+      ? `Welcome back, ${customer.firstName}`
       : `Welcome to your account.`
     : 'Account Details';
 
   return (
-    <div className="account">
-      <h1>{heading}</h1>
-      <br />
-      <AccountMenu />
-      <br />
-      <br />
-      <Outlet context={{customer}} />
-    </div>
+    <section className="py-16 md:py-24 px-6 md:px-12">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-10">
+          <h1 className="font-serif text-4xl md:text-5xl font-light mb-2">
+            My Account
+          </h1>
+          <p className="text-warm-gray text-sm">{heading}</p>
+        </div>
+        <AccountMenu />
+        <div className="pt-10">
+          <Outlet context={{customer}} />
+        </div>
+      </div>
+    </section>
   );
 }
 
 function AccountMenu() {
-  function isActiveStyle({isActive, isPending}) {
-    return {
-      fontWeight: isActive ? 'bold' : undefined,
-      color: isPending ? 'grey' : 'black',
-    };
+  function tabClass({isActive, isPending}) {
+    return `inline-block pb-3 -mb-px text-[11px] tracking-[0.15em] uppercase whitespace-nowrap border-b transition-colors ${
+      isActive
+        ? 'text-black border-black'
+        : isPending
+          ? 'text-warm-gray/60 border-transparent'
+          : 'text-warm-gray border-transparent hover:text-black'
+    }`;
   }
 
   return (
-    <nav role="navigation">
-      <NavLink to="/account/orders" style={isActiveStyle}>
-        Orders &nbsp;
+    <nav
+      role="navigation"
+      className="flex items-center gap-8 border-b border-stone-dark/40 overflow-x-auto scrollbar-hide"
+    >
+      <NavLink to="/account/orders" className={tabClass}>
+        Orders
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/profile" style={isActiveStyle}>
-        &nbsp; Profile &nbsp;
+      <NavLink to="/account/profile" className={tabClass}>
+        Profile
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/addresses" style={isActiveStyle}>
-        &nbsp; Addresses &nbsp;
+      <NavLink to="/account/addresses" className={tabClass}>
+        Addresses
       </NavLink>
-      &nbsp;|&nbsp;
       <Logout />
     </nav>
   );
@@ -87,8 +103,13 @@ function AccountMenu() {
 
 function Logout() {
   return (
-    <Form className="account-logout" method="POST" action="/account/logout">
-      &nbsp;<button type="submit">Sign out</button>
+    <Form method="POST" action="/account/logout" className="ml-auto">
+      <button
+        type="submit"
+        className="inline-block pb-3 text-[11px] tracking-[0.15em] uppercase text-warm-gray hover:text-black transition-colors whitespace-nowrap"
+      >
+        Sign Out
+      </button>
     </Form>
   );
 }
