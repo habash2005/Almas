@@ -3,8 +3,7 @@ import {createPortal} from 'react-dom';
 import {Link} from 'react-router';
 import {Search, User, Heart, ShoppingBag, Menu, X} from 'lucide-react';
 import {useAlmasCart} from '~/lib/cart';
-// {/* TODO(task-9): SearchDropdown */}
-// import SearchDropdown from './SearchDropdown';
+import SearchDropdown from './SearchDropdown';
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -135,8 +134,7 @@ export default function Navbar() {
       </div>
 
       {/* Search dropdown */}
-      {/* TODO(task-9): SearchDropdown */}
-      {/* <SearchDropdown isOpen={searchOpen} onClose={() => setSearchOpen(false)} /> */}
+      <SearchDropdown isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile menu overlay — portalled to body root */}
       {mobileMenuOpen &&
