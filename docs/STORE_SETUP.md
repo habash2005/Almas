@@ -41,6 +41,8 @@ The migration script needs a private token to create products.
    - `write_products`
    - `read_files`
    - `write_files`
+   - `read_publications`
+   - `write_publications`
 6. Click **Save**.
 7. Open the **API credentials** tab → click **Install app** → **Install**.
 8. Under **Admin API access token**, click **Reveal token once** and copy it
@@ -52,7 +54,10 @@ The migration script needs a private token to create products.
 This imports all 143 fragrances — variants (50ml/100ml with real prices),
 scent metafields (accords, notes, longevity, sillage, best-for, inspired-by),
 tags, and the 13 smart collections (For Him / For Her / Unisex + one per
-scent family).
+scent family). It also creates the metafield definitions (with storefront
+read access, so the site can display the scent data) and publishes every
+product and collection to all sales channels, including the Hydrogen
+storefront.
 
 From the repo root:
 
