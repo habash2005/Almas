@@ -1,35 +1,33 @@
-import {Aside} from '~/components/Aside';
 import AnnouncementBar from '~/components/AnnouncementBar';
 import Navbar from '~/components/Navbar';
 import Footer from '~/components/Footer';
 import ScrollToTop from '~/components/ScrollToTop';
+import CartDrawer from '~/components/CartDrawer';
 
 /**
  * Almas layout shell. Receives the root-loader data (cart, header, footer,
  * isLoggedIn, publicStoreDomain) spread from root.jsx — currently unused,
- * but kept in the signature so future tasks can consume it.
- * TODO(task-6): pass `cart` through to the CartDrawer.
+ * but kept in the signature so future tasks can consume it. Cart data is
+ * read by Navbar/CartDrawer via useAlmasCart() (root loader + CartUIProvider).
  *
  * @param {PageLayoutProps}
  */
 export function PageLayout({children = null}) {
   return (
-    /* Aside.Provider kept so scaffold route components (CartMain, ProductForm,
-       predictive search) that call useAside() keep working.
-       TODO(task-6): remove with scaffold cart */
-    <Aside.Provider>
+    <>
       <ScrollToTop />
       <AnnouncementBar />
       <Navbar />
+      <CartDrawer />
       <main>{children}</main>
       <Footer />
-    </Aside.Provider>
+    </>
   );
 }
 
 /**
  * @typedef {Object} PageLayoutProps
- * @property {Promise<CartApiQueryFragment|null>} cart
+ * @property {CartApiQueryFragment|null} cart
  * @property {Promise<FooterQuery|null>} footer
  * @property {HeaderQuery} header
  * @property {Promise<boolean>} isLoggedIn

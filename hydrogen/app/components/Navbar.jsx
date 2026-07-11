@@ -2,15 +2,14 @@ import {useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Link} from 'react-router';
 import {Search, User, Heart, ShoppingBag, Menu, X} from 'lucide-react';
+import {useAlmasCart} from '~/lib/cart';
 // {/* TODO(task-9): SearchDropdown */}
 // import SearchDropdown from './SearchDropdown';
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // TODO(task-6): real cart
-  const cartCount = 0;
-  const setIsCartOpen = () => {};
+  const {cartCount, setIsCartOpen} = useAlmasCart();
   // TODO(task-11): wishlist count
   const wishlistCount = 0;
 
@@ -102,7 +101,6 @@ export default function Navbar() {
               aria-label="Cart"
             >
               <ShoppingBag size={18} strokeWidth={1.5} />
-              {/* TODO(task-6): real cart */}
               {cartCount > 0 && (
                 <span className="absolute -top-1.5 -right-2 w-4 h-4 bg-black text-white rounded-full text-[9px] font-sans flex items-center justify-center">
                   {cartCount}
@@ -127,7 +125,6 @@ export default function Navbar() {
             aria-label="Cart"
           >
             <ShoppingBag size={18} strokeWidth={1.5} />
-            {/* TODO(task-6): real cart */}
             {cartCount > 0 && (
               <span className="absolute -top-1.5 -right-2 w-4 h-4 bg-black text-white rounded-full text-[9px] font-sans flex items-center justify-center">
                 {cartCount}

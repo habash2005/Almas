@@ -1,42 +1,40 @@
 import {CartForm} from '@shopify/hydrogen';
+import {useAlmasCart} from '~/lib/cart';
 
 /**
+ * Renders children inside a CartForm submit button. Submitting adds the
+ * given lines to the Shopify cart (via the /cart route action) and opens
+ * the cart drawer, matching the legacy addToCart() behavior.
+ *
  * @param {{
- *   analytics?: unknown;
+ *   lines: Array<OptimisticCartLineInput>;
+ *   onClick?: (e: React.MouseEvent) => void;
+ *   className?: string;
  *   children: React.ReactNode;
  *   disabled?: boolean;
- *   lines: Array<OptimisticCartLineInput>;
- *   onClick?: () => void;
  * }}
  */
-export function AddToCartButton({
-  analytics,
-  children,
-  disabled,
-  lines,
-  onClick,
-}) {
+export function AddToCartButton({lines, onClick, className, children, disabled}) {
+  const {setIsCartOpen} = useAlmasCart();
+
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" action={CartForm.ACTIONS.LinesAdd} inputs={{lines}}>
       {(fetcher) => (
-        <>
-          <input
-            name="analytics"
-            type="hidden"
-            value={JSON.stringify(analytics)}
-          />
-          <button
-            type="submit"
-            onClick={onClick}
-            disabled={disabled ?? fetcher.state !== 'idle'}
-          >
-            {children}
-          </button>
-        </>
+        <button
+          type="submit"
+          className={className}
+          disabled={disabled || fetcher.state !== 'idle'}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsCartOpen(true);
+            onClick?.(e);
+          }}
+        >
+          {children}
+        </button>
       )}
     </CartForm>
   );
 }
 
-/** @typedef {import('react-router').FetcherWithComponents} FetcherWithComponents */
 /** @typedef {import('@shopify/hydrogen').OptimisticCartLineInput} OptimisticCartLineInput */

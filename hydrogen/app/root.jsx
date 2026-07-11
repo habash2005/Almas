@@ -15,6 +15,7 @@ import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
 import {ToastProvider} from '~/components/ToastContext';
 import Toast from '~/components/Toast';
+import {CartUIProvider} from '~/lib/cart';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -98,17 +99,23 @@ export async function loader(args) {
 async function loadCriticalData({context}) {
   const {storefront} = context;
 
-  const [header] = await Promise.all([
+  // The cart is awaited (not deferred) because the cart badge in the Navbar
+  // is above the fold and this app runs React 18, which lacks the `use()`
+  // hook needed to cleanly unwrap a deferred cart promise inside
+  // useAlmasCart (see app/lib/cart.jsx). It loads in parallel with the
+  // header query, so it costs no extra serialized roundtrip.
+  const [header, cart] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
       },
     }),
+    context.cart.get(),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
-  return {header};
+  return {header, cart};
 }
 
 /**
@@ -118,7 +125,7 @@ async function loadCriticalData({context}) {
  * @param {Route.LoaderArgs}
  */
 function loadDeferredData({context}) {
-  const {storefront, customerAccount, cart} = context;
+  const {storefront, customerAccount} = context;
 
   // defer the footer query (below the fold)
   const footer = storefront
@@ -134,7 +141,6 @@ function loadDeferredData({context}) {
       return null;
     });
   return {
-    cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
   };
@@ -180,9 +186,11 @@ export default function App() {
     >
       <ToastProvider>
         <Toast />
-        <PageLayout {...data}>
-          <Outlet />
-        </PageLayout>
+        <CartUIProvider>
+          <PageLayout {...data}>
+            <Outlet />
+          </PageLayout>
+        </CartUIProvider>
       </ToastProvider>
     </Analytics.Provider>
   );

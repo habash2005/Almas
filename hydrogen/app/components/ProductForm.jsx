@@ -1,8 +1,11 @@
 import {Link, useNavigate} from 'react-router';
 import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
 
 /**
+ * TODO(task-10): this scaffold component is replaced wholesale by the ported
+ * Almas product page. The useAside() call was removed with the scaffold cart;
+ * AddToCartButton now opens the Almas cart drawer itself.
+ *
  * @param {{
  *   productOptions: MappedProductOptions[];
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
@@ -10,7 +13,6 @@ import {useAside} from './Aside';
  */
 export function ProductForm({productOptions, selectedVariant}) {
   const navigate = useNavigate();
-  const {open} = useAside();
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -95,9 +97,6 @@ export function ProductForm({productOptions, selectedVariant}) {
       })}
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          open('cart');
-        }}
         lines={
           selectedVariant
             ? [
