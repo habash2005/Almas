@@ -47,12 +47,9 @@ export function toAlmasProduct(node) {
   };
 }
 
-const METAFIELDS = `
-    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
-    accords: metafield(namespace: "almas", key: "accords") { value }
-    notes: metafield(namespace: "almas", key: "notes") { value }
-`;
-
+// Metafield selections are written out in full inside each fragment (rather
+// than interpolated from a shared string) because Shopify's graphql-codegen
+// chokes on non-#graphql interpolations ("Variable METAFIELDS not found").
 export const PRODUCT_CARD_FRAGMENT = `#graphql
   fragment ProductCard on Product {
     id
@@ -64,7 +61,9 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     variants(first: 10) {
       nodes { id title availableForSale price { amount currencyCode } }
     }
-    ${METAFIELDS}
+    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
+    accords: metafield(namespace: "almas", key: "accords") { value }
+    notes: metafield(namespace: "almas", key: "notes") { value }
   }
 `;
 
@@ -75,6 +74,10 @@ export const ALL_PRODUCTS_QUERY = `#graphql
     products(first: 250) {
       nodes {
         ...ProductCard
+        # Extra scent metafields the scent-finder scoring reads; cards ignore them.
+        longevity: metafield(namespace: "almas", key: "longevity") { value }
+        sillage: metafield(namespace: "almas", key: "sillage") { value }
+        bestFor: metafield(namespace: "almas", key: "best_for") { value }
       }
     }
   }
@@ -114,7 +117,9 @@ export const PRODUCT_FULL_FRAGMENT = `#graphql
         }
       }
     }
-    ${METAFIELDS}
+    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
+    accords: metafield(namespace: "almas", key: "accords") { value }
+    notes: metafield(namespace: "almas", key: "notes") { value }
     longevity: metafield(namespace: "almas", key: "longevity") { value }
     sillage: metafield(namespace: "almas", key: "sillage") { value }
     bestFor: metafield(namespace: "almas", key: "best_for") { value }
