@@ -17,6 +17,7 @@ import {ToastProvider} from '~/components/ToastContext';
 import Toast from '~/components/Toast';
 import {CartUIProvider} from '~/lib/cart';
 import {WishlistProvider} from '~/lib/wishlist';
+import NotFound from '~/components/NotFound';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -211,16 +212,27 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
+  // 404s thrown from loaders (e.g. unknown product handles) render here,
+  // so give them the same branded page as the catch-all route.
+  if (errorStatus === 404) {
+    return <NotFound />;
+  }
+
   return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
-    </div>
+    <section className="min-h-[80vh] flex items-center justify-center text-center bg-light-gray px-12 py-32">
+      <div className="max-w-[500px]">
+        <div className="font-serif text-2xl font-light tracking-[0.08em] mb-12">ALMAS</div>
+        <h1 className="font-serif text-[clamp(36px,4vw,56px)] font-light leading-[1.1] mb-4">
+          Something Went Wrong
+        </h1>
+        <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-warm-gray mb-6">
+          Error {errorStatus}
+        </p>
+        {errorMessage && (
+          <p className="font-sans text-sm leading-[1.7] text-warm-gray">{errorMessage}</p>
+        )}
+      </div>
+    </section>
   );
 }
 
