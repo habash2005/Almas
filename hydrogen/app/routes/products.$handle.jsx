@@ -23,10 +23,15 @@ import {
 export const meta = ({data}) => {
   return [
     {title: `ALMAS — ${data?.product?.name ?? 'Fragrance'}`},
-    {
-      rel: 'canonical',
-      href: `/products/${data?.product?.handle}`,
-    },
+    ...(data?.product?.handle
+      ? [
+          {
+            tagName: 'link',
+            rel: 'canonical',
+            href: `/products/${data.product.handle}`,
+          },
+        ]
+      : []),
   ];
 };
 
