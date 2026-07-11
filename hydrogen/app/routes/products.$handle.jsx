@@ -8,6 +8,7 @@ import AccordBar from '~/components/AccordBar';
 import ScentRadar from '~/components/ScentRadar';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useToast} from '~/components/ToastContext';
+import {useWishlist} from '~/lib/wishlist';
 import {
   getAccentColor,
   getBottleShadowColor,
@@ -182,6 +183,7 @@ export default function ProductPage() {
   /** @type {LoaderReturnData} */
   const {product, sellingPlanGroups, related: relatedProducts} = useLoaderData();
   const {addToast} = useToast();
+  const {addToWishlist, removeFromWishlist, isInWishlist} = useWishlist();
 
   const sizes = Object.keys(product.prices);
   const [selectedSizeRaw, setSelectedSize] = useState(sizes[0]);
@@ -207,7 +209,7 @@ export default function ProductPage() {
     setShowReviewForm(false);
   }, [product.id]);
 
-  const wishlisted = false; // TODO(task-11): wishlist
+  const wishlisted = product ? isInWishlist(product.id) : false;
 
   // Subscribe & Save — first selling plan of the first group (null on
   // stores without the Subscriptions app, e.g. mock.shop)
@@ -267,7 +269,13 @@ export default function ProductPage() {
   }, [reviews, reviewSort]);
 
   const handleWishlist = () => {
-    // TODO(task-11): wishlist
+    if (wishlisted) {
+      removeFromWishlist(product.id);
+      addToast('Removed from wishlist', 'info');
+    } else {
+      addToWishlist(product);
+      addToast('Added to wishlist', 'success');
+    }
   };
 
   const handleSubmitReview = (e) => {
@@ -602,7 +610,6 @@ export default function ProductPage() {
               onClick={handleWishlist}
               className="w-full border border-stone-dark text-black font-sans text-[11px] tracking-[0.15em] uppercase py-3.5 hover:border-black transition-colors flex items-center justify-center gap-2"
             >
-              {/* TODO(task-11): wishlist */}
               <svg
                 width="16" height="16" viewBox="0 0 24 24"
                 fill={wishlisted ? '#0A0A0A' : 'none'}

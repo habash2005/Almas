@@ -16,6 +16,7 @@ import {PageLayout} from './components/PageLayout';
 import {ToastProvider} from '~/components/ToastContext';
 import Toast from '~/components/Toast';
 import {CartUIProvider} from '~/lib/cart';
+import {WishlistProvider} from '~/lib/wishlist';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -186,11 +187,13 @@ export default function App() {
     >
       <ToastProvider>
         <Toast />
-        <CartUIProvider>
-          <PageLayout {...data}>
-            <Outlet />
-          </PageLayout>
-        </CartUIProvider>
+        <WishlistProvider>
+          <CartUIProvider>
+            <PageLayout {...data}>
+              <Outlet />
+            </PageLayout>
+          </CartUIProvider>
+        </WishlistProvider>
       </ToastProvider>
     </Analytics.Provider>
   );

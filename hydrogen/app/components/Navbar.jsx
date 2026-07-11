@@ -3,14 +3,14 @@ import {createPortal} from 'react-dom';
 import {Link} from 'react-router';
 import {Search, User, Heart, ShoppingBag, Menu, X} from 'lucide-react';
 import {useAlmasCart} from '~/lib/cart';
+import {useWishlist} from '~/lib/wishlist';
 import SearchDropdown from './SearchDropdown';
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const {cartCount, setIsCartOpen} = useAlmasCart();
-  // TODO(task-11): wishlist count
-  const wishlistCount = 0;
+  const {wishlistCount} = useWishlist();
 
   const navLinkClass =
     'font-sans text-[11px] font-normal tracking-[0.15em] uppercase text-black relative transition-opacity duration-300 hover:opacity-70 group';
@@ -87,7 +87,6 @@ export default function Navbar() {
               aria-label="Wishlist"
             >
               <Heart size={18} strokeWidth={1.5} />
-              {/* TODO(task-11): wishlist count */}
               {wishlistCount > 0 && (
                 <span className="absolute -top-1.5 -right-2 w-4 h-4 bg-black text-white rounded-full text-[9px] font-sans flex items-center justify-center">
                   {wishlistCount}
@@ -233,7 +232,6 @@ export default function Navbar() {
                 >
                   <Heart size={16} strokeWidth={1.5} />
                   Wishlist
-                  {/* TODO(task-11): wishlist count */}
                   {wishlistCount > 0 && (
                     <span className="ml-auto text-[11px] text-[#9A948D]">
                       {wishlistCount}

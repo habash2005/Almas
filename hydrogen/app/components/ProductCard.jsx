@@ -3,13 +3,15 @@ import {Link} from 'react-router';
 import {Heart, ShoppingBag} from 'lucide-react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useToast} from '~/components/ToastContext';
+import {useWishlist} from '~/lib/wishlist';
 
 export default function ProductCard({product}) {
   const sizes = Object.keys(product.prices || {});
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const {addToast} = useToast();
+  const {toggleWishlist, isInWishlist} = useWishlist();
 
-  const wishlisted = false; // TODO(task-11): wishlist
+  const wishlisted = isInWishlist(product.id);
   const price = product.prices?.[selectedSize];
   const variant = product.variantBySize?.[selectedSize];
   const accords = (product.accords || []).slice(0, 5);
@@ -47,9 +49,13 @@ export default function ProductCard({product}) {
         : 'Unisex';
 
   const handleWishlistToggle = (e) => {
-    // TODO(task-11): wishlist
     e.preventDefault();
     e.stopPropagation();
+    toggleWishlist(product);
+    addToast(
+      wishlisted ? 'Removed from wishlist' : 'Added to wishlist',
+      wishlisted ? 'info' : 'success',
+    );
   };
 
   const handleSizeClick = (e, size) => {
