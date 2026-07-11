@@ -13,3 +13,4 @@ Accumulated non-blocking findings from per-task code reviews.
 - [ ] ScrollToTop overrides ScrollRestoration back/forward scroll (legacy behavior, kept intentionally).
 - [ ] 11 pre-existing scaffold lint errors (unused vars in scaffold routes, env.d.ts tsconfig parse). Sweep in Task 17.
 - [ ] Toast fires on click not mutation-success for add/remove (matches legacy feel).
+- [ ] SearchDropdown links via `product.id` (which the adapter sets to the handle) — works, but should read `product.handle` like ProductCard for clarity; the adapter's id-holds-handle conflation is a latent foot-gun to keep in mind.
