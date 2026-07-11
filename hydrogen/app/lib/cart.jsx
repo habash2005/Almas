@@ -65,6 +65,30 @@ export function useAlmasCart() {
 }
 
 /**
+ * Builds a CartForm LinesAdd input from an Almas product + variant.
+ * Attaching `selectedVariant` (with product/image) lets `useOptimisticCart`
+ * render the pending line immediately instead of logging
+ * "[h2:error:useOptimisticCart] No selected variant was passed".
+ *
+ * @param {object} variant Storefront variant node ({id, title, price, ...})
+ * @param {object} product Almas-shaped product (name, handle, image)
+ * @param {number} [quantity]
+ * @param {object} [extra] Extra line fields (e.g. {sellingPlanId})
+ */
+export function toCartLine(variant, product, quantity = 1, extra = {}) {
+  return {
+    merchandiseId: variant.id,
+    quantity,
+    selectedVariant: {
+      ...variant,
+      product: {title: product.name, handle: product.handle},
+      image: {url: product.image},
+    },
+    ...extra,
+  };
+}
+
+/**
  * Maps a Shopify cart line to the item shape the legacy Almas cart UI used.
  * @param {object} line CartLine from the cart query / useOptimisticCart
  */

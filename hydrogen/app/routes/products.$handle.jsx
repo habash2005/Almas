@@ -9,6 +9,7 @@ import ScentRadar from '~/components/ScentRadar';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useToast} from '~/components/ToastContext';
 import {useWishlist} from '~/lib/wishlist';
+import {toCartLine} from '~/lib/cart';
 import {
   getAccentColor,
   getBottleShadowColor,
@@ -230,11 +231,12 @@ export default function ProductPage() {
   const variant = product.variantBySize?.[selectedSize];
   const lines = variant
     ? [
-        {
-          merchandiseId: variant.id,
+        toCartLine(
+          variant,
+          product,
           quantity,
-          ...(isSubscription ? {sellingPlanId: plan.id} : {}),
-        },
+          isSubscription ? {sellingPlanId: plan.id} : {},
+        ),
       ]
     : [];
 

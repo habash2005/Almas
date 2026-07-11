@@ -3,6 +3,7 @@ import {Link, useLoaderData} from 'react-router';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useToast} from '~/components/ToastContext';
 import {loadAllProducts} from '~/lib/almas';
+import {toCartLine} from '~/lib/cart';
 
 /* ── Step Data ── */
 const STEPS = [
@@ -399,7 +400,7 @@ export default function ScentFinderPage() {
                   <div className="flex items-center gap-4">
                     <span className="font-sans text-lg">${price}</span>
                     <AddToCartButton
-                      lines={variant ? [{merchandiseId: variant.id, quantity: 1}] : []}
+                      lines={variant ? [toCartLine(variant, result.product)] : []}
                       disabled={!variant}
                       onClick={() => addToast(`${result.product.name} added to bag`, 'success')}
                       className="px-6 py-2.5 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans hover:bg-black/85 transition-colors"

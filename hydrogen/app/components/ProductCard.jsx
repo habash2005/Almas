@@ -4,6 +4,7 @@ import {Heart, ShoppingBag} from 'lucide-react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useToast} from '~/components/ToastContext';
 import {useWishlist} from '~/lib/wishlist';
+import {toCartLine} from '~/lib/cart';
 
 export default function ProductCard({product}) {
   const sizes = Object.keys(product.prices || {});
@@ -125,7 +126,7 @@ export default function ProductCard({product}) {
 
         {/* Quick Add — slides up from bottom on hover */}
         <AddToCartButton
-          lines={variant ? [{merchandiseId: variant.id, quantity: 1}] : []}
+          lines={variant ? [toCartLine(variant, product)] : []}
           disabled={!variant}
           onClick={() => {
             addToast(`${product.name} added to bag`, 'success');
