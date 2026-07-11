@@ -1,0 +1,12 @@
+{
+  "name": "almas-scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate": "node scripts/migrate-products.mjs",
+    "test": "vitest run scripts"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}
