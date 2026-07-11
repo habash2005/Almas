@@ -1,0 +1,100 @@
+// hydrogen/app/lib/almas.js
+export const SCENT_FAMILIES = ['Woody', 'Oriental', 'Floral', 'Fresh', 'Spicy', 'Amber', 'Oud', 'Citrus', 'Aromatic', 'Gourmand'];
+export const BADGES = ['Best Seller', 'New', 'Limited', 'Exclusive', 'Popular', 'Trending'];
+export const CATEGORIES = [
+  {id: 'men', name: 'For Him'},
+  {id: 'women', name: 'For Her'},
+  {id: 'unisex', name: 'Unisex'},
+];
+
+function parseJSON(value, fallback) {
+  try {
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function toAlmasProduct(node) {
+  if (!node) return null;
+  const variants = node.variants?.nodes ?? [];
+  const prices = {};
+  const variantBySize = {};
+  for (const v of variants) {
+    prices[v.title] = Math.round(parseFloat(v.price.amount));
+    variantBySize[v.title] = v;
+  }
+  const tags = node.tags ?? [];
+  const category = tags.includes('men') ? 'men' : tags.includes('women') ? 'women' : 'unisex';
+  return {
+    id: node.handle,
+    handle: node.handle,
+    gid: node.id,
+    name: node.title,
+    inspiredBy: node.inspiredBy?.value ?? '',
+    category,
+    scentFamily: tags.find((t) => SCENT_FAMILIES.includes(t)) ?? null,
+    badge: tags.find((t) => BADGES.includes(t)) ?? null,
+    prices,
+    variantBySize,
+    accords: parseJSON(node.accords?.value, []),
+    notes: parseJSON(node.notes?.value, null),
+    longevity: node.longevity?.value ?? null,
+    sillage: node.sillage?.value ?? null,
+    bestFor: parseJSON(node.bestFor?.value, []),
+    description: node.description ?? '',
+    image: node.featuredImage?.url ?? '/images/bottle.png',
+  };
+}
+
+const METAFIELDS = `
+    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
+    accords: metafield(namespace: "almas", key: "accords") { value }
+    notes: metafield(namespace: "almas", key: "notes") { value }
+`;
+
+export const PRODUCT_CARD_FRAGMENT = `#graphql
+  fragment ProductCard on Product {
+    id
+    handle
+    title
+    description
+    tags
+    featuredImage { url altText width height }
+    variants(first: 10) {
+      nodes { id title availableForSale price { amount currencyCode } }
+    }
+    ${METAFIELDS}
+  }
+`;
+
+export const PRODUCT_FULL_FRAGMENT = `#graphql
+  fragment ProductFull on Product {
+    id
+    handle
+    title
+    description
+    tags
+    featuredImage { url altText width height }
+    images(first: 5) { nodes { url altText width height } }
+    variants(first: 10) {
+      nodes { id title availableForSale price { amount currencyCode } }
+    }
+    sellingPlanGroups(first: 2) {
+      nodes {
+        name
+        sellingPlans(first: 5) {
+          nodes {
+            id
+            name
+            priceAdjustments { adjustmentValue { ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage } } }
+          }
+        }
+      }
+    }
+    ${METAFIELDS}
+    longevity: metafield(namespace: "almas", key: "longevity") { value }
+    sillage: metafield(namespace: "almas", key: "sillage") { value }
+    bestFor: metafield(namespace: "almas", key: "best_for") { value }
+  }
+`;
