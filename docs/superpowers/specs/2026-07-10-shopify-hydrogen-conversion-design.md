@@ -47,8 +47,8 @@ hosted checkout, customer accounts, subscriptions, and product data migration.
     | `best_for` | list.single_line_text_field | `bestFor` |
 - Creates collections: For Him, For Her, Unisex, and one per scent family
   (rule-based on tags).
-- Creates a selling plan group ("Scent Subscription", monthly, discount %) and
-  attaches all products (see Subscriptions).
+- Creates a selling plan group ("Scent Subscription", monthly delivery, 15%
+  off) and attaches all products (see Subscriptions).
 - **Idempotent:** keyed on product handle; re-runs update rather than duplicate.
 - Auth: `SHOPIFY_STORE_DOMAIN` + `SHOPIFY_ADMIN_TOKEN` env vars.
 
@@ -89,7 +89,7 @@ Ported from `storefront/src/`:
   profile. Note: requires the real dev store (not available on mock.shop) —
   built to Hydrogen's standard account skeleton, verified after store setup.
 - **Subscriptions:** free Shopify Subscriptions app installed on the store;
-  migration script attaches a monthly selling plan with a discount to all
+  migration script attaches a monthly selling plan (15% off) to all
   products. PDP offers one-time vs. subscribe; subscription page markets the
   program and links into it.
 
