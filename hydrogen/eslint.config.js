@@ -231,6 +231,9 @@ export default [
     plugins: {
       jest,
     },
+    // Tests run under vitest; no jest package is installed, so pin a version
+    // for jest/no-deprecated-functions instead of letting it probe and crash.
+    settings: {jest: {version: 30}},
     languageOptions: {
       globals: {
         ...globals.node,
