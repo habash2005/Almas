@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {Link, data} from 'react-router';
+import {useEffect, useRef, useState} from 'react';
+import {Link, data, useFetcher} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {X, Minus, Plus, ShoppingBag, ArrowRight, Tag} from 'lucide-react';
 import {useAlmasCart, toAlmasCartItem} from '~/lib/cart';
@@ -118,21 +118,58 @@ export async function loader({context}) {
  * retired. The legacy upsell grid ("You Might Also Like") is omitted here;
  * it returns with the ported ProductCard + recommendations in task 10.
  */
+const PROMO_FETCHER_KEY = 'cart-promo-code';
+
 export default function Cart() {
   const {cart, lines, cartCount, cartTotal, checkoutUrl, freeShippingThreshold} =
     useAlmasCart();
   const {showToast} = useToast();
   const [promoCode, setPromoCode] = useState('');
+  // Code the user just submitted, pending validation feedback (legacy showed
+  // "applied"/"invalid" toasts). The apply CartForm uses PROMO_FETCHER_KEY so
+  // we can observe the same fetcher here; it returns to 'idle' only after the
+  // root loader has revalidated, so cart.discountCodes is fresh by then.
+  const [pendingCode, setPendingCode] = useState(null);
+  const promoFetcher = useFetcher({key: PROMO_FETCHER_KEY});
+  // Guards against the effect firing on the render between the Apply click
+  // and the fetcher actually entering 'submitting' (still 'idle' then).
+  const promoSubmitStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (promoFetcher.state !== 'idle') {
+      promoSubmitStartedRef.current = true;
+      return;
+    }
+    if (!pendingCode || !promoSubmitStartedRef.current) return;
+    promoSubmitStartedRef.current = false;
+    const submitted = (cart?.discountCodes ?? []).find(
+      (c) => c.code.toLowerCase() === pendingCode.toLowerCase(),
+    );
+    if (submitted?.applicable) {
+      showToast('Promo code applied!', 'success');
+      setPromoCode('');
+    } else {
+      showToast('Invalid promo code. Please try again.', 'error');
+    }
+    setPendingCode(null);
+  }, [pendingCode, promoFetcher.state, cart, showToast]);
 
   const items = lines.map(toAlmasCartItem);
   const subtotal = cartTotal;
   const shippingCost = subtotal >= freeShippingThreshold ? 0 : 8.95;
-  // Shopify applies discount codes server-side; surface them as the promo
-  // discount the legacy page computed locally.
+  // Only chips for codes Shopify actually accepted (applicable: false codes
+  // stay in cart.discountCodes but must not render as applied).
   const appliedCodes = (cart?.discountCodes ?? []).filter((c) => c.applicable);
   const promoApplied = appliedCodes.length > 0;
-  const shopifyTotal = parseFloat(cart?.cost?.totalAmount?.amount ?? '0') || subtotal;
-  const promoDiscount = Math.max(0, subtotal - shopifyTotal);
+  // Promo discount = cart-level discount allocations. cost.subtotalAmount is
+  // "before taxes and cart-level discounts" but already nets out line-level
+  // discounts, so subtracting cart-level allocations is exact and never
+  // conflates tax (unlike subtotal - totalAmount in tax-inclusive markets).
+  const promoDiscount = (cart?.discountAllocations ?? []).reduce(
+    (sum, allocation) =>
+      sum + parseFloat(allocation?.discountedAmount?.amount ?? '0'),
+    0,
+  );
   const total = subtotal - promoDiscount + shippingCost;
   const shippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
   const amountToFreeShipping = Math.max(freeShippingThreshold - subtotal, 0);
@@ -397,6 +434,7 @@ export default function Cart() {
                     route="/cart"
                     action={CartForm.ACTIONS.DiscountCodesUpdate}
                     inputs={{discountCodes: []}}
+                    fetcherKey={PROMO_FETCHER_KEY}
                   >
                     <div className="flex border border-stone-dark/50">
                       <input
@@ -409,7 +447,8 @@ export default function Cart() {
                       />
                       <button
                         type="submit"
-                        disabled={!promoCode.trim()}
+                        disabled={!promoCode.trim() || pendingCode !== null}
+                        onClick={() => setPendingCode(promoCode.trim())}
                         className="px-5 py-3 bg-black text-white text-[10px] tracking-[0.12em] uppercase hover:bg-black/85 transition-colors disabled:opacity-40"
                       >
                         Apply
