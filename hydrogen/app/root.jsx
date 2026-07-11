@@ -13,6 +13,8 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
+import {ToastProvider} from '~/components/ToastContext';
+import Toast from '~/components/Toast';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -176,9 +178,12 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
-      <PageLayout {...data}>
-        <Outlet />
-      </PageLayout>
+      <ToastProvider>
+        <Toast />
+        <PageLayout {...data}>
+          <Outlet />
+        </PageLayout>
+      </ToastProvider>
     </Analytics.Provider>
   );
 }
