@@ -68,6 +68,28 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
   }
 `;
 
+export const ALL_PRODUCTS_QUERY = `#graphql
+  ${PRODUCT_CARD_FRAGMENT}
+  query AllProducts($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 250) {
+      nodes {
+        ...ProductCard
+      }
+    }
+  }
+`;
+
+/**
+ * Fetches the full catalog (legacy shape) in one page — the legacy
+ * storefront filters/sorts the whole product array client-side.
+ * Shared by the shop page and the scent finder.
+ */
+export async function loadAllProducts(context) {
+  const {products} = await context.storefront.query(ALL_PRODUCTS_QUERY);
+  return products.nodes.map(toAlmasProduct);
+}
+
 export const PRODUCT_FULL_FRAGMENT = `#graphql
   fragment ProductFull on Product {
     id
