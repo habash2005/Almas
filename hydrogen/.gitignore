@@ -1,0 +1,7 @@
+build
+dist
+node_modules
+*.d.ts.map
+.env
+.shopify
+.react-router
