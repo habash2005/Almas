@@ -29,7 +29,7 @@ hosted checkout, customer accounts, subscriptions, and product data migration.
 
 `scripts/migrate-products.mjs` (Node, Admin GraphQL API):
 
-- Reads `storefront/src/data/products.js` (146 products, categories, scent
+- Reads `storefront/src/data/products.js` (143 products, categories, scent
   families).
 - Creates each product with:
   - Two variants — **50ml** and **100ml** — with the real prices from `prices`.

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rebuild the Almas perfume storefront (`storefront/`, React/Vite SPA with hardcoded data) as a Shopify Hydrogen app at `hydrogen/` with real products, cart, hosted checkout, customer accounts, and subscriptions, plus a script that migrates the 146 products into a Shopify store.
+**Goal:** Rebuild the Almas perfume storefront (`storefront/`, React/Vite SPA with hardcoded data) as a Shopify Hydrogen app at `hydrogen/` with real products, cart, hosted checkout, customer accounts, and subscriptions, plus a script that migrates the 143 products into a Shopify store.
 
 **Architecture:** New Hydrogen (React Router–based) app developed against Shopify's public `mock.shop` Storefront API until the owner's dev store exists. A single adapter module (`app/lib/almas.js`) maps Shopify product data (variants + `almas.*` metafields) into the exact product shape the legacy components consume, so the visual layer ports nearly 1:1. Cart/checkout/accounts use Hydrogen's built-ins. A Node script using the Admin GraphQL API upserts all products/collections idempotently.
 
@@ -506,7 +506,7 @@ In the component, `useLoaderData()` replaces the legacy `products.filter(...)` s
 **Files:**
 - Create: `hydrogen/app/routes/shop.jsx` (port of `LEGACY/pages/ShopPage.jsx`)
 
-- [ ] **Step 1: Loader.** Legacy ShopPage filters the full 146-product array client-side by category/scent family/price and sorts. Keep that UX: fetch up to 250 products once and keep client-side filtering (146 products fit in one page):
+- [ ] **Step 1: Loader.** Legacy ShopPage filters the full 143-product array client-side by category/scent family/price and sorts. Keep that UX: fetch up to 250 products once and keep client-side filtering (143 products fit in one page):
 
 ```js
 export async function loader({context}) {
@@ -970,7 +970,7 @@ git add package.json scripts && git commit -m "feat: idempotent product migratio
 - [ ] **Step 1: Write the owner guide** with these numbered sections (click-by-click, each step one action):
   1. **Partners account + dev store:** partners.shopify.com → sign up (free) → Stores → Add store → Create development store → name it (e.g. `almas-dev`), purpose "test and build". Record `<store>.myshopify.com`.
   2. **Admin API token for migration:** Store admin → Settings → Apps and sales channels → Develop apps → Allow custom app development → Create app ("almas-migration") → Configure Admin API scopes: `read_products`, `write_products`, `read_files`, `write_files` → Install app → reveal Admin API access token (`shpat_...`) once and save it.
-  3. **Run migration:** at repo root, `SHOPIFY_STORE_DOMAIN=<store>.myshopify.com SHOPIFY_ADMIN_TOKEN=shpat_... npm run migrate`. Expected output ends `Products: 146 created, 0 updated.` Safe to re-run.
+  3. **Run migration:** at repo root, `SHOPIFY_STORE_DOMAIN=<store>.myshopify.com SHOPIFY_ADMIN_TOKEN=shpat_... npm run migrate`. Expected output ends `Products: 143 created, 0 updated.` Safe to re-run.
   4. **Subscriptions:** admin → Apps → Shopify App Store → install the free "Shopify Subscriptions" app → Create plan: name "Scent Subscription", delivery every 3 months, 15% discount → apply to all products.
   5. **Connect Hydrogen:** in `hydrogen/`, run `npx shopify hydrogen link` (creates/links a Hydrogen storefront on the store and provisions the Storefront API + Customer Account API config), then `npx shopify hydrogen env pull` to write `.env`. Restart `npm run dev` — the app now serves real Almas products.
   6. **Deploy:** `npx shopify hydrogen deploy` → Oxygen URL; later attach a custom domain in admin.
@@ -1000,7 +1000,7 @@ The scaffold already implements Customer Account API OAuth (login redirect, orde
 
 - [ ] **Step 1: Full mock.shop walkthrough.** `npm run dev`; visit `/`, `/shop` (+ filters/sort), `/products/<handle>` (sizes, add, subscribe hidden), `/search?q=...` + navbar dropdown, `/cart` (+ drawer, quantities, remove, checkout link), `/wishlist` (+ toggle/persist), `/scent-finder` (complete quiz), `/subscription`, `/about`, `/faq`, `/shipping`, `/privacy`, `/terms`, `/contact`, garbage URL → 404. Fix anything broken.
 - [ ] **Step 2: Quality gates.** In `hydrogen/`: `npm run lint` clean, `npx vitest run` green, `npm run build` succeeds. At root: `npx vitest run scripts` green.
-- [ ] **Step 3: Write the post-store-setup checklist** (`docs/superpowers/plans/2026-07-10-launch-checklist.md`): run migration; `hydrogen link`/`env pull`; re-walk all routes against real data (146 products, radar/accords/notes render from metafields, subscribe toggle appears with the real plan, hosted checkout completes a test order with Shopify's test gateway, account login/orders work); `hydrogen deploy`. Each as a checkbox.
+- [ ] **Step 3: Write the post-store-setup checklist** (`docs/superpowers/plans/2026-07-10-launch-checklist.md`): run migration; `hydrogen link`/`env pull`; re-walk all routes against real data (143 products, radar/accords/notes render from metafields, subscribe toggle appears with the real plan, hosted checkout completes a test order with Shopify's test gateway, account login/orders work); `hydrogen deploy`. Each as a checkbox.
 - [ ] **Step 4: Commit** `git add -A && git commit -m "chore: final verification fixes and launch checklist"`
 - [ ] **Step 5: Push** `git push origin main` (repo is the user's own `habash2005/Almas`).
 
@@ -1009,5 +1009,5 @@ The scaffold already implements Customer Account API OAuth (login redirect, orde
 ## Self-review notes (already applied)
 
 - **Spec coverage:** products/cart/checkout (T4–T10), accounts (T16), subscriptions (T10 PDP + T13 page + T15 §4 owner step), migration (T14), mock.shop-first testing (every task) + real-store checklist (T17), owner docs (T15), design port (T2–T13). Legacy `CheckoutPage`/`LoginPage`/`RegisterPage`/`AuthContext` intentionally not ported per spec.
-- **Known judgment calls:** shop page keeps client-side filtering over one 250-product query (matches legacy UX, fine at 146 products); wishlist stores product snapshots in localStorage exactly like legacy; only products with a dedicated image file get media (2 exist today — cards use the shared tinted bottle render regardless, same as legacy).
+- **Known judgment calls:** shop page keeps client-side filtering over one 250-product query (matches legacy UX, fine at 143 products); wishlist stores product snapshots in localStorage exactly like legacy; only products with a dedicated image file get media (2 exist today — cards use the shared tinted bottle render regardless, same as legacy).
 - **Scaffold drift:** exact scaffold filenames may differ by CLI version; Task 1 Step 3's scaffold-map is the source of truth and later tasks defer to it.
