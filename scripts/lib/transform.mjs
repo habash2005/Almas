@@ -11,6 +11,15 @@ function metafield(key, type, value) {
   return value == null || value === '' ? null : {namespace: 'almas', key, type, value};
 }
 
+// Uniform storewide pricing (2026-07-12): every fragrance sells in three
+// sizes at fixed price points, superseding the per-product prices in
+// storefront/src/data/products.js.
+export const PRICING = {
+  '30ml': '29.99',
+  '50ml': '49.99',
+  '100ml': '69.99',
+};
+
 export function toProductSetInput(p) {
   return {
     handle: slugify(p.name),
@@ -20,10 +29,10 @@ export function toProductSetInput(p) {
     vendor: 'ALMAS',
     status: 'ACTIVE',
     tags: [p.category, p.scentFamily, p.badge].filter(Boolean),
-    productOptions: [{name: 'Size', values: Object.keys(p.prices).map((name) => ({name}))}],
-    variants: Object.entries(p.prices).map(([size, price]) => ({
+    productOptions: [{name: 'Size', values: Object.keys(PRICING).map((name) => ({name}))}],
+    variants: Object.entries(PRICING).map(([size, price]) => ({
       optionValues: [{optionName: 'Size', name: size}],
-      price: String(price),
+      price,
     })),
     metafields: [
       metafield('inspired_by', 'single_line_text_field', p.inspiredBy),

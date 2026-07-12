@@ -33,12 +33,14 @@ describe('toProductSetInput', () => {
     expect(input.vendor).toBe('ALMAS');
     expect(input.status).toBe('ACTIVE');
     expect(input.tags).toEqual(['men', 'Woody', 'Best Seller']);
+    // Uniform storewide pricing overrides the per-product legacy prices.
     expect(input.productOptions).toEqual([
-      {name: 'Size', values: [{name: '50ml'}, {name: '100ml'}]},
+      {name: 'Size', values: [{name: '30ml'}, {name: '50ml'}, {name: '100ml'}]},
     ]);
     expect(input.variants).toEqual([
-      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '120'},
-      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '180'},
+      {optionValues: [{optionName: 'Size', name: '30ml'}], price: '29.99'},
+      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99'},
+      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99'},
     ]);
     const mf = Object.fromEntries(input.metafields.map((m) => [m.key, m]));
     expect(mf.inspired_by).toEqual({namespace: 'almas', key: 'inspired_by', type: 'single_line_text_field', value: 'Creed Aventus'});

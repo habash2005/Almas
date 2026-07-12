@@ -21,7 +21,9 @@ export function toAlmasProduct(node) {
   const prices = {};
   const variantBySize = {};
   for (const v of variants) {
-    prices[v.title] = Math.round(parseFloat(v.price.amount));
+    // Keep decimals: $29.99 must not display as $30. Whole-dollar amounts
+    // ("120.00") still render as 120.
+    prices[v.title] = parseFloat(v.price.amount);
     variantBySize[v.title] = v;
   }
   const tags = node.tags ?? [];
