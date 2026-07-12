@@ -1,0 +1,41 @@
+# Products currently in stock (one handle per line, matched 2026-07-12 from
+# the owner's physical inventory list of original scents).
+# Edit this file and re-run `node scripts/set-stock.mjs` to flip availability.
+midnight-aventus
+sauvage-noir
+oud-majesty
+bleu-eternel
+acqua-imperiale
+noir-absolu
+amber-titan
+sultan-s-throne
+eros-flame
+velvet-noir
+invincible
+iron-forge
+wanted-man
+neptune
+wildfire
+adrenaline-rush
+velvet-bloom
+sugar-kiss
+aura-blanche
+cherry-luxe
+honey-elixir
+satin-nights
+vanilla-twilight
+pink-champagne
+magnolia-mist
+blossom-walk
+dulce-amor
+rose-gold
+lily-grace
+duchess
+baccarat-silk
+amber-alchemy
+noir-absolut
+velvet-iris
+saffron-elixir
+royal-amber
+sandalwood-haze
+frosted-pine
