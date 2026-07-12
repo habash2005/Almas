@@ -6,12 +6,45 @@ import {toProductSetInput, COLLECTIONS, METAFIELD_DEFINITIONS} from './lib/trans
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DOMAIN = process.env.SHOPIFY_STORE_DOMAIN; // e.g. almas-dev.myshopify.com
-const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN;   // shpat_... from custom app
-if (!DOMAIN || !TOKEN) {
-  console.error('Set SHOPIFY_STORE_DOMAIN and SHOPIFY_ADMIN_TOKEN. See docs/STORE_SETUP.md');
+// Auth, either of:
+//  - SHOPIFY_ADMIN_TOKEN: a static shpat_... token (legacy custom apps, pre-2026)
+//  - SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET: Dev Dashboard app credentials
+//    (post-2026); exchanged below for a 24h token via the client credentials
+//    grant. The app must be installed on the store first.
+let TOKEN = process.env.SHOPIFY_ADMIN_TOKEN;
+const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET;
+if (!DOMAIN || (!TOKEN && !(CLIENT_ID && CLIENT_SECRET))) {
+  console.error(
+    'Set SHOPIFY_STORE_DOMAIN plus either SHOPIFY_ADMIN_TOKEN or ' +
+      'SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET. See docs/STORE_SETUP.md',
+  );
   process.exit(1);
 }
 const ENDPOINT = `https://${DOMAIN}/admin/api/2025-10/graphql.json`;
+
+async function fetchAccessToken() {
+  const res = await fetch(`https://${DOMAIN}/admin/oauth/access_token`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `token exchange failed: HTTP ${res.status} ${res.statusText} — ` +
+        'check that the Dev Dashboard app is installed on this store and ' +
+        'that a version with the required scopes has been released',
+    );
+  }
+  const body = await res.json();
+  if (!body.access_token) throw new Error('token exchange returned no access_token');
+  console.log(`Access token acquired (scopes: ${body.scope ?? 'unknown'})`);
+  return body.access_token;
+}
 
 const MAX_ATTEMPTS = 5;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -222,6 +255,7 @@ async function publishAll(resourceIds) {
   }
 }
 
+if (!TOKEN) TOKEN = await fetchAccessToken();
 await ensureMetafieldDefinitions();
 const productIds = await migrateProducts();
 const collectionIds = await migrateCollections();

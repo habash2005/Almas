@@ -25,29 +25,30 @@ testing. You upgrade it to a paid plan only when you're ready to sell.
    `almas-dev.myshopify.com`. You'll need it below as
    `SHOPIFY_STORE_DOMAIN`.
 
-## 2. Create an Admin API token for the migration script (~5 min)
+## 2. Create app credentials for the migration script (~5 min)
 
-The migration script needs a private token to create products.
+> **Note:** Shopify retired the old in-admin "custom app" token flow on
+> January 1, 2026. New apps are created in the **Dev Dashboard**
+> (dev.shopify.com) and authenticate with a Client ID + Client Secret,
+> which the migration script exchanges for a fresh 24-hour access token
+> automatically.
 
-1. In your store admin (`https://<your-store>.myshopify.com/admin`), go to
-   **Settings** (bottom-left gear) → **Apps and sales channels**.
-2. Click **Develop apps** (top right). If prompted, click **Allow custom app
-   development** (twice).
-3. Click **Create an app** → name it `almas-migration` → **Create app**.
-4. On the app page, open the **Configuration** tab → under **Admin API
-   integration** click **Configure**.
-5. Tick these scopes (search the list):
-   - `read_products`
-   - `write_products`
-   - `read_files`
-   - `write_files`
-   - `read_publications`
-   - `write_publications`
-6. Click **Save**.
-7. Open the **API credentials** tab → click **Install app** → **Install**.
-8. Under **Admin API access token**, click **Reveal token once** and copy it
-   (starts with `shpat_`). **Save it somewhere safe — Shopify shows it only
-   once.** This is `SHOPIFY_ADMIN_TOKEN`.
+1. Go to <https://dev.shopify.com> (log in with the same account as your
+   store) and create an app (e.g. `almas`) if you haven't already.
+2. Open the app → **Versions** tab → create a version:
+   - App URL: `https://shopify.dev/apps/default-app-home` (placeholder for
+     non-embedded apps)
+   - Webhooks API version: the default
+   - **Scopes** — select these six:
+     `read_products`, `write_products`, `read_files`, `write_files`,
+     `read_publications`, `write_publications`
+   - Click **Release**.
+3. In the app's left sidebar select **Home** → scroll down → **Install app**
+   → choose your store → **Install**. (App and store must be in the same
+   organization.)
+4. Open the app's **Settings** page → copy the **Client ID** and reveal +
+   copy the **Secret**. These are `SHOPIFY_CLIENT_ID` and
+   `SHOPIFY_CLIENT_SECRET`.
 
 ## 3. Run the product migration (~10 min)
 
@@ -64,9 +65,13 @@ From the repo root:
 ```bash
 npm install   # first time only
 SHOPIFY_STORE_DOMAIN=<your-store>.myshopify.com \
-SHOPIFY_ADMIN_TOKEN=shpat_XXXXXXXX \
+SHOPIFY_CLIENT_ID=<client-id> \
+SHOPIFY_CLIENT_SECRET=<client-secret> \
 npm run migrate
 ```
+
+(A legacy `SHOPIFY_ADMIN_TOKEN=shpat_...` from a pre-2026 custom app also
+still works, in place of the client id/secret pair.)
 
 Expected output: one `created <handle>` line per product, ending with
 
