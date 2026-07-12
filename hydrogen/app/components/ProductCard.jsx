@@ -115,7 +115,7 @@ export default function ProductCard({product}) {
         {/* Wishlist — top right, appears on hover */}
         <button
           onClick={handleWishlistToggle}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.08)] z-[2]"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.08)] z-[2]"
         >
           <Heart
             size={14}
@@ -131,7 +131,7 @@ export default function ProductCard({product}) {
           onClick={() => {
             addToast(`${product.name} added to bag`, 'success');
           }}
-          className="absolute bottom-[3px] left-0 right-0 bg-[#0A0A0A] text-white py-3 flex items-center justify-center gap-2 text-[10px] tracking-[0.14em] uppercase font-sans translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-[2]"
+          className="absolute bottom-[3px] left-0 right-0 bg-[#0A0A0A] text-white py-3 flex items-center justify-center gap-2 text-[10px] tracking-[0.14em] uppercase font-sans translate-y-full group-hover:translate-y-0 [@media(hover:none)]:translate-y-0 transition-transform duration-300 ease-out z-[2]"
         >
           <ShoppingBag size={13} strokeWidth={1.5} />
           Add to Bag{price != null ? ` — $${price}` : ''}

@@ -334,7 +334,7 @@ export default function ProductPage() {
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left: Product Display */}
-          <div className="sticky top-24">
+          <div className="lg:sticky lg:top-24">
             {/* Main product card */}
             <div className="bg-white rounded-sm border border-stone/20 overflow-hidden">
               {/* Top area: Bottle left, Notes right */}
