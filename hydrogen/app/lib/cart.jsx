@@ -95,7 +95,12 @@ export function toCartLine(variant, product, quantity = 1, extra = {}) {
 export function toAlmasCartItem(line) {
   const merchandise = line?.merchandise;
   const quantity = line?.quantity ?? 1;
-  const lineTotal = parseFloat(line?.cost?.totalAmount?.amount ?? '0');
+  // Optimistic lines (pending LinesAdd) have no cost yet — fall back to the
+  // variant price carried on selectedVariant so they don't flash $0.00.
+  const lineTotal =
+    line?.cost?.totalAmount?.amount != null
+      ? parseFloat(line.cost.totalAmount.amount)
+      : parseFloat(merchandise?.price?.amount ?? '0') * quantity;
 
   return {
     lineId: line?.id,

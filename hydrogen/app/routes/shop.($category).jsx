@@ -86,13 +86,20 @@ export default function ShopPage() {
       result = result.filter((p) => p.badge === badgeFilter);
     }
 
-    // Sort
+    // Sort — legacy sorted by the 50ml price; fall back to the cheapest
+    // variant so price sorts still work when variants use other titles
+    // (e.g. mock.shop's apparel sizes).
+    const priceOf = (p) => {
+      if (p.prices?.['50ml'] != null) return p.prices['50ml'];
+      const all = Object.values(p.prices ?? {});
+      return all.length ? Math.min(...all) : 0;
+    };
     switch (sortBy) {
       case 'price-asc':
-        result.sort((a, b) => (a.prices['50ml'] || 0) - (b.prices['50ml'] || 0));
+        result.sort((a, b) => priceOf(a) - priceOf(b));
         break;
       case 'price-desc':
-        result.sort((a, b) => (b.prices['50ml'] || 0) - (a.prices['50ml'] || 0));
+        result.sort((a, b) => priceOf(b) - priceOf(a));
         break;
       case 'az':
         result.sort((a, b) => a.name.localeCompare(b.name));

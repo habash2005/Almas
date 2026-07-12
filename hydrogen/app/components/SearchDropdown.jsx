@@ -58,8 +58,8 @@ export default function SearchDropdown({isOpen, onClose}) {
     }
   };
 
-  const handleResultClick = (productId) => {
-    navigate(`/products/${productId}`);
+  const handleResultClick = (handle) => {
+    navigate(`/products/${handle}`);
     onClose();
   };
 
@@ -111,7 +111,7 @@ export default function SearchDropdown({isOpen, onClose}) {
               {filteredProducts.map((product) => (
                 <button
                   key={product.id}
-                  onClick={() => handleResultClick(product.id)}
+                  onClick={() => handleResultClick(product.handle)}
                   className="w-full flex items-center gap-4 py-3.5 px-2 hover:bg-light-gray transition-colors text-left border-b border-black/[0.04] last:border-0"
                 >
                   <div className="w-12 h-14 bg-light-gray flex items-center justify-center flex-shrink-0">
