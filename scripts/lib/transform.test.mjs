@@ -37,10 +37,11 @@ describe('toProductSetInput', () => {
     expect(input.productOptions).toEqual([
       {name: 'Size', values: [{name: '30ml'}, {name: '50ml'}, {name: '100ml'}]},
     ]);
+    const variantDefaults = {inventoryItem: {tracked: false}, inventoryPolicy: 'CONTINUE'};
     expect(input.variants).toEqual([
-      {optionValues: [{optionName: 'Size', name: '30ml'}], price: '29.99'},
-      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99'},
-      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99'},
+      {optionValues: [{optionName: 'Size', name: '30ml'}], price: '29.99', ...variantDefaults},
+      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99', ...variantDefaults},
+      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99', ...variantDefaults},
     ]);
     const mf = Object.fromEntries(input.metafields.map((m) => [m.key, m]));
     expect(mf.inspired_by).toEqual({namespace: 'almas', key: 'inspired_by', type: 'single_line_text_field', value: 'Creed Aventus'});

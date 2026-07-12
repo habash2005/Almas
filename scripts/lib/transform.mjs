@@ -33,6 +33,10 @@ export function toProductSetInput(p) {
     variants: Object.entries(PRICING).map(([size, price]) => ({
       optionValues: [{optionName: 'Size', name: size}],
       price,
+      // Untracked inventory: every size is always purchasable (newly created
+      // variants otherwise default to tracked with 0 stock = "out of stock").
+      inventoryItem: {tracked: false},
+      inventoryPolicy: 'CONTINUE',
     })),
     metafields: [
       metafield('inspired_by', 'single_line_text_field', p.inspiredBy),
