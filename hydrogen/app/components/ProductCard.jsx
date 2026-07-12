@@ -126,15 +126,21 @@ export default function ProductCard({product}) {
 
         {/* Quick Add — slides up from bottom on hover */}
         <AddToCartButton
-          lines={variant ? [toCartLine(variant, product)] : []}
-          disabled={!variant}
+          lines={variant?.availableForSale ? [toCartLine(variant, product)] : []}
+          disabled={!variant?.availableForSale}
           onClick={() => {
             addToast(`${product.name} added to bag`, 'success');
           }}
-          className="absolute bottom-[3px] left-0 right-0 bg-[#0A0A0A] text-white py-3 flex items-center justify-center gap-2 text-[10px] tracking-[0.14em] uppercase font-sans translate-y-full group-hover:translate-y-0 [@media(hover:none)]:translate-y-0 transition-transform duration-300 ease-out z-[2]"
+          className={`absolute bottom-[3px] left-0 right-0 py-3 flex items-center justify-center gap-2 text-[10px] tracking-[0.14em] uppercase font-sans translate-y-full group-hover:translate-y-0 [@media(hover:none)]:translate-y-0 transition-transform duration-300 ease-out z-[2] ${
+            variant?.availableForSale
+              ? 'bg-[#0A0A0A] text-white'
+              : 'bg-[#9A948D] text-white cursor-not-allowed'
+          }`}
         >
           <ShoppingBag size={13} strokeWidth={1.5} />
-          Add to Bag{price != null ? ` — $${price}` : ''}
+          {variant?.availableForSale
+            ? `Add to Bag${price != null ? ` — $${price}` : ''}`
+            : 'Sold Out'}
         </AddToCartButton>
       </div>
 

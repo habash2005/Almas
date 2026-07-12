@@ -604,12 +604,16 @@ export default function ProductPage() {
 
             {/* Add to Bag */}
             <AddToCartButton
-              lines={lines}
-              disabled={!variant}
+              lines={variant?.availableForSale ? lines : []}
+              disabled={!variant?.availableForSale}
               onClick={() => addToast(`${product.name} added to bag`, 'success')}
-              className="w-full bg-black text-white font-sans text-[11px] tracking-[0.15em] uppercase py-4 hover:bg-black/85 transition-colors mb-3"
+              className={`w-full font-sans text-[11px] tracking-[0.15em] uppercase py-4 transition-colors mb-3 ${
+                variant?.availableForSale
+                  ? 'bg-black text-white hover:bg-black/85'
+                  : 'bg-warm-gray text-white cursor-not-allowed'
+              }`}
             >
-              Add to Bag — ${displayPrice}
+              {variant?.availableForSale ? `Add to Bag — $${displayPrice}` : 'Sold Out'}
             </AddToCartButton>
 
             {/* Wishlist */}
@@ -641,8 +645,17 @@ export default function ProductPage() {
                   {product.scentFamily}
                 </span>
               )}
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-              <span className="text-xs text-green-600">In Stock</span>
+              {variant?.availableForSale ? (
+                <>
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                  <span className="text-xs text-green-600">In Stock</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-1.5 h-1.5 bg-warm-gray rounded-full" />
+                  <span className="text-xs text-warm-gray">Sold Out</span>
+                </>
+              )}
             </div>
 
             {/* Accordion Sections */}

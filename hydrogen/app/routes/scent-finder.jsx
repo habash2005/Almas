@@ -400,12 +400,16 @@ export default function ScentFinderPage() {
                   <div className="flex items-center gap-4">
                     <span className="font-sans text-lg">${price}</span>
                     <AddToCartButton
-                      lines={variant ? [toCartLine(variant, result.product)] : []}
-                      disabled={!variant}
+                      lines={variant?.availableForSale ? [toCartLine(variant, result.product)] : []}
+                      disabled={!variant?.availableForSale}
                       onClick={() => addToast(`${result.product.name} added to bag`, 'success')}
-                      className="px-6 py-2.5 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans hover:bg-black/85 transition-colors"
+                      className={`px-6 py-2.5 text-white text-[11px] tracking-[0.15em] uppercase font-sans transition-colors ${
+                        variant?.availableForSale
+                          ? 'bg-black hover:bg-black/85'
+                          : 'bg-warm-gray cursor-not-allowed'
+                      }`}
                     >
-                      Add to Bag
+                      {variant?.availableForSale ? 'Add to Bag' : 'Sold Out'}
                     </AddToCartButton>
                     <Link
                       to={`/products/${result.product.handle}`}
