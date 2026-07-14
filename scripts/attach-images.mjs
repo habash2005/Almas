@@ -78,12 +78,19 @@ async function uploadLocalImage(path) {
 
 if (!TOKEN) TOKEN = await fetchAccessToken();
 
+// REPLACE=1 swaps existing media for the local file (except PRESERVE handles,
+// which keep their original AI artwork).
+const REPLACE = process.env.REPLACE === '1';
+const PRESERVE = new Set(['midnight-aventus', 'sauvage-noir']);
+
 let attached = 0, skipped = 0, missing = 0;
 for (const p of products) {
   const handle = slugify(p.name);
   const data = await gql(
     `query($q: String!) {
-      products(first: 10, query: $q) { nodes { id handle mediaCount { count } } }
+      products(first: 10, query: $q) {
+        nodes { id handle mediaCount { count } media(first: 10) { nodes { id } } }
+      }
     }`,
     {q: `handle:"${handle}"`},
   );
@@ -93,8 +100,21 @@ for (const p of products) {
     continue;
   }
   if (node.mediaCount.count > 0) {
-    skipped++;
-    continue;
+    if (!REPLACE || PRESERVE.has(handle)) {
+      skipped++;
+      continue;
+    }
+    const del = await gql(
+      `mutation($productId: ID!, $mediaIds: [ID!]!) {
+        productDeleteMedia(productId: $productId, mediaIds: $mediaIds) {
+          deletedMediaIds
+          mediaUserErrors { field message }
+        }
+      }`,
+      {productId: node.id, mediaIds: node.media.nodes.map((m) => m.id)},
+    );
+    const derr = del.productDeleteMedia.mediaUserErrors;
+    if (derr.length) throw new Error(`${handle} delete media: ${JSON.stringify(derr)}`);
   }
   const imgPath = resolve(ROOT, 'storefront/public/products', `${handle}.png`);
   if (!existsSync(imgPath)) {
