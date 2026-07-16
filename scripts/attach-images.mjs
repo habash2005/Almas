@@ -1,9 +1,13 @@
-// Attaches storefront/public/products/<handle>.png to any store product that
-// has no media yet (admin thumbnails, Shop app, POS). Idempotent: products
-// that already have media are skipped. Run generate-bottle-images.py first.
+// Attaches product images so every store product carries TWO media, in order:
+//   1. <handle>-square.png  — 1200x1200 bottle-only thumbnail (featured; what
+//      Shop app / admin / collections center-crop to ~square)
+//   2. <handle>.png         — the 1024x1536 notes card (or original AI art
+//      for the PRESERVE handles)
+// Idempotent: products already at 2+ media are skipped. Run
+// generate-bottle-images.py first.
 //
 // Usage: SHOPIFY_STORE_DOMAIN=... SHOPIFY_CLIENT_ID=... SHOPIFY_CLIENT_SECRET=... \
-//        node scripts/attach-images.mjs
+//        [REPLACE=1] node scripts/attach-images.mjs
 
 import {existsSync, readFileSync} from 'node:fs';
 import {resolve, dirname} from 'node:path';
@@ -78,10 +82,39 @@ async function uploadLocalImage(path) {
 
 if (!TOKEN) TOKEN = await fetchAccessToken();
 
-// REPLACE=1 swaps existing media for the local file (except PRESERVE handles,
-// which keep their original AI artwork).
+// REPLACE=1 swaps existing media for [square, notes-card]. PRESERVE handles
+// keep their original AI artwork as image 2 but still get the square first.
 const REPLACE = process.env.REPLACE === '1';
 const PRESERVE = new Set(['midnight-aventus', 'sauvage-noir']);
+
+async function createMedia(productId, entries) {
+  const data = await gql(
+    `mutation($productId: ID!, $media: [CreateMediaInput!]!) {
+      productCreateMedia(productId: $productId, media: $media) {
+        media { id }
+        mediaUserErrors { field message }
+      }
+    }`,
+    {productId, media: entries},
+  );
+  const errs = data.productCreateMedia.mediaUserErrors;
+  if (errs.length) throw new Error(JSON.stringify(errs));
+  return data.productCreateMedia.media.map((m) => m.id);
+}
+
+async function waitForMediaReady(mediaId) {
+  for (let i = 0; i < 20; i++) {
+    const d = await gql(
+      `query($id: ID!) { node(id: $id) { ... on MediaImage { status } } }`,
+      {id: mediaId},
+    );
+    const s = d.node?.status;
+    if (s === 'READY') return;
+    if (s === 'FAILED') throw new Error(`media processing failed: ${mediaId}`);
+    await sleep(1500);
+  }
+  throw new Error(`media never became READY: ${mediaId}`);
+}
 
 let attached = 0, skipped = 0, missing = 0;
 for (const p of products) {
@@ -99,42 +132,60 @@ for (const p of products) {
     console.warn(`not in store, skipped: ${handle}`);
     continue;
   }
-  if (node.mediaCount.count > 0) {
-    if (!REPLACE || PRESERVE.has(handle)) {
-      skipped++;
-      continue;
-    }
-    const del = await gql(
-      `mutation($productId: ID!, $mediaIds: [ID!]!) {
-        productDeleteMedia(productId: $productId, mediaIds: $mediaIds) {
-          deletedMediaIds
-          mediaUserErrors { field message }
-        }
-      }`,
-      {productId: node.id, mediaIds: node.media.nodes.map((m) => m.id)},
-    );
-    const derr = del.productDeleteMedia.mediaUserErrors;
-    if (derr.length) throw new Error(`${handle} delete media: ${JSON.stringify(derr)}`);
+  // 2+ media means the square-first layout is already in place.
+  if (node.mediaCount.count >= 2 || (node.mediaCount.count > 0 && !REPLACE)) {
+    skipped++;
+    continue;
   }
-  const imgPath = resolve(ROOT, 'storefront/public/products', `${handle}.png`);
-  if (!existsSync(imgPath)) {
+
+  const squarePath = resolve(ROOT, 'storefront/public/products', `${handle}-square.png`);
+  const cardPath = resolve(ROOT, 'storefront/public/products', `${handle}.png`);
+  if (!existsSync(squarePath) || (!PRESERVE.has(handle) && !existsSync(cardPath))) {
     console.warn(`no local image: ${handle}`);
     missing++;
     continue;
   }
-  const resourceUrl = await uploadLocalImage(imgPath);
-  const media = await gql(
-    `mutation($productId: ID!, $media: [CreateMediaInput!]!) {
-      productCreateMedia(productId: $productId, media: $media) {
-        media { id }
-        mediaUserErrors { field message }
-      }
-    }`,
-    {productId: node.id, media: [{originalSource: resourceUrl, mediaContentType: 'IMAGE', alt: p.name}]},
-  );
-  const errs = media.productCreateMedia.mediaUserErrors;
-  if (errs.length) throw new Error(`${handle}: ${JSON.stringify(errs)}`);
+
+  if (PRESERVE.has(handle) && node.mediaCount.count > 0) {
+    // Keep the original AI card; prepend the square as the featured image.
+    const squareUrl = await uploadLocalImage(squarePath);
+    const [squareId] = await createMedia(node.id, [
+      {originalSource: squareUrl, mediaContentType: 'IMAGE', alt: p.name},
+    ]);
+    await waitForMediaReady(squareId);
+    const reorder = await gql(
+      `mutation($id: ID!, $moves: [MoveInput!]!) {
+        productReorderMedia(id: $id, moves: $moves) {
+          job { id }
+          mediaUserErrors { field message }
+        }
+      }`,
+      {id: node.id, moves: [{id: squareId, newPosition: '0'}]},
+    );
+    const rerr = reorder.productReorderMedia.mediaUserErrors;
+    if (rerr.length) throw new Error(`${handle} reorder: ${JSON.stringify(rerr)}`);
+  } else {
+    if (node.mediaCount.count > 0) {
+      const del = await gql(
+        `mutation($productId: ID!, $mediaIds: [ID!]!) {
+          productDeleteMedia(productId: $productId, mediaIds: $mediaIds) {
+            deletedMediaIds
+            mediaUserErrors { field message }
+          }
+        }`,
+        {productId: node.id, mediaIds: node.media.nodes.map((m) => m.id)},
+      );
+      const derr = del.productDeleteMedia.mediaUserErrors;
+      if (derr.length) throw new Error(`${handle} delete media: ${JSON.stringify(derr)}`);
+    }
+    const squareUrl = await uploadLocalImage(squarePath);
+    const cardUrl = await uploadLocalImage(cardPath);
+    await createMedia(node.id, [
+      {originalSource: squareUrl, mediaContentType: 'IMAGE', alt: p.name},
+      {originalSource: cardUrl, mediaContentType: 'IMAGE', alt: `${p.name} — scent notes`},
+    ]);
+  }
   attached++;
   console.log(`attached: ${handle}`);
 }
-console.log(`\n${attached} attached, ${skipped} already had media, ${missing} missing local files.`);
+console.log(`\n${attached} attached, ${skipped} skipped (already square-first), ${missing} missing local files.`);

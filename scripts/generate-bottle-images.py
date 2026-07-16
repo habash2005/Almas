@@ -7,10 +7,15 @@ right (accord name, strength label, rounded color pill), divider, then
 The bottle is storefront/public/images/bottle-transparent.png run through the
 site's CSS tint (sepia 0.4 -> hue-rotate(dominant accord hue) -> saturate 0.8).
 
+Also emits <handle>-square.png (1200x1200): the tinted bottle alone, centered
+on the site's warm-white background with a soft grounding shadow and no text.
+Squares survive the ~square center-crop used by Shop app / admin / collection
+thumbnails, so they go first (featured); the notes card becomes image 2.
+
 Usage: python3 scripts/generate-bottle-images.py [--force]
-Writes storefront/public/products/<handle>.png. Skips existing files unless
---force; never overwrites the two original AI images (midnight-aventus,
-sauvage-noir).
+Writes storefront/public/products/<handle>.png and <handle>-square.png. Skips
+existing files unless --force; never overwrites the two original AI card
+images (midnight-aventus, sauvage-noir), but still generates their squares.
 """
 
 import json
@@ -21,7 +26,7 @@ import unicodedata
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 BASE = Path(__file__).resolve().parent.parent
 BOTTLE = BASE / "storefront/public/images/bottle-transparent.png"
@@ -163,6 +168,30 @@ def render_card(p, rgb, alpha) -> Image.Image:
     return img
 
 
+def render_square(rgb, alpha, hue) -> Image.Image:
+    """1200x1200 thumbnail: tinted bottle centered on warm white, no text."""
+    S = 1200
+    img = Image.new("RGBA", (S, S), (247, 245, 242, 255))
+
+    bottle = tinted_bottle(rgb, alpha, hue)
+    bottle = bottle.crop(bottle.getbbox())  # drop transparent margins
+    bh = int(S * 0.72)
+    bw = int(bottle.width * bh / bottle.height)
+    bottle = bottle.resize((bw, bh), Image.LANCZOS)
+    bx, by = (S - bw) // 2, (S - bh) // 2
+
+    # very soft grounding shadow under the bottle
+    shadow = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow)
+    ew, eh = int(bw * 0.92), int(bh * 0.055)
+    cy = by + bh + eh // 3
+    sd.ellipse([S // 2 - ew // 2, cy - eh // 2, S // 2 + ew // 2, cy + eh // 2], fill=(70, 64, 58, 60))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(16))
+    img.alpha_composite(shadow)
+    img.alpha_composite(bottle, (bx, by))
+    return img.convert("RGB")
+
+
 def main():
     force = "--force" in sys.argv
     bottle = Image.open(BOTTLE).convert("RGBA")
@@ -172,12 +201,22 @@ def main():
     generated = skipped = 0
     for p in load_products():
         handle = slugify(p["name"])
+        accords = sorted(p["accords"], key=lambda a: -a["strength"])
+        dominant = accords[0]["color"] if accords else "#C4A882"
+
         out = OUT / f"{handle}.png"
         if handle in PRESERVE or (out.exists() and not force):
             skipped += 1
-            continue
-        render_card(p, rgb, alpha).save(out, "PNG")
-        generated += 1
+        else:
+            render_card(p, rgb, alpha).save(out, "PNG")
+            generated += 1
+
+        sq = OUT / f"{handle}-square.png"
+        if sq.exists() and not force:
+            skipped += 1
+        else:
+            render_square(rgb, alpha, hex_to_hue(dominant)).save(sq, "PNG")
+            generated += 1
     print(f"generated {generated}, skipped {skipped}")
 
 
