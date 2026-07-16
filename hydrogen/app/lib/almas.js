@@ -44,7 +44,9 @@ export function toAlmasProduct(node) {
     longevity: node.longevity?.value ?? null,
     sillage: node.sillage?.value ?? null,
     bestFor: parseJSON(node.bestFor?.value, []),
-    description: node.description ?? '',
+    // Shopify's description now carries the full rich detail for Shop/POS;
+    // the site's intro paragraph stays the short blurb metafield.
+    description: node.blurb?.value ?? node.description ?? '',
     image: node.featuredImage?.url ?? '/images/bottle.png',
   };
 }
@@ -66,6 +68,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
     accords: metafield(namespace: "almas", key: "accords") { value }
     notes: metafield(namespace: "almas", key: "notes") { value }
+    blurb: metafield(namespace: "almas", key: "short_description") { value }
   }
 `;
 
@@ -122,6 +125,7 @@ export const PRODUCT_FULL_FRAGMENT = `#graphql
     inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }
     accords: metafield(namespace: "almas", key: "accords") { value }
     notes: metafield(namespace: "almas", key: "notes") { value }
+    blurb: metafield(namespace: "almas", key: "short_description") { value }
     longevity: metafield(namespace: "almas", key: "longevity") { value }
     sillage: metafield(namespace: "almas", key: "sillage") { value }
     bestFor: metafield(namespace: "almas", key: "best_for") { value }

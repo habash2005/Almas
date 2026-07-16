@@ -44,7 +44,15 @@ describe('toProductSetInput', () => {
       {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99', inventoryItem: {sku: 'CREED-AVENTUS-50ML'}},
       {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99', inventoryItem: {sku: 'CREED-AVENTUS-100ML'}},
     ]);
+    // Rich description carries the site's full detail for Shopify surfaces.
+    expect(input.descriptionHtml).toContain('<p>A bold fragrance.</p>');
+    expect(input.descriptionHtml).toContain('<em>Inspired by Creed Aventus</em>');
+    expect(input.descriptionHtml).toContain('<h3>Fragrance Notes</h3>');
+    expect(input.descriptionHtml).toContain('<strong>Top:</strong> Pineapple');
+    expect(input.descriptionHtml).toContain('Fruity — Strong');
+    expect(input.descriptionHtml).toContain('<strong>Longevity:</strong> 8-10 hours');
     const mf = Object.fromEntries(input.metafields.map((m) => [m.key, m]));
+    expect(mf.short_description.value).toBe('A bold fragrance.');
     expect(mf.inspired_by).toEqual({namespace: 'almas', key: 'inspired_by', type: 'single_line_text_field', value: 'Creed Aventus'});
     expect(JSON.parse(mf.accords.value)).toEqual(LEGACY_PRODUCT.accords);
     expect(JSON.parse(mf.notes.value)).toEqual(LEGACY_PRODUCT.notes);

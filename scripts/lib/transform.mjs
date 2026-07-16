@@ -27,11 +27,49 @@ export function skuFor(p, size) {
   return `${slugify(p.inspiredBy || p.name).toUpperCase()}-${size.toUpperCase()}`;
 }
 
+const esc = (s) =>
+  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const strengthLabel = (v) => (v >= 85 ? 'Strong' : v >= 60 ? 'Medium' : 'Soft');
+
+// Rich product description for Shopify surfaces (Shop app, POS, admin,
+// channels) mirroring the detail the website renders from metafields.
+// The site itself keeps showing only the short blurb (almas.short_description
+// metafield) as its intro paragraph.
+export function richDescriptionHtml(p) {
+  const parts = [];
+  if (p.description) parts.push(`<p>${esc(p.description)}</p>`);
+  if (p.inspiredBy) parts.push(`<p><em>Inspired by ${esc(p.inspiredBy)}</em></p>`);
+  if (p.notes && (p.notes.top?.length || p.notes.heart?.length || p.notes.base?.length)) {
+    const rows = [
+      ['Top', p.notes.top],
+      ['Heart', p.notes.heart],
+      ['Base', p.notes.base],
+    ]
+      .filter(([, list]) => list?.length)
+      .map(([label, list]) => `<li><strong>${label}:</strong> ${esc(list.join(', '))}</li>`);
+    parts.push(`<h3>Fragrance Notes</h3><ul>${rows.join('')}</ul>`);
+  }
+  if (p.accords?.length) {
+    const rows = [...p.accords]
+      .sort((a, b) => b.strength - a.strength)
+      .map((a) => `<li>${esc(a.name)} — ${strengthLabel(a.strength)}</li>`);
+    parts.push(`<h3>Scent Profile</h3><ul>${rows.join('')}</ul>`);
+  }
+  const details = [
+    p.longevity && `<li><strong>Longevity:</strong> ${esc(p.longevity)}</li>`,
+    p.sillage && `<li><strong>Sillage:</strong> ${esc(p.sillage)}</li>`,
+    p.bestFor?.length && `<li><strong>Best for:</strong> ${esc(p.bestFor.join(', '))}</li>`,
+  ].filter(Boolean);
+  if (details.length) parts.push(`<h3>Details</h3><ul>${details.join('')}</ul>`);
+  return parts.join('\n');
+}
+
 export function toProductSetInput(p) {
   return {
     handle: slugify(p.name),
     title: p.name,
-    descriptionHtml: `<p>${p.description ?? ''}</p>`,
+    descriptionHtml: richDescriptionHtml(p),
     productType: 'Fragrance',
     vendor: 'ALMAS',
     status: 'ACTIVE',
@@ -47,6 +85,7 @@ export function toProductSetInput(p) {
       inventoryItem: {sku: skuFor(p, size)},
     })),
     metafields: [
+      metafield('short_description', 'multi_line_text_field', p.description),
       metafield('inspired_by', 'single_line_text_field', p.inspiredBy),
       metafield('accords', 'json', p.accords && JSON.stringify(p.accords)),
       metafield('notes', 'json', p.notes && JSON.stringify(p.notes)),
@@ -60,6 +99,7 @@ export function toProductSetInput(p) {
 // One definition per metafield key emitted by toProductSetInput. Storefront access
 // PUBLIC_READ is required for the Hydrogen storefront to read these via the Storefront API.
 export const METAFIELD_DEFINITIONS = [
+  {name: 'Short description', key: 'short_description', type: 'multi_line_text_field'},
   {name: 'Inspired by', key: 'inspired_by', type: 'single_line_text_field'},
   {name: 'Accords', key: 'accords', type: 'json'},
   {name: 'Notes', key: 'notes', type: 'json'},
