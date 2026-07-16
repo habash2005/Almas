@@ -88,103 +88,163 @@ export async function loader({context}) {
   return {products: await loadAllProducts(context)};
 }
 
-/* ── Scoring Logic ── */
+/* ── Scoring Logic ──
+ * All mapping values below are reconciled against the real catalog data
+ * (distinct scentFamily / accord / bestFor / sillage values in Shopify
+ * metafields) — do not add terms that don't exist in the data.
+ */
+
+// Mood → scent families + accord names (both verified against the catalog).
+const MOOD_MAP = {
+  fresh: {
+    families: ['Fresh', 'Citrus', 'Aromatic'],
+    accords: ['Fresh', 'Citrus', 'Aquatic', 'Clean', 'Green', 'Aromatic', 'Mineral'],
+  },
+  bold: {
+    families: ['Woody', 'Oud', 'Spicy'],
+    accords: ['Oud', 'Leather', 'Leathery', 'Smoky', 'Spicy', 'Tobacco', 'Woody'],
+  },
+  romantic: {
+    families: ['Floral', 'Gourmand', 'Oriental'],
+    accords: ['Floral', 'Sweet', 'Fruity', 'Vanilla', 'Powdery', 'Musk', 'Musky', 'Creamy'],
+  },
+  mysterious: {
+    families: ['Oriental', 'Oud', 'Amber'],
+    accords: ['Oud', 'Smoky', 'Amber', 'Earthy', 'Leather', 'Leathery', 'Warm'],
+  },
+  warm: {
+    families: ['Amber', 'Gourmand', 'Woody', 'Oriental'],
+    accords: ['Warm', 'Amber', 'Vanilla', 'Sweet', 'Gourmand', 'Almond', 'Creamy', 'Tobacco'],
+  },
+  energetic: {
+    families: ['Fresh', 'Citrus', 'Aromatic', 'Spicy'],
+    accords: ['Citrus', 'Fresh', 'Fruity', 'Green', 'Aromatic', 'Spicy', 'Aquatic'],
+  },
+};
+
+// Occasion → bestFor values (exact values from the catalog).
+const OCCASION_MAP = {
+  everyday: ['Daily Wear', 'Casual', 'All Seasons', 'Brunch', 'Office'],
+  date: ['Date Night', 'Evening', 'Special Occasions', 'Clubbing'],
+  office: ['Office', 'Daily Wear', 'Casual'],
+  special: ['Special Occasions', 'Evening', 'Date Night', 'Garden Party', 'Clubbing'],
+  outdoor: ['Beach', 'Sport', 'Garden Party', 'Vacation', 'Summer', 'Spring'],
+};
+
+// Catalog sillage strings mapped onto the 1–4 quiz scale.
+const SILLAGE_LEVEL = {
+  'soft': 1,
+  'soft-moderate': 1.5,
+  'moderate': 2,
+  'variable': 2.5,
+  'moderate-strong': 3,
+  'strong': 3.5,
+  'enormous': 4,
+};
+
+function isInStock(product) {
+  return Object.values(product.variantBySize || {}).some(
+    (v) => v?.availableForSale,
+  );
+}
+
+function genderMatches(product, gender) {
+  if (gender === 'surprise' || gender === 'any' || !gender) return true;
+  return product.category === gender || product.category === 'unisex';
+}
+
+function scoreProduct(product, answers) {
+  let score = 0;
+  let maxScore = 0;
+
+  const accordNames = (product.accords || []).map((a) => a.name.toLowerCase());
+
+  // Mood match via scent family + accords (weight: 30)
+  maxScore += 30;
+  const mood = MOOD_MAP[answers.mood];
+  if (mood) {
+    if (mood.families.includes(product.scentFamily)) score += 16;
+    const accordHits = mood.accords.filter((a) =>
+      accordNames.includes(a.toLowerCase()),
+    ).length;
+    score += Math.min(14, accordHits * 5);
+  } else {
+    score += 15;
+  }
+
+  // Occasion match via bestFor (weight: 20)
+  maxScore += 20;
+  const occasionTerms = (OCCASION_MAP[answers.occasion] || []).map((t) =>
+    t.toLowerCase(),
+  );
+  const bestForHits = (product.bestFor || []).filter((bf) =>
+    occasionTerms.includes(bf.toLowerCase()),
+  ).length;
+  if (occasionTerms.length === 0) {
+    score += 10;
+  } else if (bestForHits >= 2) {
+    score += 20;
+  } else if (bestForHits === 1) {
+    score += 14;
+  }
+
+  // Intensity match via sillage, by distance on the 1–4 scale (weight: 15)
+  maxScore += 15;
+  const level = SILLAGE_LEVEL[(product.sillage || '').toLowerCase()];
+  if (level != null && answers.intensity != null) {
+    score += Math.max(0, 15 - Math.abs(level - answers.intensity) * 6);
+  } else {
+    score += 5;
+  }
+
+  // Notes match against top/heart/base notes AND accords (weight: 20)
+  maxScore += 20;
+  const selectedNotes = answers.notes || [];
+  if (selectedNotes.length > 0) {
+    const haystack = [
+      ...(product.notes?.top || []),
+      ...(product.notes?.heart || []),
+      ...(product.notes?.base || []),
+      ...accordNames,
+    ].map((n) => n.toLowerCase());
+
+    const matchCount = selectedNotes.filter((note) => {
+      const q = note.toLowerCase();
+      return haystack.some((pn) => pn.includes(q) || q.includes(pn));
+    }).length;
+
+    score += Math.min(20, Math.round((matchCount / selectedNotes.length) * 20));
+  } else {
+    score += 10;
+  }
+
+  const matchPct = Math.round((score / maxScore) * 100);
+  return {product, score, matchPct: Math.min(matchPct, 98)};
+}
+
 function scoreProducts(products, answers) {
-  return products.map(product => {
-    let score = 0;
-    let maxScore = 0;
+  // Sold-out products are never recommended.
+  const inStock = products.filter(isInStock);
 
-    // Gender match (weight: 30)
-    maxScore += 30;
-    if (answers.gender === 'surprise' || answers.gender === 'any') {
-      score += 30;
-    } else if (answers.gender === 'men' && product.category === 'men') {
-      score += 30;
-    } else if (answers.gender === 'women' && product.category === 'women') {
-      score += 30;
-    } else if (product.category === 'unisex') {
-      score += 20;
-    }
+  // "For Him"/"For Her" is a hard filter (unisex always qualifies) — the
+  // old soft weighting let men's products surface on a For Her path.
+  const pool = inStock.filter((p) => genderMatches(p, answers.gender));
 
-    // Mood match via scent family (weight: 25)
-    maxScore += 25;
-    const moodFamilyMap = {
-      fresh: ['Fresh', 'Citrus', 'Aromatic'],
-      bold: ['Woody', 'Oud', 'Spicy'],
-      romantic: ['Floral', 'Oriental', 'Gourmand'],
-      mysterious: ['Oriental', 'Oud', 'Amber'],
-      warm: ['Amber', 'Gourmand', 'Woody'],
-      energetic: ['Fresh', 'Citrus', 'Aromatic', 'Spicy'],
-    };
-    const preferredFamilies = moodFamilyMap[answers.mood] || [];
-    if (preferredFamilies.includes(product.scentFamily)) {
-      score += 25;
-    } else {
-      score += 5;
-    }
+  const ranked = pool
+    .map((p) => scoreProduct(p, answers))
+    .sort((a, b) => b.score - a.score);
 
-    // Occasion match via bestFor (weight: 20)
-    maxScore += 20;
-    const occasionMap = {
-      everyday: ['Day', 'Everyday', 'Casual', 'Spring', 'Summer'],
-      date: ['Evening', 'Night', 'Date Night', 'Romance', 'Fall', 'Winter'],
-      office: ['Day', 'Office', 'Work', 'Spring', 'Everyday'],
-      special: ['Evening', 'Night', 'Special', 'All Seasons', 'Fall', 'Winter'],
-      outdoor: ['Day', 'Summer', 'Spring', 'Outdoor', 'Fresh'],
-    };
-    const bestForTerms = occasionMap[answers.occasion] || [];
-    const productBestFor = product.bestFor || [];
-    const hasOccasionMatch = productBestFor.some(bf =>
-      bestForTerms.some(t => bf.toLowerCase().includes(t.toLowerCase()))
-    );
-    if (hasOccasionMatch) {
-      score += 20;
-    } else {
-      score += 5;
-    }
+  // Backfill from the remaining in-stock catalog only if the gender pool
+  // can't fill the top 3 — never backfill with sold-out products.
+  if (ranked.length < 3) {
+    const rest = inStock
+      .filter((p) => !genderMatches(p, answers.gender))
+      .map((p) => scoreProduct(p, answers))
+      .sort((a, b) => b.score - a.score);
+    return [...ranked, ...rest].slice(0, 3);
+  }
 
-    // Intensity match via sillage (weight: 10)
-    maxScore += 10;
-    const sillageMap = {
-      1: ['Light', 'Soft', 'Intimate'],
-      2: ['Moderate', 'Medium'],
-      3: ['Strong', 'Moderate-Strong'],
-      4: ['Strong', 'Heavy', 'Projection', 'Statement'],
-    };
-    const preferredSillage = sillageMap[answers.intensity] || [];
-    if (product.sillage && preferredSillage.some(s =>
-      product.sillage.toLowerCase().includes(s.toLowerCase())
-    )) {
-      score += 10;
-    } else {
-      score += 3;
-    }
-
-    // Notes match (weight: 15)
-    maxScore += 15;
-    const selectedNotes = answers.notes || [];
-    if (selectedNotes.length > 0) {
-      const allProductNotes = [
-        ...(product.notes?.top || []),
-        ...(product.notes?.heart || []),
-        ...(product.notes?.base || []),
-      ].map(n => n.toLowerCase());
-
-      const matchCount = selectedNotes.filter(note =>
-        allProductNotes.some(pn => pn.includes(note.toLowerCase()) || note.toLowerCase().includes(pn))
-      ).length;
-
-      score += Math.min(15, Math.round((matchCount / Math.max(selectedNotes.length, 1)) * 15));
-    } else {
-      score += 8;
-    }
-
-    const matchPct = Math.round((score / maxScore) * 100);
-
-    return {product, score, matchPct: Math.min(matchPct, 98)};
-  })
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+  return ranked.slice(0, 3);
 }
 
 function getMatchExplanation(result, answers) {
@@ -203,6 +263,7 @@ function getMatchExplanation(result, answers) {
     ...(p.notes?.top || []),
     ...(p.notes?.heart || []),
     ...(p.notes?.base || []),
+    ...(p.accords || []).map(a => a.name),
   ];
   const matched = selectedNotes.filter(n =>
     allNotes.some(pn => pn.toLowerCase().includes(n.toLowerCase()))
@@ -357,9 +418,14 @@ export default function ScentFinderPage() {
                 key={result.product.id}
                 className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8 p-8 border border-stone-dark/30 hover:border-stone-dark transition-colors"
               >
-                {/* Image placeholder */}
-                <div className="aspect-[3/4] bg-light-gray flex items-center justify-center relative">
-                  <span className="font-serif text-lg text-stone-dark/40">{result.product.name}</span>
+                {/* Product image */}
+                <div className="aspect-[2/3] max-md:w-[240px] max-md:mx-auto bg-light-gray relative overflow-hidden">
+                  <img
+                    src={result.product.image}
+                    alt={result.product.name}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
                   <span className="absolute top-3 left-3 bg-black text-white font-sans text-[9px] tracking-[0.1em] uppercase px-2 py-1">
                     #{index + 1} Match
                   </span>

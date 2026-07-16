@@ -69,7 +69,7 @@ export default function ProductCard({product}) {
     <Link to={`/products/${product.handle}`} className="group no-underline block">
 
       {/* ━━━ IMAGE AREA ━━━ */}
-      <div className="relative overflow-hidden mb-4">
+      <div className="relative overflow-hidden mb-2.5">
 
         {/* Bottle left + Notes right */}
         <div className="aspect-[3/4] flex">
@@ -145,7 +145,7 @@ export default function ProductCard({product}) {
       </div>
 
       {/* ━━━ PRODUCT INFO ━━━ */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
 
         {/* Category */}
         <p className="text-[9px] tracking-[0.2em] uppercase text-[#9A948D] font-sans">
@@ -165,7 +165,7 @@ export default function ProductCard({product}) {
         )}
 
         {/* Accords — compact row of colored dots with names */}
-        <div className="flex flex-wrap gap-x-3 gap-y-1 pt-1">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 pt-0.5">
           {accords.map((a) => (
             <span key={a.name} className="flex items-center gap-1.5">
               <span className="w-[8px] h-[8px] rounded-full shrink-0" style={{backgroundColor: a.color}} />
@@ -176,7 +176,7 @@ export default function ProductCard({product}) {
 
         {/* Fragrance Notes — Top / Heart / Base */}
         {product.notes && (
-          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#ECEAE7]">
+          <div className="grid grid-cols-3 gap-2 pt-1.5 border-t border-[#ECEAE7]">
             <div>
               <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Top</p>
               <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
@@ -199,7 +199,7 @@ export default function ProductCard({product}) {
         )}
 
         {/* Price + Sizes */}
-        <div className="flex items-center justify-between pt-2 border-t border-[#ECEAE7]">
+        <div className="flex items-center justify-between pt-1.5 border-t border-[#ECEAE7]">
           <span className="font-serif text-[18px] text-[#0A0A0A]">{price != null ? `$${price}` : ''}</span>
           <div className="flex gap-1">
             {sizes.map((size) => (
