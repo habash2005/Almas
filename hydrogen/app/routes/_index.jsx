@@ -65,12 +65,16 @@ export async function loader({context}) {
 export default function Homepage() {
   const {products} = useLoaderData();
 
-  // Legacy: badge-based selections. On stores without almas badge tags
-  // (e.g. mock.shop) fall back to slices so the sections still render.
-  let bestSellers = products.filter((p) => p.badge === 'Best Seller').slice(0, 4);
-  if (bestSellers.length === 0) bestSellers = products.slice(0, 4);
+  // Best Sellers reflect REAL sales: the loader queries sortKey BEST_SELLING,
+  // so the first products are Shopify's actual top sellers by orders placed
+  // (updates automatically as orders come in). Sold-out products are skipped
+  // so the section stays shoppable.
+  const purchasable = (p) =>
+    Object.values(p.variantBySize ?? {}).some((v) => v?.availableForSale);
+  const bestSellers = products.filter(purchasable).slice(0, 4);
+  // New Arrivals keep the curated badge with a slice fallback.
   let newArrivals = products.filter((p) => p.badge === 'New').slice(0, 4);
-  if (newArrivals.length === 0) newArrivals = products.slice(4, 8);
+  if (newArrivals.length === 0) newArrivals = products.filter(purchasable).slice(4, 8);
 
   return (
     <>
@@ -198,13 +202,13 @@ export default function Homepage() {
 
       {/* ===== DUAL BANNERS — Row 1 ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-5 md:px-12">
-        {/* Spring Collection */}
+        {/* Summer Collection */}
         <Link to="/shop" className="relative aspect-video overflow-hidden bg-stone cursor-pointer group no-underline">
-          <img src="/images/spring-collection.png" alt="Spring Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <img src="/images/spring-collection.png" alt="Summer Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
             <span className="text-[9px] tracking-[0.15em] uppercase text-white/70 mb-2.5">Limited Edition</span>
-            <h3 className="font-serif text-[26px] font-light mb-1.5">Spring Collection 2026</h3>
+            <h3 className="font-serif text-[26px] font-light mb-1.5">Summer Collection 2026</h3>
             <span className="text-[11px] tracking-[0.1em] uppercase text-white no-underline mt-3 inline-flex items-center gap-2">
               Shop Now &rarr;
             </span>

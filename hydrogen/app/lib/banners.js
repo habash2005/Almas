@@ -121,9 +121,9 @@ export const dualBanners = [
     banners: [
       {
         id: "dual-4a",
-        title: "Spring Edit",
+        title: "Summer Edit",
         subtitle: "Fresh, floral fragrances perfect for the new season",
-        cta: "Shop Spring",
+        cta: "Shop Summer",
         link: "/shop?scentFamily=Fresh",
         image: "/banners/spring-edit.jpg",
         theme: "light",

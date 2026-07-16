@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {SOCIALS} from '~/components/Footer';
 import {Mail, MapPin, Phone, Clock, ArrowRight} from 'lucide-react';
 
 const contactInfo = [
@@ -179,19 +180,16 @@ export default function ContactPage() {
               Follow Us
             </span>
             <div className="flex gap-3">
-              {[
-                {label: 'IG', href: 'https://instagram.com'},
-                {label: 'TK', href: 'https://tiktok.com'},
-                {label: 'FB', href: 'https://facebook.com'},
-              ].map((social) => (
+              {SOCIALS.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-[34px] h-[34px] border border-stone-dark rounded-full flex items-center justify-center no-underline text-black text-xs font-sans transition-all duration-300 hover:bg-black hover:text-white hover:border-black"
+                  aria-label={social.label}
+                  className="w-[34px] h-[34px] border border-stone-dark rounded-full flex items-center justify-center no-underline text-black transition-all duration-300 hover:bg-black hover:text-white hover:border-black"
                 >
-                  {social.label}
+                  {social.icon}
                 </a>
               ))}
             </div>

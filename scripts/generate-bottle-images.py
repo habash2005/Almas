@@ -171,7 +171,7 @@ def render_card(p, rgb, alpha) -> Image.Image:
 def render_square(rgb, alpha, hue) -> Image.Image:
     """1200x1200 thumbnail: tinted bottle centered on warm white, no text."""
     S = 1200
-    img = Image.new("RGBA", (S, S), (247, 245, 242, 255))
+    img = Image.new("RGBA", (S, S), (255, 255, 255, 255))  # pure white: no visible edge on white surfaces
 
     bottle = tinted_bottle(rgb, alpha, hue)
     bottle = bottle.crop(bottle.getbbox())  # drop transparent margins
