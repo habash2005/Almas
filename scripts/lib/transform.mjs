@@ -20,6 +20,13 @@ export const PRICING = {
   '100ml': '69.99',
 };
 
+// SKUs carry the ORIGINAL (inspired-by) scent name so Shopify POS search —
+// which matches SKUs, not tags — finds products by the name used in stores,
+// while the website keeps the alias titles. e.g. CREED-AVENTUS-50ML.
+export function skuFor(p, size) {
+  return `${slugify(p.inspiredBy || p.name).toUpperCase()}-${size.toUpperCase()}`;
+}
+
 export function toProductSetInput(p) {
   return {
     handle: slugify(p.name),
@@ -28,15 +35,16 @@ export function toProductSetInput(p) {
     productType: 'Fragrance',
     vendor: 'ALMAS',
     status: 'ACTIVE',
-    tags: [p.category, p.scentFamily, p.badge].filter(Boolean),
+    // inspiredBy tag aids admin search; site tag logic only reads
+    // category/scent-family/badge values so it is unaffected.
+    tags: [p.category, p.scentFamily, p.badge, p.inspiredBy].filter(Boolean),
     productOptions: [{name: 'Size', values: Object.keys(PRICING).map((name) => ({name}))}],
+    // NOTE: no inventory fields here — stock is owned by set-stock.mjs and
+    // oil-inventory.mjs; the migration must never clobber availability.
     variants: Object.entries(PRICING).map(([size, price]) => ({
       optionValues: [{optionName: 'Size', name: size}],
       price,
-      // Untracked inventory: every size is always purchasable (newly created
-      // variants otherwise default to tracked with 0 stock = "out of stock").
-      inventoryItem: {tracked: false},
-      inventoryPolicy: 'CONTINUE',
+      inventoryItem: {sku: skuFor(p, size)},
     })),
     metafields: [
       metafield('inspired_by', 'single_line_text_field', p.inspiredBy),

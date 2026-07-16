@@ -32,16 +32,17 @@ describe('toProductSetInput', () => {
     expect(input.title).toBe('Midnight Aventus');
     expect(input.vendor).toBe('ALMAS');
     expect(input.status).toBe('ACTIVE');
-    expect(input.tags).toEqual(['men', 'Woody', 'Best Seller']);
+    expect(input.tags).toEqual(['men', 'Woody', 'Best Seller', 'Creed Aventus']);
     // Uniform storewide pricing overrides the per-product legacy prices.
     expect(input.productOptions).toEqual([
       {name: 'Size', values: [{name: '30ml'}, {name: '50ml'}, {name: '100ml'}]},
     ]);
-    const variantDefaults = {inventoryItem: {tracked: false}, inventoryPolicy: 'CONTINUE'};
+    // SKUs carry the inspired-by name for POS search; no inventory fields
+    // (stock is owned by set-stock.mjs / oil-inventory.mjs).
     expect(input.variants).toEqual([
-      {optionValues: [{optionName: 'Size', name: '30ml'}], price: '29.99', ...variantDefaults},
-      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99', ...variantDefaults},
-      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99', ...variantDefaults},
+      {optionValues: [{optionName: 'Size', name: '30ml'}], price: '29.99', inventoryItem: {sku: 'CREED-AVENTUS-30ML'}},
+      {optionValues: [{optionName: 'Size', name: '50ml'}], price: '49.99', inventoryItem: {sku: 'CREED-AVENTUS-50ML'}},
+      {optionValues: [{optionName: 'Size', name: '100ml'}], price: '69.99', inventoryItem: {sku: 'CREED-AVENTUS-100ML'}},
     ]);
     const mf = Object.fromEntries(input.metafields.map((m) => [m.key, m]));
     expect(mf.inspired_by).toEqual({namespace: 'almas', key: 'inspired_by', type: 'single_line_text_field', value: 'Creed Aventus'});
