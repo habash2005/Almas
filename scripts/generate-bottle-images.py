@@ -35,13 +35,13 @@ W, H = 1024, 1536
 PRESERVE = {"midnight-aventus", "sauvage-noir"}  # original AI artwork
 
 FONTS = "/System/Library/Fonts/Supplemental"
-f_notes_hdr = ImageFont.truetype(f"{FONTS}/Arial.ttf", 26)
-f_accord = ImageFont.truetype(f"{FONTS}/Arial Bold.ttf", 34)
-f_strength = ImageFont.truetype(f"{FONTS}/Arial.ttf", 22)
-f_inspired_lbl = ImageFont.truetype(f"{FONTS}/Georgia Italic.ttf", 40)
-f_inspired = ImageFont.truetype(f"{FONTS}/Georgia Bold.ttf", 46)
-f_foot_b = ImageFont.truetype(f"{FONTS}/Arial Bold.ttf", 22)
-f_foot = ImageFont.truetype(f"{FONTS}/Arial.ttf", 19)
+f_notes_hdr = ImageFont.truetype(f"{FONTS}/Arial.ttf", 30)
+f_accord = ImageFont.truetype(f"{FONTS}/Arial Bold.ttf", 40)
+f_strength = ImageFont.truetype(f"{FONTS}/Arial.ttf", 26)
+f_inspired_lbl = ImageFont.truetype(f"{FONTS}/Georgia Italic.ttf", 44)
+f_inspired = ImageFont.truetype(f"{FONTS}/Georgia Bold.ttf", 52)
+f_foot_b = ImageFont.truetype(f"{FONTS}/Arial Bold.ttf", 24)
+f_foot = ImageFont.truetype(f"{FONTS}/Arial.ttf", 21)
 
 GRAY = (154, 148, 141)
 BLACK = (17, 17, 17)
@@ -137,24 +137,26 @@ def render_card(p, rgb, alpha) -> Image.Image:
     dominant = accords[0]["color"] if accords else "#C4A882"
 
     # ── photo block: tinted bottle on the site's light-gray panel ──
-    px0, py0, px1, py1 = 30, 50, 550, 480
+    px0, py0, px1, py1 = 30, 50, 580, 800
     d.rectangle([px0, py0, px1, py1], fill=(245, 243, 240))
     bottle = tinted_bottle(rgb, alpha, hex_to_hue(dominant))
-    bh = int((py1 - py0) * 0.86)
-    bw = int(bottle.width * bh / bottle.height)
+    bottle = bottle.crop(bottle.getbbox())  # drop transparent margins so the fit is real
+    avail_w, avail_h = int((px1 - px0) * 0.90), int((py1 - py0) * 0.90)
+    scale = min(avail_w / bottle.width, avail_h / bottle.height)
+    bw, bh = int(bottle.width * scale), int(bottle.height * scale)
     bottle = bottle.resize((bw, bh), Image.LANCZOS)
     img.paste(bottle, (px0 + ((px1 - px0) - bw) // 2, py0 + ((py1 - py0) - bh) // 2), bottle)
 
     # ── NOTES column ──
-    nx = 580
-    d.text((nx, 160), "N O T E S", font=f_notes_hdr, fill=GRAY)
-    d.line([nx, 200, nx + 68, 200], fill=LIGHT, width=2)
-    y = 225
+    nx = 616
+    d.text((nx, 155), "N O T E S", font=f_notes_hdr, fill=GRAY)
+    d.line([nx, 200, nx + 78, 200], fill=LIGHT, width=2)
+    y = 230
     for a in accords:
         d.text((nx, y), a["name"], font=f_accord, fill=BLACK)
-        d.text((nx, y + 42), strength_label(a["strength"]), font=f_strength, fill=GRAY)
-        d.rounded_rectangle([865, y + 8, 965, y + 40], radius=16, fill=hex_rgb(a["color"]))
-        y += 100
+        d.text((nx, y + 50), strength_label(a["strength"]), font=f_strength, fill=GRAY)
+        d.rounded_rectangle([865, y + 10, 985, y + 48], radius=19, fill=hex_rgb(a["color"]))
+        y += 118
 
     # ── divider + inspired by ──
     d.line([40, 1275, 985, 1275], fill=(232, 230, 227), width=2)
@@ -175,7 +177,7 @@ def render_square(rgb, alpha, hue) -> Image.Image:
 
     bottle = tinted_bottle(rgb, alpha, hue)
     bottle = bottle.crop(bottle.getbbox())  # drop transparent margins
-    bh = int(S * 0.72)
+    bh = int(S * 0.80)
     bw = int(bottle.width * bh / bottle.height)
     bottle = bottle.resize((bw, bh), Image.LANCZOS)
     bx, by = (S - bw) // 2, (S - bh) // 2
