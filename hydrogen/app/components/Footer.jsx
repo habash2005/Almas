@@ -17,8 +17,8 @@ const TikTokIcon = (
 );
 
 export const SOCIALS = [
-  {label: 'Instagram', href: 'https://instagram.com', icon: InstagramIcon},
-  {label: 'TikTok', href: 'https://tiktok.com', icon: TikTokIcon},
+  {label: 'Instagram', href: 'https://instagram.com/almasscent', icon: InstagramIcon},
+  {label: 'TikTok', href: 'https://www.tiktok.com/@almasscent', icon: TikTokIcon},
 ];
 
 export default function Footer() {
