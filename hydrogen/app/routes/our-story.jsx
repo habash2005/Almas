@@ -52,11 +52,11 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 1 — Image Left ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
-        <div className="bg-stone relative overflow-hidden">
+      <section className="grid grid-cols-1 md:grid-cols-2 md:min-h-[70vh]">
+        <div className="bg-stone relative overflow-hidden min-h-[320px] md:min-h-0">
           <img src="/images/lifestyle-spray.png" alt="ALMAS fragrance" className="absolute inset-0 w-full h-full object-cover" />
         </div>
-        <div className="flex flex-col justify-center p-20">
+        <div className="flex flex-col justify-center p-10 md:p-20">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
             The Beginning
@@ -74,8 +74,8 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 2 — Image Right ===== */}
-      <section className="grid grid-cols-2 min-h-[70vh]">
-        <div className="flex flex-col justify-center p-20 bg-light-gray">
+      <section className="grid grid-cols-1 md:grid-cols-2 md:min-h-[70vh]">
+        <div className="flex flex-col justify-center p-10 md:p-20 bg-light-gray">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-warm-gray mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-warm-gray" />
             The Process
@@ -90,7 +90,7 @@ export default function AboutPage() {
             The result is a fragrance that captures the essence, longevity, and sillage of its inspiration, presented in beautifully designed bottles that reflect the elegance within.
           </p>
         </div>
-        <div className="bg-stone relative overflow-hidden">
+        <div className="bg-stone relative overflow-hidden min-h-[320px] md:min-h-0">
           <img src="/images/ingredients.png" alt="Premium fragrance ingredients" className="absolute inset-0 w-full h-full object-cover" />
         </div>
       </section>
@@ -116,11 +116,11 @@ export default function AboutPage() {
             The principles that guide every bottle we create
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-8 max-w-[900px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[900px] mx-auto">
           {values.map((value) => (
             <div
               key={value.title}
-              className="p-10 border border-black/[0.06] bg-white transition-colors duration-300 hover:border-black/[0.15]"
+              className="p-8 md:p-10 border border-black/[0.06] bg-white transition-colors duration-300 hover:border-black/[0.15]"
             >
               <h3 className="font-serif text-2xl font-light mb-4">{value.title}</h3>
               <p className="text-sm leading-[1.8] text-warm-gray">{value.description}</p>
@@ -130,11 +130,11 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EDITORIAL BLOCK 3 — Full Width CTA ===== */}
-      <section className="grid grid-cols-2 min-h-[60vh]">
-        <div className="bg-stone relative overflow-hidden">
+      <section className="grid grid-cols-1 md:grid-cols-2 md:min-h-[60vh]">
+        <div className="bg-stone relative overflow-hidden min-h-[320px] md:min-h-0">
           <img src="/images/hero-bottle.png" alt="ALMAS collection" className="absolute inset-0 w-full h-full object-cover object-center" />
         </div>
-        <div className="flex flex-col justify-center p-20 bg-black text-white">
+        <div className="flex flex-col justify-center p-10 md:p-20 bg-black text-white">
           <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/50 mb-7 flex items-center gap-3">
             <span className="w-8 h-px bg-white/30" />
             140+ Fragrances

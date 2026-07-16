@@ -445,9 +445,15 @@ export default function Cart() {
                         placeholder="Promo code"
                         className="flex-1 px-4 py-3 bg-transparent text-sm outline-none placeholder:text-warm-gray/60"
                       />
+                      {/* NOTE: disabled must not depend on pendingCode — the
+                          onClick state update flushes synchronously (React
+                          discrete event) and would disable the button before
+                          the browser runs the form-submit default action,
+                          cancelling the submit. promoFetcher.state only
+                          changes once the submission has actually started. */}
                       <button
                         type="submit"
-                        disabled={!promoCode.trim() || pendingCode !== null}
+                        disabled={!promoCode.trim() || promoFetcher.state !== 'idle'}
                         onClick={() => setPendingCode(promoCode.trim())}
                         className="px-5 py-3 bg-black text-white text-[10px] tracking-[0.12em] uppercase hover:bg-black/85 transition-colors disabled:opacity-40"
                       >
