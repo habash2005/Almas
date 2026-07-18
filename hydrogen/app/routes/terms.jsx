@@ -94,12 +94,12 @@ export default function TermsPage() {
           </div>
 
           <div>
-            <h2 className="font-serif text-xl md:text-2xl font-light mb-4">6. Returns & Refunds</h2>
+            <h2 className="font-serif text-xl md:text-2xl font-light mb-4">6. Final Sale Policy</h2>
             <p className="text-sm text-warm-gray leading-relaxed mb-4">
-              We accept returns of unused, unopened products in their original packaging within 30 days of delivery. To initiate a return, please contact our customer service team. Return shipping costs may apply for non-defective returns.
+              All sales are final. Due to the personal nature of fragrance products, we do not accept returns or exchanges. Please review your order carefully before completing checkout.
             </p>
             <p className="text-sm text-warm-gray leading-relaxed">
-              Refunds will be processed within 5-7 business days of receiving the returned item and applied to the original payment method. We reserve the right to refuse returns that do not meet our return policy requirements.
+              If your order arrives damaged, defective, or incorrect, contact our customer service team within 7 days of delivery with your order number and photos, and we will arrange a replacement.
             </p>
           </div>
 

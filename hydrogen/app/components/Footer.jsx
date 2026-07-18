@@ -117,11 +117,6 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/faq" className="text-[13px] text-warm-gray no-underline transition-colors duration-300 hover:text-black">
-                Returns
-              </Link>
-            </li>
-            <li>
               <Link to="/contact" className="text-[13px] text-warm-gray no-underline transition-colors duration-300 hover:text-black">
                 Contact Us
               </Link>

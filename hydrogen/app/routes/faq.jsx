@@ -58,27 +58,15 @@ const FAQ_SECTIONS = [
     ],
   },
   {
-    title: 'Returns',
+    title: 'Final Sale Policy',
     questions: [
       {
-        q: 'What is your return policy?',
-        a: 'We offer a 30-day return policy on all unused, unopened products in their original packaging. If you are not satisfied with your purchase, contact us to initiate a return.',
+        q: 'Can I return or exchange my order?',
+        a: 'All sales are final. Because fragrances are personal care products, we do not accept returns or exchanges once an order is placed. Please review your order carefully before checkout — and try our Scent Finder quiz if you need help choosing.',
       },
       {
-        q: 'How do I initiate a return?',
-        a: 'Log into your account and navigate to your order history, or contact our customer service team. We will provide a prepaid return shipping label and instructions.',
-      },
-      {
-        q: 'Can I return a product that has been opened or used?',
-        a: 'We understand that fragrance is personal. If you have lightly tested a product and are not satisfied, please reach out to us. We handle these requests on a case-by-case basis.',
-      },
-      {
-        q: 'When will I receive my refund?',
-        a: 'Refunds are processed within 5-7 business days of receiving your return. The refund will be applied to your original payment method. Please allow an additional 3-5 business days for the refund to appear on your statement.',
-      },
-      {
-        q: 'Can I exchange a product instead of returning it?',
-        a: 'Yes, exchanges are welcome. Contact our team to arrange an exchange for a different size or fragrance. Exchanges are subject to product availability.',
+        q: 'What if my order arrives damaged or incorrect?',
+        a: 'If your order arrives damaged, defective, or incorrect, contact us within 7 days of delivery with photos and your order number, and we will make it right with a replacement.',
       },
     ],
   },
@@ -144,9 +132,9 @@ const FAQ_SECTIONS = [
 
 export const meta = () => {
   return pageMeta({
-    title: 'FAQ \u2014 Ordering, Shipping & Returns',
+    title: 'FAQ \u2014 Ordering, Shipping & Policies',
     description:
-      'Answers to common questions about ALMAS Scent orders, shipping times, returns, and our luxury-inspired fragrances.',
+      'Answers to common questions about ALMAS Scent orders, shipping times, policies, and our luxury-inspired fragrances.',
     path: '/faq',
   });
 };
@@ -198,7 +186,7 @@ export default function FAQPage() {
             Frequently Asked Questions
           </h1>
           <p className="text-warm-gray text-sm max-w-lg mx-auto leading-relaxed">
-            Find answers to common questions about ordering, shipping, returns, subscriptions, and more.
+            Find answers to common questions about ordering, shipping, subscriptions, and more.
           </p>
         </div>
 
