@@ -2,12 +2,17 @@ import {useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {ProductItem} from '~/components/ProductItem';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Products`}];
+  return pageMeta({
+    title: 'All Fragrances',
+    description: 'Every ALMAS Scent luxury-inspired eau de parfum in one place \u2014 30ml, 50ml & 100ml from $29.99.',
+    path: '/collections/all',
+  });
 };
 
 /**

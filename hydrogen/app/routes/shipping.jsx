@@ -1,3 +1,4 @@
+import {pageMeta} from '~/lib/seo';
 import {Link} from 'react-router';
 import {Truck, Globe, Clock, Package} from 'lucide-react';
 
@@ -18,7 +19,12 @@ const INTERNATIONAL_RATES = [
 ];
 
 export const meta = () => {
-  return [{title: 'Shipping Information — ALMAS'}];
+  return pageMeta({
+    title: 'Shipping Information',
+    description:
+      'ALMAS Scent shipping: free US shipping on orders over $100, standard delivery in 5-7 business days, plus express, overnight, and worldwide options.',
+    path: '/shipping',
+  });
 };
 
 export default function ShippingPage() {

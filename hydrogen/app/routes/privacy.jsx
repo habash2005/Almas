@@ -1,5 +1,7 @@
+import {pageMeta} from '~/lib/seo';
+
 export const meta = () => {
-  return [{title: 'Privacy Policy — ALMAS'}];
+  return pageMeta({title: 'Privacy Policy', path: '/privacy'});
 };
 
 export default function PrivacyPage() {

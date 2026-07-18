@@ -1,11 +1,12 @@
 import {useLoaderData} from 'react-router';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
-export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
+export const meta = ({data, params}) => {
+  return pageMeta({title: data?.page?.title ?? 'Page', path: `/pages/${params?.handle ?? ''}`});
 };
 
 /**

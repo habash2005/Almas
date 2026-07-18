@@ -18,6 +18,7 @@ import Toast from '~/components/Toast';
 import {CartUIProvider} from '~/lib/cart';
 import {WishlistProvider} from '~/lib/wishlist';
 import NotFound from '~/components/NotFound';
+import {JsonLd, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD} from '~/lib/seo';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -164,6 +165,8 @@ export function Layout({children}) {
         <link rel="stylesheet" href={tailwindCss}></link>
         <Meta />
         <Links />
+        <JsonLd data={ORGANIZATION_JSON_LD} />
+        <JsonLd data={WEBSITE_JSON_LD} />
       </head>
       <body>
         {children}

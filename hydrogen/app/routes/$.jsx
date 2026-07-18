@@ -1,8 +1,9 @@
 import {data} from 'react-router';
 import NotFound from '~/components/NotFound';
+import {pageMeta} from '~/lib/seo';
 
 export const meta = () => {
-  return [{title: 'Page Not Found — ALMAS'}];
+  return pageMeta({title: 'Page Not Found', path: '/', noindex: true});
 };
 
 /**

@@ -6,6 +6,7 @@ import {
   useLoaderData,
 } from 'react-router';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
+import {pageMeta} from '~/lib/seo';
 
 export function shouldRevalidate() {
   return true;
@@ -15,7 +16,7 @@ export function shouldRevalidate() {
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'My Account — ALMAS'}];
+  return pageMeta({title: 'My Account', path: '/account', noindex: true});
 };
 
 /**

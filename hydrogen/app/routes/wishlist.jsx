@@ -2,12 +2,13 @@ import {Link} from 'react-router';
 import {Heart, ArrowRight} from 'lucide-react';
 import {useWishlist} from '~/lib/wishlist';
 import ProductCard from '~/components/ProductCard';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'ALMAS — Wishlist'}];
+  return pageMeta({title: 'Wishlist', path: '/wishlist', noindex: true});
 };
 
 export default function WishlistPage() {

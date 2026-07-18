@@ -2,6 +2,7 @@ import {useState, useEffect, useMemo} from 'react';
 import {useLoaderData, useParams, useSearchParams} from 'react-router';
 import ProductCard from '~/components/ProductCard';
 import {loadAllProducts} from '~/lib/almas';
+import {pageMeta} from '~/lib/seo';
 
 const CATEGORIES = [
   {label: 'All', value: 'all'},
@@ -31,8 +32,35 @@ const categoryTitles = {
   unisex: 'Unisex',
 };
 
-export const meta = () => {
-  return [{title: 'Shop — ALMAS'}];
+const SHOP_SEO = {
+  all: {
+    title: 'Shop Luxury-Inspired Perfumes',
+    description:
+      'Browse the full ALMAS Scent collection: eau de parfum inspired by iconic designer and niche fragrances, in 30ml, 50ml & 100ml from $29.99.',
+  },
+  men: {
+    title: "Men's Luxury-Inspired Fragrances",
+    description:
+      "Men's eau de parfum by ALMAS Scent — bold woody, oud, and fresh scents inspired by the most coveted designer fragrances for him.",
+  },
+  women: {
+    title: "Women's Luxury-Inspired Perfumes",
+    description:
+      "Women's eau de parfum by ALMAS Scent — floral, sweet, and amber scents inspired by the most coveted designer perfumes for her.",
+  },
+  unisex: {
+    title: 'Unisex Luxury-Inspired Fragrances',
+    description:
+      'Unisex eau de parfum by ALMAS Scent — versatile luxury-inspired scents crafted to be worn by anyone, any season.',
+  },
+};
+
+export const meta = ({params}) => {
+  const key = params.category && SHOP_SEO[params.category] ? params.category : 'all';
+  return pageMeta({
+    ...SHOP_SEO[key],
+    path: key === 'all' ? '/shop' : `/shop/${key}`,
+  });
 };
 
 export async function loader({context}) {

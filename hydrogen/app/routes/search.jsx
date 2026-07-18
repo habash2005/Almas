@@ -1,10 +1,11 @@
 import {useLoaderData, Link} from 'react-router';
 import ProductCard from '~/components/ProductCard';
 import {toAlmasProduct, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
+import {pageMeta} from '~/lib/seo';
 
 export const meta = ({data}) => {
   const q = data?.q?.trim();
-  return [{title: q ? `Search: ${q} — ALMAS` : 'Search — ALMAS'}];
+  return pageMeta({title: q ? `Search: ${q}` : 'Search', path: '/search', noindex: true});
 };
 
 export async function loader({request, context}) {

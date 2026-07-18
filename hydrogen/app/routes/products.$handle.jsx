@@ -3,6 +3,7 @@ import {useLoaderData, Link} from 'react-router';
 import {Analytics} from '@shopify/hydrogen';
 import {Droplets, Heart as HeartIcon, Wind, Clock, Sun, Minus, Plus} from 'lucide-react';
 import {toAlmasProduct, PRODUCT_FULL_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
+import {pageMeta, productJsonLd, breadcrumbJsonLd, JsonLd} from '~/lib/seo';
 import ProductCard from '~/components/ProductCard';
 import AccordBar from '~/components/AccordBar';
 import ScentRadar from '~/components/ScentRadar';
@@ -22,18 +23,17 @@ import {
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [
-    {title: `ALMAS — ${data?.product?.name ?? 'Fragrance'}`},
-    ...(data?.product?.handle
-      ? [
-          {
-            tagName: 'link',
-            rel: 'canonical',
-            href: `/products/${data.product.handle}`,
-          },
-        ]
-      : []),
-  ];
+  const p = data?.product;
+  if (!p) return pageMeta({title: 'Fragrance', path: '/shop'});
+  const blurb = (p.description ?? '').trim();
+  return pageMeta({
+    title: p.inspiredBy ? `${p.name} — Inspired by ${p.inspiredBy}` : p.name,
+    description:
+      blurb.length > 155 ? `${blurb.slice(0, 152).trimEnd()}…` : blurb || undefined,
+    path: `/products/${p.handle}`,
+    image: p.image?.startsWith('http') ? p.image : undefined,
+    type: 'product',
+  });
 };
 
 /**
@@ -312,6 +312,14 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={productJsonLd(product)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          {name: 'Home', path: '/'},
+          {name: 'Shop', path: '/shop'},
+          {name: product.name, path: `/products/${product.handle}`},
+        ])}
+      />
       {/* Breadcrumb */}
       <div className="px-6 md:px-12 py-4 border-b border-stone-dark/20">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase font-sans text-warm-gray">

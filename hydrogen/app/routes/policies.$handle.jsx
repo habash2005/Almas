@@ -1,10 +1,11 @@
 import {Link, useLoaderData} from 'react-router';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
-export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.policy.title ?? ''}`}];
+export const meta = ({data, params}) => {
+  return pageMeta({title: data?.policy?.title ?? 'Policy', path: `/policies/${params?.handle ?? ''}`});
 };
 
 /**

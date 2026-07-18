@@ -1,3 +1,4 @@
+import {pageMeta} from '~/lib/seo';
 import {useState, useMemo} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import {AddToCartButton} from '~/components/AddToCartButton';
@@ -78,7 +79,12 @@ const TOTAL_STEPS = STEPS.length;
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Scent Finder — ALMAS'}];
+  return pageMeta({
+    title: 'Scent Finder Quiz \u2014 Find Your Perfect Fragrance',
+    description:
+      'Take the ALMAS Scent finder quiz: answer a few questions and get matched with the luxury-inspired perfume made for your taste.',
+    path: '/scent-finder',
+  });
 };
 
 /**

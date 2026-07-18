@@ -4,12 +4,13 @@ import {CartForm} from '@shopify/hydrogen';
 import {X, Minus, Plus, ShoppingBag, ArrowRight, Tag} from 'lucide-react';
 import {useAlmasCart, toAlmasCartItem} from '~/lib/cart';
 import {useToast} from '~/components/ToastContext';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return pageMeta({title: 'Your Bag', path: '/cart', noindex: true});
 };
 
 /**

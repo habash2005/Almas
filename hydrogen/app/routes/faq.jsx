@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {ChevronDown} from 'lucide-react';
+import {pageMeta, faqJsonLd, JsonLd} from '~/lib/seo';
 
 const FAQ_SECTIONS = [
   {
@@ -142,7 +143,12 @@ const FAQ_SECTIONS = [
 ];
 
 export const meta = () => {
-  return [{title: 'FAQ — ALMAS'}];
+  return pageMeta({
+    title: 'FAQ \u2014 Ordering, Shipping & Returns',
+    description:
+      'Answers to common questions about ALMAS Scent orders, shipping times, returns, and our luxury-inspired fragrances.',
+    path: '/faq',
+  });
 };
 
 function AccordionItem({question, answer}) {
@@ -179,6 +185,7 @@ function AccordionItem({question, answer}) {
 export default function FAQPage() {
   return (
     <section className="py-16 md:py-24 px-6 md:px-12">
+      <JsonLd data={faqJsonLd(FAQ_SECTIONS.flatMap((s) => s.questions))} />
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

@@ -3,12 +3,18 @@ import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  const c = data?.collection;
+  return pageMeta({
+    title: c ? `${c.title} Collection` : 'Collection',
+    description: c?.description || undefined,
+    path: c ? `/collections/${c.handle}` : '/collections',
+  });
 };
 
 /**

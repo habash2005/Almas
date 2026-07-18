@@ -1,3 +1,4 @@
+import {pageMeta} from '~/lib/seo';
 import {useState} from 'react';
 import {useLoaderData, Link} from 'react-router';
 import {ArrowRight, Check, Gift, ChevronDown} from 'lucide-react';
@@ -68,7 +69,12 @@ const faqs = [
 ];
 
 export const meta = () => {
-  return [{title: 'ALMAS Refill Club — ALMAS'}];
+  return pageMeta({
+    title: 'Refill Club \u2014 Fragrance Subscription',
+    description:
+      'Join the ALMAS Refill Club: your favorite luxury-inspired fragrance delivered every 3 months at 15% off, with free shipping always.',
+    path: '/subscribe',
+  });
 };
 
 export async function loader({context}) {

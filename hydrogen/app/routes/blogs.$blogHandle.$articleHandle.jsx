@@ -1,12 +1,17 @@
 import {useLoaderData} from 'react-router';
 import {Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {pageMeta} from '~/lib/seo';
 
 /**
  * @type {Route.MetaFunction}
  */
-export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.article.title ?? ''} article`}];
+export const meta = ({data, params}) => {
+  return pageMeta({
+    title: data?.article?.title ?? 'Article',
+    path: `/blogs/${params?.blogHandle ?? ''}/${params?.articleHandle ?? ''}`,
+    type: 'article',
+  });
 };
 
 /**

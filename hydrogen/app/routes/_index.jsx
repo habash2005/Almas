@@ -2,6 +2,7 @@ import {useLoaderData, Link} from 'react-router';
 import {ArrowRight, Check} from 'lucide-react';
 import ProductCard from '~/components/ProductCard';
 import {toAlmasProduct, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
+import {pageMeta} from '~/lib/seo';
 
 const marqueeItems = [
   'Free Shipping Over $100',
@@ -54,7 +55,12 @@ const scentNotes = [
 ];
 
 export const meta = () => {
-  return [{title: 'ALMAS — Luxury Inspired Fragrances'}];
+  return pageMeta({
+    fullTitle: 'ALMAS Scent — Luxury-Inspired Perfumes & Fragrances | Official Site',
+    description:
+      'Shop ALMAS Scent: luxury-inspired perfumes capturing the essence of the world’s most coveted designer fragrances. 30ml, 50ml & 100ml eau de parfum from $29.99, with free US shipping over $100.',
+    path: '/',
+  });
 };
 
 export async function loader({context}) {

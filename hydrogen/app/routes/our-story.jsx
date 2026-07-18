@@ -1,3 +1,4 @@
+import {pageMeta} from '~/lib/seo';
 import {Link} from 'react-router';
 import {ArrowRight} from 'lucide-react';
 
@@ -25,7 +26,12 @@ const values = [
 ];
 
 export const meta = () => {
-  return [{title: 'Our Story — ALMAS'}];
+  return pageMeta({
+    title: 'Our Story',
+    description:
+      'The story of ALMAS Scent: why we craft luxury-inspired eau de parfum that captures the essence of the world\u2019s most coveted fragrances at a fair price.',
+    path: '/our-story',
+  });
 };
 
 export default function AboutPage() {

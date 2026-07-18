@@ -1,5 +1,7 @@
+import {pageMeta} from '~/lib/seo';
+
 export const meta = () => {
-  return [{title: 'Terms & Conditions — ALMAS'}];
+  return pageMeta({title: 'Terms & Conditions', path: '/terms'});
 };
 
 export default function TermsPage() {

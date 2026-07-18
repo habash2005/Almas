@@ -1,3 +1,4 @@
+import {pageMeta} from '~/lib/seo';
 import {useState} from 'react';
 import {SOCIALS} from '~/components/Footer';
 import {Mail, MapPin, Phone, Clock, ArrowRight} from 'lucide-react';
@@ -30,7 +31,12 @@ const contactInfo = [
 ];
 
 export const meta = () => {
-  return [{title: 'Contact Us — ALMAS'}];
+  return pageMeta({
+    title: 'Contact Us',
+    description:
+      'Questions about your order or our luxury-inspired perfumes? Contact the ALMAS Scent team — we respond within 1 business day.',
+    path: '/contact',
+  });
 };
 
 export default function ContactPage() {
