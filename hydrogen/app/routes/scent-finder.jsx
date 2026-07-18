@@ -410,72 +410,52 @@ export default function ScentFinderPage() {
             </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
             {results.map((result, index) => {
-              // Legacy hardcoded the 50ml size; fall back to the first
-              // available size when variants use other titles (mock.shop).
               const size = result.product.prices?.['50ml'] != null
                 ? '50ml'
                 : Object.keys(result.product.prices || {})[0];
               const price = result.product.prices?.[size];
               const variant = result.product.variantBySize?.[size];
               return (
-              <div
-                key={result.product.id}
-                className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8 p-8 border border-stone-dark/30 hover:border-stone-dark transition-colors"
-              >
-                {/* Product image */}
-                <div className="aspect-[2/3] max-md:w-[240px] max-md:mx-auto bg-light-gray relative overflow-hidden">
-                  <img
-                    src={result.product.image}
-                    alt={result.product.name}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    className="absolute inset-0 w-full h-full object-contain"
-                  />
-                  <span className="absolute top-3 left-3 bg-black text-white font-sans text-[9px] tracking-[0.1em] uppercase px-2 py-1">
-                    #{index + 1} Match
-                  </span>
-                </div>
+              <div key={result.product.id} className="flex flex-col items-center text-center">
+                {/* Match badge */}
+                <span className="inline-flex items-center gap-2 bg-light-gray rounded-full px-5 py-2 font-sans text-[13px] mb-5">
+                  <span aria-hidden="true">&#10022;</span> {result.matchPct}% Match
+                </span>
 
-                {/* Info */}
-                <div className="flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-sans text-[11px] tracking-[0.15em] uppercase text-warm-gray">
+                {/* Why it matches */}
+                <p className="font-sans text-sm text-warm-gray leading-relaxed mb-5 min-h-[60px]">
+                  {getMatchExplanation(result, answers)}
+                </p>
+
+                {/* Product card */}
+                <Link
+                  to={`/products/${result.product.handle}`}
+                  className="w-full border border-stone-dark/30 hover:border-stone-dark transition-colors no-underline text-left"
+                >
+                  <div className="aspect-square bg-white relative overflow-hidden">
+                    <img
+                      src={result.product.image}
+                      alt={result.product.name}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      className="absolute inset-0 w-full h-full object-contain p-4"
+                    />
+                  </div>
+                  <div className="p-5 border-t border-stone-dark/20">
+                    <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-warm-gray mb-2">
                       {result.product.category === 'men' ? 'For Him' : result.product.category === 'women' ? 'For Her' : 'Unisex'}
-                    </span>
-                    <span className="font-sans text-[11px] tracking-[0.1em] text-warm-gray">|</span>
-                    <span className="font-sans text-[11px] tracking-[0.1em] text-warm-gray">
-                      {result.product.scentFamily}
-                    </span>
-                  </div>
-
-                  <h3 className="font-serif text-2xl font-light mb-1">{result.product.name}</h3>
-                  <p className="font-sans text-sm text-warm-gray italic mb-3">
-                    Inspired by {result.product.inspiredBy}
-                  </p>
-
-                  {/* Match percentage */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="flex-1 max-w-[200px] h-2 bg-light-gray rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-black rounded-full transition-all duration-700"
-                        style={{width: `${result.matchPct}%`}}
-                      />
-                    </div>
-                    <span className="font-sans text-sm font-medium">{result.matchPct}% match</span>
-                  </div>
-
-                  <p className="font-sans text-sm text-warm-gray leading-relaxed mb-6">
-                    {getMatchExplanation(result, answers)}
-                  </p>
-
-                  <div className="flex items-center gap-4">
-                    <span className="font-sans text-lg">${price}</span>
+                    </p>
+                    <h3 className="font-serif text-xl font-light text-black mb-1">{result.product.name}</h3>
+                    <p className="font-sans text-sm text-warm-gray mb-3">
+                      Inspired by <span className="text-black">{result.product.inspiredBy}</span>
+                    </p>
+                    <p className="font-serif text-lg text-black mb-4">${price}</p>
                     <AddToCartButton
                       lines={variant?.availableForSale ? [toCartLine(variant, result.product)] : []}
                       disabled={!variant?.availableForSale}
                       onClick={() => addToast(`${result.product.name} added to bag`, 'success')}
-                      className={`px-6 py-2.5 text-white text-[11px] tracking-[0.15em] uppercase font-sans transition-colors ${
+                      className={`w-full px-6 py-2.5 text-white text-[11px] tracking-[0.15em] uppercase font-sans transition-colors ${
                         variant?.availableForSale
                           ? 'bg-black hover:bg-black/85'
                           : 'bg-warm-gray cursor-not-allowed'
@@ -483,27 +463,27 @@ export default function ScentFinderPage() {
                     >
                       {variant?.availableForSale ? 'Add to Bag' : 'Sold Out'}
                     </AddToCartButton>
-                    <Link
-                      to={`/products/${result.product.handle}`}
-                      className="px-6 py-2.5 border border-black text-black text-[11px] tracking-[0.15em] uppercase font-sans hover:bg-black hover:text-white transition-colors"
-                    >
-                      View Details
-                    </Link>
                   </div>
-                </div>
+                </Link>
               </div>
               );
             })}
           </div>
 
-          {/* Start Again */}
-          <div className="text-center mt-12">
+          {/* Retake / browse */}
+          <div className="flex items-center justify-center gap-6 mt-14">
             <button
               onClick={startOver}
-              className="px-8 py-3 border border-stone-dark text-black text-[11px] tracking-[0.15em] uppercase font-sans hover:border-black transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-sans hover:bg-black/85 transition-colors"
             >
-              Start Again
+              &#8635; Retake Quiz
             </button>
+            <Link
+              to="/shop"
+              className="font-sans text-sm text-black underline underline-offset-4 hover:opacity-60 transition-opacity"
+            >
+              Browse All Fragrances
+            </Link>
           </div>
         </div>
       </div>
