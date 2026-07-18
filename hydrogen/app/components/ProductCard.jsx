@@ -15,7 +15,9 @@ export default function ProductCard({product}) {
   const wishlisted = isInWishlist(product.id);
   const price = product.prices?.[selectedSize];
   const variant = product.variantBySize?.[selectedSize];
-  const accords = (product.accords || []).slice(0, 4);
+  const accords = [...(product.accords || [])]
+    .sort((a, b) => (b.strength || 0) - (a.strength || 0))
+    .slice(0, 4);
 
   // Derive hue rotation from dominant accord for liquid tint
   const dominantColor =
@@ -80,7 +82,7 @@ export default function ProductCard({product}) {
       {/* ━━━ IMAGE: bottle + slim accord pills, vertically centered ━━━ */}
       <div className="relative overflow-hidden bg-[#FAF9F7]">
         <div className="aspect-[4/5] flex items-center">
-          <div className="w-[58%] h-full flex items-center justify-center py-8 pl-4">
+          <div className="w-[60%] h-full flex items-center justify-center py-3 pl-3">
             <img
               src="/images/bottle-transparent.png"
               alt={product.name}
@@ -88,7 +90,7 @@ export default function ProductCard({product}) {
               style={{filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)`}}
             />
           </div>
-          <div className="w-[42%] flex flex-col gap-2 items-start pr-5 pl-1">
+          <div className="w-[40%] flex flex-col gap-2 items-start pr-5 pl-1">
             {accords.map((a) => (
               <span
                 key={a.name}
