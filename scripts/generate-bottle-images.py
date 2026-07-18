@@ -139,7 +139,6 @@ def render_card(p, rgb, alpha) -> Image.Image:
 
     # ── photo block: tinted bottle on the site's light-gray panel ──
     px0, py0, px1, py1 = 30, 50, 580, 800
-    d.rectangle([px0, py0, px1, py1], fill=(245, 243, 240))
     bottle = tinted_bottle(rgb, alpha, hex_to_hue(dominant))
     bottle = bottle.crop(bottle.getbbox())  # drop transparent margins so the fit is real
     avail_w, avail_h = int((px1 - px0) * 0.90), int((py1 - py0) * 0.90)
@@ -185,7 +184,7 @@ def render_square(p, rgb, alpha, hue) -> Image.Image:
     "Inspired by <original>" caption beneath (text only — no third-party
     imagery)."""
     S = 1200
-    img = Image.new("RGBA", (S, S), (255, 255, 255, 255))  # pure white: no visible edge on white surfaces
+    img = Image.new("RGBA", (S, S), (255, 255, 255, 0))  # transparent: renders on any surface
 
     bottle = tinted_bottle(rgb, alpha, hue)
     bottle = bottle.crop(bottle.getbbox())  # drop transparent margins
@@ -204,7 +203,7 @@ def render_square(p, rgb, alpha, hue) -> Image.Image:
     shadow = shadow.filter(ImageFilter.GaussianBlur(16))
     img.alpha_composite(shadow)
     img.alpha_composite(bottle, (bx, by))
-    out = img.convert("RGB")
+    out = img
 
     if has_caption:
         d = ImageDraw.Draw(out)
