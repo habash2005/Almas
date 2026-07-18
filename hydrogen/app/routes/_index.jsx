@@ -116,10 +116,10 @@ export default function Homepage() {
             </Link>
           </div>
         </div>
-        <div className="flex-1 hidden md:flex justify-center items-center relative z-[1]">
+        <div className="flex-1 flex justify-center items-center relative z-[1] mt-10 md:mt-0">
           <div className="relative">
-            <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 w-[200px] h-10 bg-black/[0.04] rounded-full blur-[20px]" />
-            <img src="/images/bottle-transparent.png" alt="ALMAS Eau de Parfum" className="w-[280px] lg:w-[360px] h-auto object-contain relative z-[1]" />
+            <div className="absolute -bottom-[40px] md:-bottom-[60px] left-1/2 -translate-x-1/2 w-[150px] md:w-[200px] h-10 bg-black/[0.04] rounded-full blur-[20px]" />
+            <img src="/images/bottle-transparent.png" alt="ALMAS Eau de Parfum" className="w-[200px] md:w-[280px] lg:w-[360px] h-auto object-contain relative z-[1]" />
           </div>
         </div>
       </section>
