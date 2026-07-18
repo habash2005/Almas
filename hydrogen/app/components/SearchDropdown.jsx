@@ -114,8 +114,17 @@ export default function SearchDropdown({isOpen, onClose}) {
                   onClick={() => handleResultClick(product.handle)}
                   className="w-full flex items-center gap-4 py-3.5 px-2 hover:bg-light-gray transition-colors text-left border-b border-black/[0.04] last:border-0"
                 >
-                  <div className="w-12 h-14 bg-light-gray flex items-center justify-center flex-shrink-0">
-                    <span className="font-serif text-[10px] text-stone-dark">ALMAS</span>
+                  <div className="w-12 h-14 bg-light-gray flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {product.image ? (
+                      <img
+                        src={`${product.image}${product.image.includes('?') ? '&' : '?'}width=96`}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span className="font-serif text-[10px] text-stone-dark">ALMAS</span>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-serif text-[15px] text-black truncate">{product.name}</p>
@@ -123,9 +132,6 @@ export default function SearchDropdown({isOpen, onClose}) {
                       Inspired by {product.inspiredBy}
                     </p>
                   </div>
-                  <span className="font-sans text-[13px] text-black flex-shrink-0">
-                    ${product.prices['50ml'] ?? Object.values(product.prices ?? {})[0]}
-                  </span>
                 </button>
               ))}
             </div>
