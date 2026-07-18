@@ -17,7 +17,7 @@ export default function ProductCard({product}) {
   const variant = product.variantBySize?.[selectedSize];
   const accords = [...(product.accords || [])]
     .sort((a, b) => (b.strength || 0) - (a.strength || 0))
-    .slice(0, 4);
+    .slice(0, 5);
 
   // Derive hue rotation from dominant accord for liquid tint
   const dominantColor =
@@ -82,18 +82,19 @@ export default function ProductCard({product}) {
       {/* ━━━ IMAGE: bottle + slim accord pills, vertically centered ━━━ */}
       <div className="relative overflow-hidden bg-[#FAF9F7]">
         <div className="aspect-[4/5] flex items-center">
-          <div className="w-[60%] h-full flex items-center justify-center py-1 pl-2">
+          <div className="w-[60%] h-full flex items-center justify-center pl-2">
             <img
               src="/images/bottle-transparent.png"
               alt={product.name}
-              className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.05]"
+              className="h-full w-auto object-contain scale-[1.14] transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.18]"
               style={{filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)`}}
             />
           </div>
           <div className="w-[40%] flex flex-col gap-2 items-end pr-4 pl-1">
             {accords.map((a, i) => {
-              const max = accords[0]?.strength || 100;
-              const pct = 68 + Math.round(((a.strength || 60) / max) * 32);
+              // Rank-stepped widths: a clear staircase from strongest to
+              // weakest (strengths are too close together to read visually).
+              const pct = 100 - i * 11;
               return (
                 <span
                   key={a.name}
