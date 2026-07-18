@@ -119,6 +119,14 @@ export default function ProductCard({product}) {
           </div>
         </div>
 
+        {/* Inspired-by caption at the base of the image, like the brand imagery */}
+        {product.inspiredBy && (
+          <div className="absolute bottom-0 inset-x-0 pb-3 px-4 text-center pointer-events-none">
+            <p className="font-serif italic text-[11px] text-[#9A948D] leading-tight">Inspired by</p>
+            <p className="font-serif text-[14px] font-medium text-[#0A0A0A] truncate">{product.inspiredBy}</p>
+          </div>
+        )}
+
         {product.badge && (
           <span className="absolute top-4 left-4 text-[9px] tracking-[0.14em] uppercase bg-black text-white px-3 py-1 font-sans">
             {product.badge}
@@ -154,11 +162,6 @@ export default function ProductCard({product}) {
           {product.name}
         </h3>
 
-        {product.inspiredBy && (
-          <p className="text-[12px] text-[#9A948D] font-sans mt-0.5 line-clamp-1">
-            Inspired by <span className="text-[#0A0A0A]">{product.inspiredBy}</span>
-          </p>
-        )}
 
         <div className="flex items-center justify-between mt-3.5 pt-3.5 border-t border-black/[0.06]">
           <span className="font-serif text-[19px] text-[#0A0A0A]">
