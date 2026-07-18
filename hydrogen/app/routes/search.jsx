@@ -1,6 +1,7 @@
 import {useLoaderData, Link} from 'react-router';
 import ProductCard from '~/components/ProductCard';
-import {toAlmasProduct, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
+import {loadAllProducts} from '~/lib/almas';
+import {searchProducts} from '~/lib/fuzzySearch';
 import {pageMeta} from '~/lib/seo';
 
 export const meta = ({data}) => {
@@ -12,21 +13,11 @@ export async function loader({request, context}) {
   const url = new URL(request.url);
   const q = url.searchParams.get('q') ?? '';
   if (!q.trim()) return {q, results: []};
-  const {search} = await context.storefront.query(SEARCH_QUERY, {
-    variables: {q},
-  });
-  return {q, results: search.nodes.map(toAlmasProduct)};
+  // Typo-tolerant in-process ranking over the whole catalog — Shopify's
+  // search API can't fuzzy-match ("backarat" must still find Baccarat).
+  const all = await loadAllProducts(context);
+  return {q, results: searchProducts(all, q)};
 }
-
-const SEARCH_QUERY = `#graphql
-  ${PRODUCT_CARD_FRAGMENT}
-  query SearchProducts($q: String!, $country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    search(query: $q, first: 50, types: PRODUCT) {
-      nodes { ...on Product { ...ProductCard } }
-    }
-  }
-`;
 
 export default function SearchResultsPage() {
   const {q: query, results} = useLoaderData();
