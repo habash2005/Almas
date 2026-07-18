@@ -5,7 +5,7 @@ import {Droplets, Heart as HeartIcon, Wind, Clock, Sun, Minus, Plus} from 'lucid
 import {toAlmasProduct, PRODUCT_FULL_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
 import {pageMeta, productJsonLd, breadcrumbJsonLd, JsonLd} from '~/lib/seo';
 import {adminGql} from '~/lib/adminApi';
-import ProductCard from '~/components/ProductCard';
+import ProductCard, {LIQUID_MASK, lighten} from '~/components/ProductCard';
 import AccordBar from '~/components/AccordBar';
 import ScentRadar from '~/components/ScentRadar';
 import {AddToCartButton} from '~/components/AddToCartButton';
@@ -997,26 +997,23 @@ function ProductBottleImage({product, bottleShadow}) {
     ? accords.reduce((a, b) => (a.strength > b.strength ? a : b)).color
     : '#C4A882';
 
-  const h = dominantColor.replace('#', '');
-  const r = parseInt(h.substring(0, 2), 16) / 255;
-  const g = parseInt(h.substring(2, 4), 16) / 255;
-  const b = parseInt(h.substring(4, 6), 16) / 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let hue = 0;
-  if (max !== min) {
-    const d = max - min;
-    if (max === r) hue = ((g - b) / d + (g < b ? 6 : 0)) * 60;
-    else if (max === g) hue = ((b - r) / d + 2) * 60;
-    else hue = ((r - g) / d + 4) * 60;
-  }
-
   return (
-    <img
-      src="/images/bottle-transparent.png"
-      alt={product.name}
-      className="w-full h-auto object-contain"
-      style={{filter: `drop-shadow(0 12px 30px ${bottleShadow}) sepia(0.4) hue-rotate(${Math.round(hue)}deg) saturate(0.8)`}}
-    />
+    <div className="relative w-full">
+      <img
+        src="/images/bottle-transparent.png"
+        alt={product.name}
+        className="w-full h-auto object-contain"
+        style={{filter: `drop-shadow(0 12px 30px ${bottleShadow})`}}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{backgroundColor: dominantColor, mixBlendMode: 'color', opacity: 0.6, ...LIQUID_MASK}}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{backgroundColor: lighten(dominantColor, 0.35), mixBlendMode: 'multiply', opacity: 0.65, ...LIQUID_MASK}}
+      />
+    </div>
   );
 }
 

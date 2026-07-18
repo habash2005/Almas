@@ -6,6 +6,24 @@ import {useToast} from '~/components/ToastContext';
 import {useWishlist} from '~/lib/wishlist';
 import {toCartLine} from '~/lib/cart';
 
+export const LIQUID_MASK = {
+  WebkitMaskImage: 'url(/images/bottle-liquid-mask.png)',
+  WebkitMaskSize: 'contain',
+  WebkitMaskRepeat: 'no-repeat',
+  WebkitMaskPosition: 'center',
+  maskImage: 'url(/images/bottle-liquid-mask.png)',
+  maskSize: 'contain',
+  maskRepeat: 'no-repeat',
+  maskPosition: 'center',
+};
+
+/** Mixes a hex color toward white by `amt` (0-1). */
+export function lighten(hex, amt) {
+  const h = hex.replace('#', '');
+  const c = [0, 2, 4].map((i) => parseInt(h.substring(i, i + 2), 16));
+  return `rgb(${c.map((v) => Math.round(v + (255 - v) * amt)).join(',')})`;
+}
+
 export default function ProductCard({product}) {
   const sizes = Object.keys(product.prices || {});
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
@@ -69,26 +87,17 @@ export default function ProductCard({product}) {
                 alt={product.name}
                 className="absolute inset-0 h-full w-full object-contain"
               />
-              {/* Liquid tint: the strongest accord's actual color, masked to
-                  the bottle silhouette and multiplied over the glass. */}
+              {/* Liquid tint (audited): two masked layers — 'color' sets the
+                  accord hue, 'multiply' with a lightened copy adds depth.
+                  bottle-liquid-mask.png = bottle alpha eroded off the glass
+                  walls and clipped to the fill band. */}
               <div
                 className="absolute inset-0 pointer-events-none"
-                style={{
-                  // bottle-liquid-mask.png is the bottle alpha eroded away
-                  // from the glass walls and clipped to the liquid band, so
-                  // only the juice itself takes the accord color.
-                  backgroundColor: dominantColor,
-                  WebkitMaskImage: 'url(/images/bottle-liquid-mask.png)',
-                  WebkitMaskSize: 'contain',
-                  WebkitMaskRepeat: 'no-repeat',
-                  WebkitMaskPosition: 'center',
-                  maskImage: 'url(/images/bottle-liquid-mask.png)',
-                  maskSize: 'contain',
-                  maskRepeat: 'no-repeat',
-                  maskPosition: 'center',
-                  mixBlendMode: 'color',
-                  opacity: 0.65,
-                }}
+                style={{backgroundColor: dominantColor, mixBlendMode: 'color', opacity: 0.6, ...LIQUID_MASK}}
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{backgroundColor: lighten(dominantColor, 0.35), mixBlendMode: 'multiply', opacity: 0.65, ...LIQUID_MASK}}
               />
             </div>
           </div>
