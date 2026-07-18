@@ -42,6 +42,15 @@ export default function ProductCard({product}) {
   };
   const hueRotation = hexToHue(dominantColor);
 
+  // Accord bars need readable text: white on dark colors, near-black on light.
+  const textOn = (hex) => {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#0A0A0A' : '#FFFFFF';
+  };
+
   const categoryLabel =
     product.category === 'men'
       ? 'For Him'
@@ -65,44 +74,48 @@ export default function ProductCard({product}) {
     setSelectedSize(size);
   };
 
+  const maxStrength = accords.length
+    ? Math.max(...accords.map((a) => a.strength || 60))
+    : 100;
+
   return (
-    <Link to={`/products/${product.handle}`} className="group no-underline block">
-
-      {/* ━━━ IMAGE AREA ━━━ */}
-      <div className="relative overflow-hidden mb-2.5">
-
-        {/* Bottle left + Notes right */}
-        <div className="aspect-[3/4] flex">
-          {/* Bottle — left, takes up most of the space */}
-          <div className="w-[65%] flex items-center justify-center p-4 pl-3">
+    <Link
+      to={`/products/${product.handle}`}
+      className="group no-underline block bg-white border border-black/[0.05] shadow-[0_1px_10px_rgba(0,0,0,0.03)]"
+    >
+      {/* ━━━ IMAGE AREA: bottle left, accord bars right ━━━ */}
+      <div className="relative overflow-hidden">
+        <div className="aspect-[3/4] flex items-center">
+          {/* Bottle */}
+          <div className="w-[55%] h-full flex items-center justify-center p-5">
             <img
               src="/images/bottle-transparent.png"
               alt={product.name}
-              className="h-full w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06]"
+              className="h-[85%] w-auto object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.06]"
               style={{filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)`}}
             />
           </div>
-          {/* Notes — compact on the right */}
-          <div className="w-[35%] flex flex-col justify-center pr-3 py-6">
-            <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-2.5">
-              <span className="border-b border-[#9A948D]/30 pb-0.5">Notes</span>
-            </p>
-            <div className="flex flex-col gap-2">
-              {accords.map((a) => (
-                <div key={a.name} className="flex items-center gap-1.5">
-                  <span className="text-[9px] text-[#0A0A0A] leading-tight flex-1 truncate">{a.name}</span>
-                  <div className="w-[28px] h-[10px] rounded-full shrink-0" style={{backgroundColor: a.color}} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* Accord color strip — thin bar of product's signature colors at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-[3px] flex">
-          {accords.map((a) => (
-            <div key={a.name} className="flex-1" style={{backgroundColor: a.color}} />
-          ))}
+          {/* Accord bars — colored, name inside, width by strength */}
+          <div className="w-[45%] flex flex-col gap-1.5 pr-4 items-end">
+            {accords.map((a) => {
+              const pct = 62 + Math.round(((a.strength || 60) / maxStrength) * 38);
+              return (
+                <div
+                  key={a.name}
+                  className="h-[30px] rounded-l-md rounded-br-md flex items-center justify-center"
+                  style={{backgroundColor: a.color, width: `${pct}%`}}
+                >
+                  <span
+                    className="font-sans text-[11px] font-medium lowercase tracking-[0.02em] px-2 truncate"
+                    style={{color: textOn(a.color)}}
+                  >
+                    {a.name}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Badge */}
@@ -123,90 +136,54 @@ export default function ProductCard({product}) {
             className={`transition-colors duration-200 ${wishlisted ? 'fill-black text-black' : 'text-[#0A0A0A]'}`}
           />
         </button>
-
-        {/* Quick Add — slides up from bottom on hover */}
-        <AddToCartButton
-          lines={variant?.availableForSale ? [toCartLine(variant, product)] : []}
-          disabled={!variant?.availableForSale}
-          onClick={() => {
-            addToast(`${product.name} added to bag`, 'success');
-          }}
-          className={`absolute bottom-[3px] left-0 right-0 py-3 flex items-center justify-center gap-2 text-[10px] tracking-[0.14em] uppercase font-sans translate-y-full group-hover:translate-y-0 [@media(hover:none)]:translate-y-0 transition-transform duration-300 ease-out z-[2] ${
-            variant?.availableForSale
-              ? 'bg-[#0A0A0A] text-white'
-              : 'bg-[#9A948D] text-white cursor-not-allowed'
-          }`}
-        >
-          <ShoppingBag size={13} strokeWidth={1.5} />
-          {variant?.availableForSale
-            ? `Add to Bag${price != null ? ` — $${price}` : ''}`
-            : 'Sold Out'}
-        </AddToCartButton>
       </div>
 
-      {/* ━━━ PRODUCT INFO ━━━ */}
-      <div className="space-y-1.5">
+      {/* ━━━ INSPIRED BY callout ━━━ */}
+      {product.inspiredBy && (
+        <div className="border-t border-b border-black/[0.06] px-5 py-3 flex items-center gap-3">
+          <span className="w-[3px] self-stretch bg-[#C4A882] shrink-0" />
+          <div className="min-w-0">
+            <p className="text-[9px] tracking-[0.2em] uppercase text-[#C4A882] font-sans mb-0.5">
+              Inspired By
+            </p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.02em] text-[#0A0A0A] font-sans truncate">
+              {product.inspiredBy}
+            </p>
+          </div>
+        </div>
+      )}
 
-        {/* Category */}
-        <p className="text-[9px] tracking-[0.2em] uppercase text-[#9A948D] font-sans">
+      {/* ━━━ PRODUCT INFO ━━━ */}
+      <div className="px-5 pt-4 pb-5">
+        <p className="text-[10px] tracking-[0.2em] uppercase text-[#C4A882] font-sans mb-1.5">
           {categoryLabel}
         </p>
 
-        {/* Name */}
-        <h3 className="font-serif text-[17px] font-normal text-[#0A0A0A] leading-snug line-clamp-1">
+        <h3 className="font-serif text-[20px] font-normal text-[#0A0A0A] leading-snug line-clamp-1 mb-1">
           {product.name}
         </h3>
 
-        {/* Inspired by */}
         {product.inspiredBy && (
-          <p className="text-[11px] text-[#9A948D] font-sans">
-            Inspired by <span className="text-[#0A0A0A] font-medium">{product.inspiredBy}</span>
+          <p className="text-[13px] text-[#9A948D] font-sans mb-3 line-clamp-1">
+            Inspired by {product.inspiredBy}
           </p>
         )}
 
-        {/* Accords — compact row of colored dots with names */}
-        <div className="flex flex-wrap gap-x-3 gap-y-1 pt-0.5">
-          {accords.map((a) => (
-            <span key={a.name} className="flex items-center gap-1.5">
-              <span className="w-[8px] h-[8px] rounded-full shrink-0" style={{backgroundColor: a.color}} />
-              <span className="text-[10px] text-[#9A948D] font-sans">{a.name}</span>
+        {/* Scent family chip + sizes */}
+        <div className="flex items-center justify-between mb-4">
+          {product.scentFamily ? (
+            <span className="text-[10px] tracking-[0.12em] uppercase bg-[#F5F3F0] text-[#0A0A0A] px-2.5 py-1.5 font-sans">
+              {product.scentFamily}
             </span>
-          ))}
-        </div>
-
-        {/* Fragrance Notes — Top / Heart / Base */}
-        {product.notes && (
-          <div className="grid grid-cols-3 gap-2 pt-1.5 border-t border-[#ECEAE7]">
-            <div>
-              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Top</p>
-              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
-                {product.notes.top?.slice(0, 2).join(', ')}
-              </p>
-            </div>
-            <div>
-              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Heart</p>
-              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
-                {product.notes.heart?.slice(0, 2).join(', ')}
-              </p>
-            </div>
-            <div>
-              <p className="text-[8px] tracking-[0.12em] uppercase text-[#9A948D] mb-1">Base</p>
-              <p className="text-[10px] text-[#0A0A0A] leading-[1.4]">
-                {product.notes.base?.slice(0, 2).join(', ')}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Price + Sizes */}
-        <div className="flex items-center justify-between pt-1.5 border-t border-[#ECEAE7]">
-          <span className="font-serif text-[18px] text-[#0A0A0A]">{price != null ? `$${price}` : ''}</span>
+          ) : (
+            <span />
+          )}
           <div className="flex gap-1">
             {sizes.map((size) => (
               <button
                 key={size}
                 onClick={(e) => handleSizeClick(e, size)}
-                className={`text-[9px] px-2.5 py-[3px] font-sans tracking-[0.04em] transition-all duration-200 border ${
+                className={`text-[9px] px-2 py-[3px] font-sans tracking-[0.04em] transition-all duration-200 border ${
                   selectedSize === size
                     ? 'border-[#0A0A0A] bg-[#0A0A0A] text-white'
                     : 'border-[#D4CFC8] text-[#9A948D] hover:border-[#0A0A0A]'
@@ -216,6 +193,28 @@ export default function ProductCard({product}) {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Price + Add to Bag */}
+        <div className="flex items-center justify-between">
+          <span className="font-serif text-[24px] text-[#0A0A0A]">
+            {price != null ? `$${price}` : ''}
+          </span>
+          <AddToCartButton
+            lines={variant?.availableForSale ? [toCartLine(variant, product)] : []}
+            disabled={!variant?.availableForSale}
+            onClick={() => {
+              addToast(`${product.name} added to bag`, 'success');
+            }}
+            className={`inline-flex items-center gap-2 px-5 py-3 text-[10px] tracking-[0.14em] uppercase font-sans transition-colors ${
+              variant?.availableForSale
+                ? 'bg-[#0A0A0A] text-white hover:bg-black/85'
+                : 'bg-[#9A948D] text-white cursor-not-allowed'
+            }`}
+          >
+            <ShoppingBag size={13} strokeWidth={1.5} />
+            {variant?.availableForSale ? 'Add to Bag' : 'Sold Out'}
+          </AddToCartButton>
         </div>
       </div>
     </Link>
