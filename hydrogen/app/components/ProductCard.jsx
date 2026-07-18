@@ -82,7 +82,7 @@ export default function ProductCard({product}) {
       {/* ━━━ IMAGE: bottle + slim accord pills, vertically centered ━━━ */}
       <div className="relative overflow-hidden bg-[#FAF9F7]">
         <div className="aspect-[4/5] flex items-center">
-          <div className="w-[60%] h-full flex items-center justify-center py-3 pl-3">
+          <div className="w-[60%] h-full flex items-center justify-center py-1 pl-2">
             <img
               src="/images/bottle-transparent.png"
               alt={product.name}
@@ -90,16 +90,20 @@ export default function ProductCard({product}) {
               style={{filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)`}}
             />
           </div>
-          <div className="w-[40%] flex flex-col gap-2 items-start pr-5 pl-1">
-            {accords.map((a) => (
-              <span
-                key={a.name}
-                className="inline-flex h-[24px] items-center rounded-full px-3.5 font-sans text-[10px] lowercase tracking-[0.03em]"
-                style={{backgroundColor: a.color, color: textOn(a.color)}}
-              >
-                {a.name}
-              </span>
-            ))}
+          <div className="w-[40%] flex flex-col gap-2 items-end pr-4 pl-1">
+            {accords.map((a, i) => {
+              const max = accords[0]?.strength || 100;
+              const pct = 68 + Math.round(((a.strength || 60) / max) * 32);
+              return (
+                <span
+                  key={a.name}
+                  className="flex h-[24px] items-center justify-center rounded-full font-sans text-[10px] lowercase tracking-[0.03em] truncate px-2"
+                  style={{backgroundColor: a.color, color: textOn(a.color), width: `${pct}%`}}
+                >
+                  {a.name}
+                </span>
+              );
+            })}
           </div>
         </div>
 
