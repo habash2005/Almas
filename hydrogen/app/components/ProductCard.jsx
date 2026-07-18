@@ -83,7 +83,7 @@ export default function ProductCard({product}) {
           <div className="w-[66%] h-full flex items-center justify-center pl-1">
             <div className="relative h-full w-full scale-[1.12] transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.16]">
               <img
-                src="/images/bottle-transparent.png"
+                src="/images/bottle-neutral.png"
                 alt={product.name}
                 className="absolute inset-0 h-full w-full object-contain"
               />
