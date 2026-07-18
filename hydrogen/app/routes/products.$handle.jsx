@@ -778,8 +778,8 @@ export default function ProductPage() {
         </section>
       )}
 
-      {/* Reviews Section */}
-      <section className="px-6 md:px-12 py-16 bg-light-gray">
+      {/* Reviews Section (#reviews: review-request emails deep-link here) */}
+      <section id="reviews" className="px-6 md:px-12 py-16 bg-light-gray scroll-mt-24">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-12">
             <div>
