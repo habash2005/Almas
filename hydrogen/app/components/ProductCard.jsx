@@ -101,7 +101,7 @@ export default function ProductCard({product}) {
               />
             </div>
           </div>
-          <div className="w-[34%] flex flex-col gap-2 items-start pr-4 pl-1">
+          <div className="w-[34%] flex flex-col gap-1 md:gap-2 items-start pr-2 md:pr-4 pl-1">
             {accords.map((a, i) => {
               // Rank-stepped widths: a clear staircase from strongest to
               // weakest (strengths are too close together to read visually).
@@ -109,7 +109,7 @@ export default function ProductCard({product}) {
               return (
                 <span
                   key={a.name}
-                  className="flex h-[24px] items-center justify-center rounded-full font-sans text-[10px] lowercase tracking-[0.03em] truncate px-2"
+                  className="flex h-[15px] md:h-[24px] items-center justify-center rounded-full font-sans text-[7px] md:text-[10px] lowercase tracking-[0.03em] truncate px-1 md:px-2"
                   style={{backgroundColor: a.color, color: textOn(a.color), width: `${pct}%`}}
                 >
                   {a.name}
@@ -121,9 +121,9 @@ export default function ProductCard({product}) {
 
         {/* Inspired-by caption at the base of the image, like the brand imagery */}
         {product.inspiredBy && (
-          <div className="absolute bottom-0 inset-x-0 pb-3 px-4 text-center pointer-events-none">
-            <p className="font-serif italic text-[11px] text-[#9A948D] leading-tight">Inspired by</p>
-            <p className="font-serif text-[14px] font-medium text-[#0A0A0A] truncate">{product.inspiredBy}</p>
+          <div className="absolute bottom-0 inset-x-0 pb-2 md:pb-3 px-2 md:px-4 text-center pointer-events-none">
+            <p className="font-serif italic text-[9px] md:text-[11px] text-[#9A948D] leading-tight">Inspired by</p>
+            <p className="font-serif text-[11px] md:text-[14px] font-medium text-[#0A0A0A] truncate">{product.inspiredBy}</p>
           </div>
         )}
 
@@ -146,25 +146,25 @@ export default function ProductCard({product}) {
       </div>
 
       {/* ━━━ INFO ━━━ */}
-      <div className="px-5 pt-4 pb-5">
+      <div className="px-3 pt-3 pb-4 md:px-5 md:pt-4 md:pb-5">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[9px] tracking-[0.2em] uppercase text-[#9A948D] font-sans">
+          <span className="text-[8px] md:text-[9px] tracking-[0.15em] md:tracking-[0.2em] uppercase text-[#9A948D] font-sans">
             {categoryLabel}
           </span>
           {product.scentFamily && (
-            <span className="text-[9px] tracking-[0.2em] uppercase text-[#C4A882] font-sans">
+            <span className="text-[8px] md:text-[9px] tracking-[0.15em] md:tracking-[0.2em] uppercase text-[#C4A882] font-sans">
               {product.scentFamily}
             </span>
           )}
         </div>
 
-        <h3 className="font-serif text-[19px] font-normal text-[#0A0A0A] leading-snug line-clamp-1">
+        <h3 className="font-serif text-[15px] md:text-[19px] font-normal text-[#0A0A0A] leading-snug line-clamp-1">
           {product.name}
         </h3>
 
 
-        <div className="flex items-center justify-between mt-3.5 pt-3.5 border-t border-black/[0.06]">
-          <span className="font-serif text-[19px] text-[#0A0A0A]">
+        <div className="flex items-center justify-between mt-2.5 pt-2.5 md:mt-3.5 md:pt-3.5 border-t border-black/[0.06]">
+          <span className="font-serif text-[15px] md:text-[19px] text-[#0A0A0A]">
             {price != null ? `$${price}` : ''}
           </span>
           <div className="flex gap-1">
@@ -172,7 +172,7 @@ export default function ProductCard({product}) {
               <button
                 key={size}
                 onClick={(e) => handleSizeClick(e, size)}
-                className={`text-[10px] px-2 py-1 font-sans tracking-[0.02em] transition-colors duration-200 ${
+                className={`text-[9px] md:text-[10px] px-1 md:px-2 py-1 font-sans tracking-[0.02em] transition-colors duration-200 ${
                   selectedSize === size
                     ? 'text-[#0A0A0A] font-medium underline underline-offset-4'
                     : 'text-[#9A948D] hover:text-[#0A0A0A]'
@@ -181,7 +181,7 @@ export default function ProductCard({product}) {
                 {size.replace('ml', '')}
               </button>
             ))}
-            <span className="text-[10px] text-[#9A948D] py-1 pl-0.5 font-sans">ml</span>
+            <span className="text-[9px] md:text-[10px] text-[#9A948D] py-1 pl-0.5 font-sans">ml</span>
           </div>
         </div>
 
@@ -191,7 +191,7 @@ export default function ProductCard({product}) {
           onClick={() => {
             addToast(`${product.name} added to bag`, 'success');
           }}
-          className={`mt-3.5 w-full h-[42px] inline-flex items-center justify-center gap-2 text-[10px] tracking-[0.18em] uppercase font-sans transition-colors ${
+          className={`mt-2.5 md:mt-3.5 w-full h-[36px] md:h-[42px] inline-flex items-center justify-center gap-1.5 md:gap-2 text-[9px] md:text-[10px] tracking-[0.12em] md:tracking-[0.18em] uppercase font-sans transition-colors ${
             variant?.availableForSale
               ? 'bg-[#0A0A0A] text-white hover:bg-black/80'
               : 'bg-[#E5E1DC] text-[#9A948D] cursor-not-allowed'
