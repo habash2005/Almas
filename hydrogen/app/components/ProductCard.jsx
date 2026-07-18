@@ -74,7 +74,9 @@ export default function ProductCard({product}) {
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  backgroundColor: dominantColor,
+                  // Vertical gradient keeps the cap/neck and glass base clear
+                  // so only the liquid region takes the accord color.
+                  backgroundImage: `linear-gradient(to bottom, transparent 0%, transparent 30%, ${dominantColor} 42%, ${dominantColor} 82%, transparent 92%)`,
                   WebkitMaskImage: 'url(/images/bottle-transparent.png)',
                   WebkitMaskSize: 'contain',
                   WebkitMaskRepeat: 'no-repeat',
