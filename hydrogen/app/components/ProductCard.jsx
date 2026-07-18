@@ -7,11 +7,11 @@ import {useWishlist} from '~/lib/wishlist';
 import {toCartLine} from '~/lib/cart';
 
 export const LIQUID_MASK = {
-  WebkitMaskImage: 'url(/images/bottle-liquid-mask-v5.png)',
+  WebkitMaskImage: 'url(/images/bottle-liquid-mask-v6.png)',
   WebkitMaskSize: 'contain',
   WebkitMaskRepeat: 'no-repeat',
   WebkitMaskPosition: 'center',
-  maskImage: 'url(/images/bottle-liquid-mask-v5.png)',
+  maskImage: 'url(/images/bottle-liquid-mask-v6.png)',
   maskSize: 'contain',
   maskRepeat: 'no-repeat',
   maskPosition: 'center',
