@@ -42,6 +42,7 @@ f_inspired_lbl = ImageFont.truetype(f"{FONTS}/Georgia Italic.ttf", 44)
 f_inspired = ImageFont.truetype(f"{FONTS}/Georgia Bold.ttf", 52)
 f_foot_b = ImageFont.truetype(f"{FONTS}/Arial Bold.ttf", 24)
 f_foot = ImageFont.truetype(f"{FONTS}/Arial.ttf", 21)
+f_sq_label = ImageFont.truetype(f"{FONTS}/Georgia Italic.ttf", 38)
 
 GRAY = (154, 148, 141)
 BLACK = (17, 17, 17)
@@ -170,17 +171,20 @@ def render_card(p, rgb, alpha) -> Image.Image:
     return img
 
 
-def render_square(rgb, alpha, hue) -> Image.Image:
-    """1200x1200 thumbnail: tinted bottle centered on warm white, no text."""
+def render_square(p, rgb, alpha, hue) -> Image.Image:
+    """1200x1200 thumbnail: tinted bottle on pure white with an
+    "Inspired by <original>" caption beneath (text only — no third-party
+    imagery)."""
     S = 1200
     img = Image.new("RGBA", (S, S), (255, 255, 255, 255))  # pure white: no visible edge on white surfaces
 
     bottle = tinted_bottle(rgb, alpha, hue)
     bottle = bottle.crop(bottle.getbbox())  # drop transparent margins
-    bh = int(S * 0.80)
+    has_caption = bool(p.get("inspiredBy"))
+    bh = int(S * (0.70 if has_caption else 0.80))
     bw = int(bottle.width * bh / bottle.height)
     bottle = bottle.resize((bw, bh), Image.LANCZOS)
-    bx, by = (S - bw) // 2, (S - bh) // 2
+    bx, by = (S - bw) // 2, int(S * 0.05) if has_caption else (S - bh) // 2
 
     # very soft grounding shadow under the bottle
     shadow = Image.new("RGBA", (S, S), (0, 0, 0, 0))
@@ -191,7 +195,21 @@ def render_square(rgb, alpha, hue) -> Image.Image:
     shadow = shadow.filter(ImageFilter.GaussianBlur(16))
     img.alpha_composite(shadow)
     img.alpha_composite(bottle, (bx, by))
-    return img.convert("RGB")
+    out = img.convert("RGB")
+
+    if has_caption:
+        d = ImageDraw.Draw(out)
+        d.text((S // 2, 1015), "Inspired by", font=f_sq_label, fill=GRAY, anchor="mm")
+        # Shrink the name until it fits with margins.
+        name = p["inspiredBy"]
+        size = 54
+        while size > 28:
+            font = ImageFont.truetype(f"{FONTS}/Georgia Bold.ttf", size)
+            if d.textlength(name, font=font) <= S - 140:
+                break
+            size -= 4
+        d.text((S // 2, 1085), name, font=font, fill=BLACK, anchor="mm")
+    return out
 
 
 def main():
@@ -217,7 +235,7 @@ def main():
         if sq.exists() and not force:
             skipped += 1
         else:
-            render_square(rgb, alpha, hex_to_hue(dominant)).save(sq, "PNG")
+            render_square(p, rgb, alpha, hex_to_hue(dominant)).save(sq, "PNG")
             generated += 1
     print(f"generated {generated}, skipped {skipped}")
 
