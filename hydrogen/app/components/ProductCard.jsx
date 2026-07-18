@@ -74,19 +74,20 @@ export default function ProductCard({product}) {
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  // Vertical gradient keeps the cap/neck and glass base clear
-                  // so only the liquid region takes the accord color.
-                  backgroundImage: `linear-gradient(to bottom, transparent 0%, transparent 30%, ${dominantColor} 42%, ${dominantColor} 82%, transparent 92%)`,
-                  WebkitMaskImage: 'url(/images/bottle-transparent.png)',
+                  // bottle-liquid-mask.png is the bottle alpha eroded away
+                  // from the glass walls and clipped to the liquid band, so
+                  // only the juice itself takes the accord color.
+                  backgroundColor: dominantColor,
+                  WebkitMaskImage: 'url(/images/bottle-liquid-mask.png)',
                   WebkitMaskSize: 'contain',
                   WebkitMaskRepeat: 'no-repeat',
                   WebkitMaskPosition: 'center',
-                  maskImage: 'url(/images/bottle-transparent.png)',
+                  maskImage: 'url(/images/bottle-liquid-mask.png)',
                   maskSize: 'contain',
                   maskRepeat: 'no-repeat',
                   maskPosition: 'center',
                   mixBlendMode: 'multiply',
-                  opacity: 0.4,
+                  opacity: 0.42,
                 }}
               />
             </div>
