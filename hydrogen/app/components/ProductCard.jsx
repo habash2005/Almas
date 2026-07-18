@@ -22,23 +22,6 @@ export default function ProductCard({product}) {
   // Liquid tint follows the STRONGEST accord (accords are sorted desc above)
   const dominantColor = accords[0]?.color ?? '#C4A882';
 
-  const hexToHue = (hex) => {
-    const h = hex.replace('#', '');
-    const r = parseInt(h.substring(0, 2), 16) / 255;
-    const g = parseInt(h.substring(2, 4), 16) / 255;
-    const b = parseInt(h.substring(4, 6), 16) / 255;
-    const max = Math.max(r, g, b),
-      min = Math.min(r, g, b);
-    let hue = 0;
-    if (max !== min) {
-      const d = max - min;
-      if (max === r) hue = ((g - b) / d + (g < b ? 6 : 0)) * 60;
-      else if (max === g) hue = ((b - r) / d + 2) * 60;
-      else hue = ((r - g) / d + 4) * 60;
-    }
-    return Math.round(hue);
-  };
-  const hueRotation = hexToHue(dominantColor);
 
   const textOn = (hex) => {
     const h = hex.replace('#', '');
@@ -79,15 +62,34 @@ export default function ProductCard({product}) {
       {/* ━━━ IMAGE: bottle + slim accord pills, vertically centered ━━━ */}
       <div className="relative overflow-hidden bg-[#FAF9F7]">
         <div className="aspect-[4/5] flex items-center">
-          <div className="w-[60%] h-full flex items-center justify-center pl-2">
-            <img
-              src="/images/bottle-transparent.png"
-              alt={product.name}
-              className="h-full w-auto object-contain scale-[1.14] transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.18]"
-              style={{filter: `sepia(0.55) hue-rotate(${hueRotation}deg) saturate(1.15)`}}
-            />
+          <div className="w-[66%] h-full flex items-center justify-center pl-1">
+            <div className="relative h-full w-full scale-[1.12] transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.16]">
+              <img
+                src="/images/bottle-transparent.png"
+                alt={product.name}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
+              {/* Liquid tint: the strongest accord's actual color, masked to
+                  the bottle silhouette and multiplied over the glass. */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundColor: dominantColor,
+                  WebkitMaskImage: 'url(/images/bottle-transparent.png)',
+                  WebkitMaskSize: 'contain',
+                  WebkitMaskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskImage: 'url(/images/bottle-transparent.png)',
+                  maskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  maskPosition: 'center',
+                  mixBlendMode: 'multiply',
+                  opacity: 0.4,
+                }}
+              />
+            </div>
           </div>
-          <div className="w-[40%] flex flex-col gap-2 items-start pr-4 pl-1">
+          <div className="w-[34%] flex flex-col gap-2 items-start pr-4 pl-1">
             {accords.map((a, i) => {
               // Rank-stepped widths: a clear staircase from strongest to
               // weakest (strengths are too close together to read visually).
