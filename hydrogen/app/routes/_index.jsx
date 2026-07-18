@@ -1,4 +1,4 @@
-import {useLoaderData, Link} from 'react-router';
+import {useLoaderData, useFetcher, Link} from 'react-router';
 import {ArrowRight, Check} from 'lucide-react';
 import ProductCard from '~/components/ProductCard';
 import {toAlmasProduct, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
@@ -70,6 +70,7 @@ export async function loader({context}) {
 
 export default function Homepage() {
   const {products} = useLoaderData();
+  const newsletter = useFetcher();
 
   // Best Sellers reflect REAL sales: the loader queries sortKey BEST_SELLING,
   // so the first products are Shopify's actual top sellers by orders placed
@@ -458,22 +459,36 @@ export default function Homepage() {
         <p className="text-sm text-warm-gray mb-10">
           New releases, exclusive offers, and the art of fragrance — delivered to your inbox.
         </p>
-        <form
-          className="flex max-w-[480px] mx-auto border border-black"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <input
-            type="email"
-            placeholder="Enter your email address"
-            className="flex-1 px-5 py-4 border-none bg-transparent font-sans text-[13px] outline-none"
-          />
-          <button
-            type="submit"
-            className="px-8 py-4 bg-black text-white border-none font-sans text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-80"
+        {newsletter.data?.ok ? (
+          <p className="font-sans text-[13px] tracking-[0.05em] max-w-[480px] mx-auto py-4">
+            You&apos;re on the list — welcome to ALMAS.
+          </p>
+        ) : (
+          <newsletter.Form
+            method="post"
+            action="/api/newsletter"
+            className="flex max-w-[480px] mx-auto border border-black"
           >
-            Subscribe
-          </button>
-        </form>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Enter your email address"
+              className="flex-1 px-5 py-4 border-none bg-transparent font-sans text-[13px] outline-none"
+            />
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+            <button
+              type="submit"
+              disabled={newsletter.state !== 'idle'}
+              className="px-8 py-4 bg-black text-white border-none font-sans text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-80 disabled:opacity-50"
+            >
+              {newsletter.state === 'idle' ? 'Subscribe' : 'Joining…'}
+            </button>
+          </newsletter.Form>
+        )}
+        {newsletter.data && !newsletter.data.ok && (
+          <p className="font-sans text-[12px] text-warm-gray mt-3">{newsletter.data.error}</p>
+        )}
       </section>
     </>
   );

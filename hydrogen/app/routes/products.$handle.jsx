@@ -1,9 +1,10 @@
 import {useState, useEffect, useMemo} from 'react';
-import {useLoaderData, Link} from 'react-router';
+import {useLoaderData, useFetcher, Link} from 'react-router';
 import {Analytics} from '@shopify/hydrogen';
 import {Droplets, Heart as HeartIcon, Wind, Clock, Sun, Minus, Plus} from 'lucide-react';
 import {toAlmasProduct, PRODUCT_FULL_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/almas';
 import {pageMeta, productJsonLd, breadcrumbJsonLd, JsonLd} from '~/lib/seo';
+import {adminGql} from '~/lib/adminApi';
 import ProductCard from '~/components/ProductCard';
 import AccordBar from '~/components/AccordBar';
 import ScentRadar from '~/components/ScentRadar';
@@ -146,49 +147,75 @@ function SillageBar({sillage}) {
   );
 }
 
-/* ── Review Helpers ── */
-function getStoredReviews(productId) {
+/* ── Reviews ──
+ * Shared across all visitors: stored in the product's `almas.reviews` json
+ * metafield. The route action below appends a validated review via the Admin
+ * API; the loader's product query already selects the metafield. */
+export async function action({request, params, context}) {
+  const form = await request.formData();
+  if (form.get('website')) return {ok: true}; // honeypot
+  const name = String(form.get('name') ?? '').trim().slice(0, 60);
+  const text = String(form.get('text') ?? '').trim().slice(0, 2000);
+  const rating = Math.round(Number(form.get('rating')));
+  if (!name || !text || !(rating >= 1 && rating <= 5)) {
+    return {ok: false, error: 'Please fill in all fields and select a rating.'};
+  }
+
   try {
-    const data = localStorage.getItem(`almas-reviews-${productId}`);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
+    const found = await adminGql(
+      context.env,
+      `query($q: String!) {
+        products(first: 5, query: $q) {
+          nodes { id handle reviews: metafield(namespace: "almas", key: "reviews") { value } }
+        }
+      }`,
+      {q: `handle:"${params.handle}"`},
+    );
+    const node = found.products.nodes.find((n) => n.handle === params.handle);
+    if (!node) return {ok: false, error: 'Product not found.'};
+
+    let existing = [];
+    try {
+      existing = JSON.parse(node.reviews?.value ?? '[]');
+    } catch {
+      existing = [];
+    }
+    const review = {
+      id: `r-${Date.now()}`,
+      name,
+      rating,
+      text,
+      date: new Date().toISOString().split('T')[0],
+    };
+    const updated = [review, ...existing].slice(0, 200);
+
+    const set = await adminGql(
+      context.env,
+      `mutation($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) { userErrors { field message } }
+      }`,
+      {
+        metafields: [
+          {ownerId: node.id, namespace: 'almas', key: 'reviews', type: 'json', value: JSON.stringify(updated)},
+        ],
+      },
+    );
+    if (set.metafieldsSet.userErrors.length) {
+      throw new Error(JSON.stringify(set.metafieldsSet.userErrors));
+    }
+    return {ok: true};
+  } catch (e) {
+    console.error('review submit failed:', e);
+    return {ok: false, error: 'Could not submit your review — please try again later.'};
   }
 }
-
-function storeReviews(productId, reviews) {
-  localStorage.setItem(`almas-reviews-${productId}`, JSON.stringify(reviews));
-}
-
-const DEFAULT_REVIEWS = [
-  {
-    id: 'default-1',
-    name: 'Sarah M.',
-    rating: 5,
-    text: 'Absolutely stunning fragrance. The longevity is incredible and I receive compliments every time I wear it. Worth every penny.',
-    date: '2026-03-15',
-  },
-  {
-    id: 'default-2',
-    name: 'Ahmed K.',
-    rating: 4,
-    text: 'Very close to the original designer fragrance at a fraction of the price. Great projection and the scent evolves beautifully throughout the day.',
-    date: '2026-03-10',
-  },
-  {
-    id: 'default-3',
-    name: 'Jessica L.',
-    rating: 5,
-    text: 'This has become my signature scent. The quality is outstanding and the subscription service makes it so convenient.',
-    date: '2026-02-28',
-  },
-];
 
 /* ── Main Component ── */
 export default function ProductPage() {
   /** @type {LoaderReturnData} */
   const {product, sellingPlanGroups, related: relatedProducts} = useLoaderData();
   const {addToast} = useToast();
+  const reviewFetcher = useFetcher();
   const {addToWishlist, removeFromWishlist, isInWishlist} = useWishlist();
 
   const sizes = Object.keys(product.prices);
@@ -207,13 +234,14 @@ export default function ProductPage() {
   const [reviewText, setReviewText] = useState('');
 
   useEffect(() => {
-    const stored = getStoredReviews(product.id);
-    setReviews(stored.length > 0 ? stored : DEFAULT_REVIEWS);
+    // Reviews are server data (almas.reviews metafield); revalidation after
+    // the action keeps this in sync post-submit.
+    setReviews(product.reviews ?? []);
     // Reset transient purchase state when navigating between products
     setQuantity(1);
     setSubscribe(false);
     setShowReviewForm(false);
-  }, [product.id]);
+  }, [product.id, product.reviews]);
 
   const wishlisted = product ? isInWishlist(product.id) : false;
 
@@ -292,22 +320,27 @@ export default function ProductPage() {
       return;
     }
 
-    const newReview = {
-      id: `user-${Date.now()}`,
-      name: reviewName.trim(),
-      rating: reviewRating,
-      text: reviewText.trim(),
-      date: new Date().toISOString().split('T')[0],
-    };
-
-    const updatedReviews = [newReview, ...reviews];
-    setReviews(updatedReviews);
-    storeReviews(product.id, updatedReviews);
+    reviewFetcher.submit(
+      {name: reviewName.trim(), rating: String(reviewRating), text: reviewText.trim()},
+      {method: 'post'},
+    );
+    // Optimistic: show it immediately; the post-action revalidation replaces
+    // this with the server's copy.
+    setReviews([
+      {
+        id: `user-${Date.now()}`,
+        name: reviewName.trim(),
+        rating: reviewRating,
+        text: reviewText.trim(),
+        date: new Date().toISOString().split('T')[0],
+      },
+      ...reviews,
+    ]);
     setReviewName('');
     setReviewRating(0);
     setReviewText('');
     setShowReviewForm(false);
-    addToast('Review submitted successfully', 'success');
+    addToast('Review submitted — thank you!', 'success');
   };
 
   return (
@@ -499,13 +532,15 @@ export default function ProductPage() {
               </p>
             )}
 
-            {/* Rating */}
-            <div className="flex items-center gap-3 mb-6">
-              <StarRating rating={Math.round(parseFloat(avgRating))} />
-              <span className="font-sans text-sm text-warm-gray">
-                {avgRating} ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
-              </span>
-            </div>
+            {/* Rating (hidden until the product has real reviews) */}
+            {reviews.length > 0 && (
+              <div className="flex items-center gap-3 mb-6">
+                <StarRating rating={Math.round(parseFloat(avgRating))} />
+                <span className="font-sans text-sm text-warm-gray">
+                  {avgRating} ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+                </span>
+              </div>
+            )}
 
             {/* Description */}
             <p className="font-sans text-sm text-warm-gray leading-relaxed mb-8">
@@ -763,7 +798,15 @@ export default function ProductPage() {
             </button>
           </div>
 
+          {/* Empty state */}
+          {reviews.length === 0 && (
+            <p className="font-sans text-sm text-warm-gray mb-12">
+              No reviews yet — be the first to share your experience with this fragrance.
+            </p>
+          )}
+
           {/* Rating Summary */}
+          {reviews.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-12 mb-12">
             {/* Average */}
             <div className="text-center md:text-left">
@@ -790,6 +833,7 @@ export default function ProductPage() {
               ))}
             </div>
           </div>
+          )}
 
           {/* Write Review Form */}
           {showReviewForm && (

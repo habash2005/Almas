@@ -48,6 +48,7 @@ export function toAlmasProduct(node) {
     // the site's intro paragraph stays the short blurb metafield.
     description: node.blurb?.value ?? node.description ?? '',
     image: node.featuredImage?.url ?? '/images/bottle.png',
+    reviews: parseJSON(node.reviews?.value, []),
   };
 }
 
@@ -129,5 +130,6 @@ export const PRODUCT_FULL_FRAGMENT = `#graphql
     longevity: metafield(namespace: "almas", key: "longevity") { value }
     sillage: metafield(namespace: "almas", key: "sillage") { value }
     bestFor: metafield(namespace: "almas", key: "best_for") { value }
+    reviews: metafield(namespace: "almas", key: "reviews") { value }
   }
 `;

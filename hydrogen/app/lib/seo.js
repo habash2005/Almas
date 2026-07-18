@@ -79,7 +79,16 @@ export const WEBSITE_JSON_LD = {
 export function productJsonLd(p) {
   const inStock = Object.values(p.variantBySize ?? {}).some((v) => v.availableForSale);
   const prices = Object.values(p.prices ?? {});
+  const reviews = p.reviews ?? [];
+  const aggregateRating = reviews.length
+    ? {
+        '@type': 'AggregateRating',
+        ratingValue: (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1),
+        reviewCount: reviews.length,
+      }
+    : undefined;
   return {
+    ...(aggregateRating ? {aggregateRating} : {}),
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: p.name,
