@@ -86,8 +86,8 @@ export default function ProductCard({product}) {
                   maskSize: 'contain',
                   maskRepeat: 'no-repeat',
                   maskPosition: 'center',
-                  mixBlendMode: 'multiply',
-                  opacity: 0.42,
+                  mixBlendMode: 'color',
+                  opacity: 0.65,
                 }}
               />
             </div>
