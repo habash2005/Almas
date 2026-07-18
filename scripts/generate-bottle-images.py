@@ -164,7 +164,16 @@ def render_card(p, rgb, alpha) -> Image.Image:
     lbl = "Inspired by: "
     d.text((50, 1310), lbl, font=f_inspired_lbl, fill=GRAY)
     lw = d.textlength(lbl, font=f_inspired_lbl)
-    d.text((50 + lw + 8, 1306), p["inspiredBy"], font=f_inspired, fill=BLACK)
+    # Long designer names (e.g. "Kayali Yum Pistachio Gelato") must shrink to
+    # stay inside the card instead of running off the right edge.
+    name = p["inspiredBy"]
+    size = 52
+    while size > 26:
+        f_name = ImageFont.truetype(f"{FONTS}/Georgia Bold.ttf", size)
+        if lw + 8 + d.textlength(name, font=f_name) <= 985 - 50:
+            break
+        size -= 2
+    d.text((50 + lw + 8, 1306 + (52 - size) // 2), name, font=f_name, fill=BLACK)
 
     d.text((985, 1380), "Designer Scent", font=f_foot_b, fill=BLACK, anchor="ra")
     d.text((985, 1408), "Similar vibe & DNA", font=f_foot, fill=GRAY, anchor="ra")
