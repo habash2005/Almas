@@ -707,8 +707,8 @@ export default function ProductPage() {
               <Accordion title="Shipping & Returns" defaultOpen>
                 <div className="font-sans text-sm text-warm-gray leading-relaxed space-y-3">
                   <p>Free standard shipping on all orders over $100. Orders typically ship within 1-2 business days.</p>
-                  <p>Standard shipping: 5-7 business days ($5.95)</p>
-                  <p>Express shipping: 2-3 business days ($12.95)</p>
+                  <p>Standard shipping: 5-7 business days ($8.95)</p>
+                  <p>Express shipping: 2-3 business days ($14.95)</p>
                   <p>We accept returns within 30 days of purchase for unopened products.</p>
                 </div>
               </Accordion>

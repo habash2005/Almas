@@ -13,28 +13,11 @@ const marqueeItems = [
 ];
 
 const categories = [
-  {name: 'For Him', count: 45, slug: 'men', image: '/images/category-him.png'},
-  {name: 'For Her', count: 41, slug: 'women', image: '/images/category-her.png'},
-  {name: 'Unisex', count: 57, slug: 'unisex', image: '/images/ingredients.png'},
+  {name: 'For Him', count: 45, slug: 'men', image: '/images/category-him.webp'},
+  {name: 'For Her', count: 41, slug: 'women', image: '/images/category-her.webp'},
+  {name: 'Unisex', count: 57, slug: 'unisex', image: '/images/ingredients.webp'},
 ];
 
-const testimonials = [
-  {
-    stars: 5,
-    quote: 'Absolutely enchanting. The perfect blend of floral and woody notes. I get compliments every time.',
-    author: 'Sarah M.',
-  },
-  {
-    stars: 5,
-    quote: 'Luxurious and long-lasting. The subscription is a game-changer — never running out again.',
-    author: 'Ahmed K.',
-  },
-  {
-    stars: 5,
-    quote: 'A true gem. Sophisticated, elegant, and the presentation is beautiful. Perfect gift.',
-    author: 'Nadia L.',
-  },
-];
 
 const scentNotes = [
   {
@@ -144,7 +127,7 @@ export default function Homepage() {
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[320px] overflow-hidden cursor-pointer">
           {/* Left image */}
           <div className="relative overflow-hidden">
-            <img src="/images/subscription.png" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover" />
+            <img src="/images/subscription.webp" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
           </div>
           {/* Right content */}
           <div className="flex flex-col justify-center px-16 py-14 bg-black text-white">
@@ -191,7 +174,7 @@ export default function Homepage() {
               className="relative aspect-[3/4] overflow-hidden bg-stone cursor-pointer group no-underline"
             >
               {/* Category image */}
-              <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover" />
+              <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               {/* Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end p-9 bg-gradient-to-t from-[rgba(10,10,10,0.5)] to-transparent transition-all duration-400 group-hover:from-[rgba(10,10,10,0.7)] group-hover:to-[rgba(10,10,10,0.15)]">
                 {/* Arrow */}
@@ -210,7 +193,7 @@ export default function Homepage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-5 md:px-12">
         {/* Summer Collection */}
         <Link to="/shop" className="relative aspect-video overflow-hidden bg-stone cursor-pointer group no-underline">
-          <img src="/images/spring-collection.png" alt="Summer Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <img src="/images/spring-collection.webp" alt="Summer Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
             <span className="text-[9px] tracking-[0.15em] uppercase text-white/70 mb-2.5">Limited Edition</span>
@@ -222,7 +205,7 @@ export default function Homepage() {
         </Link>
         {/* Best Sellers */}
         <Link to="/shop" className="relative aspect-video overflow-hidden bg-black cursor-pointer group no-underline">
-          <img src="/images/lifestyle-spray.png" alt="Best Sellers" className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/images/lifestyle-spray.webp" alt="Best Sellers" className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
             <span className="text-[9px] tracking-[0.15em] uppercase text-white/50 mb-2.5">Most Loved</span>
@@ -257,7 +240,7 @@ export default function Homepage() {
 
       {/* ===== FULL-WIDTH SCENT FINDER BANNER ===== */}
       <div className="relative min-h-[400px] flex items-center justify-center text-center overflow-hidden mx-12">
-        <img src="/images/ingredients.png" alt="Fragrance Ingredients" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <img src="/images/ingredients.webp" alt="Fragrance Ingredients" className="absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy" />
         <div className="absolute inset-0 bg-white/60" />
         <div className="relative z-[2] py-20 px-10">
           <p className="text-[10px] tracking-[0.2em] uppercase text-warm-gray mb-5">Scent Finder</p>
@@ -280,7 +263,7 @@ export default function Homepage() {
         <div className="grid grid-cols-1 md:grid-cols-2 border border-black/[0.08] overflow-hidden">
           {/* Left — subscription visual */}
           <div className="bg-black text-white flex flex-col items-center justify-center relative overflow-hidden">
-            <img src="/images/subscription.png" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+            <img src="/images/subscription.webp" alt="ALMAS Subscription" className="absolute inset-0 w-full h-full object-cover opacity-80" loading="lazy" />
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative z-[1] text-center">
               <h3 className="font-serif text-4xl font-light mb-3">Every 3 Months</h3>
@@ -329,7 +312,7 @@ export default function Homepage() {
       <section className="grid grid-cols-1 md:grid-cols-2 min-h-[50vh] md:min-h-[70vh]">
         {/* Left image */}
         <div className="relative overflow-hidden">
-          <img src="/images/lifestyle-spray.png" alt="ALMAS Lifestyle" className="absolute inset-0 w-full h-full object-cover" />
+          <img src="/images/lifestyle-spray.webp" alt="ALMAS Lifestyle" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         </div>
         {/* Right content */}
         <div className="flex flex-col justify-center p-20">
@@ -374,33 +357,6 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* ===== DUAL BANNERS — Row 2 ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-5 md:px-12 pt-20">
-        {/* Discovery Sets */}
-        <Link to="/shop" className="relative aspect-video overflow-hidden bg-black cursor-pointer group no-underline">
-          <img src="/images/discovery-sets.png" alt="Discovery Sets" className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
-            <span className="text-[9px] tracking-[0.15em] uppercase text-white/50 mb-2.5">Gift Idea</span>
-            <h3 className="font-serif text-[26px] font-light mb-1.5">Discovery Sample Sets</h3>
-            <span className="text-[11px] tracking-[0.1em] uppercase text-white no-underline mt-3 inline-flex items-center gap-2">
-              Shop Sets &rarr;
-            </span>
-          </div>
-        </Link>
-        {/* Ramadan Gift Guide */}
-        <Link to="/shop" className="relative aspect-video overflow-hidden bg-black cursor-pointer group no-underline">
-          <img src="/images/ramadan.png" alt="Ramadan Gift Guide" className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
-            <span className="text-[9px] tracking-[0.15em] uppercase text-white/60 mb-2.5">Seasonal</span>
-            <h3 className="font-serif text-[26px] font-light mb-1.5">Ramadan Gift Guide</h3>
-            <span className="text-[11px] tracking-[0.1em] uppercase text-white no-underline mt-3 inline-flex items-center gap-2">
-              Explore &rarr;
-            </span>
-          </div>
-        </Link>
-      </div>
 
       {/* ===== SCENT NOTES ===== */}
       <section className="bg-black text-white py-14 md:py-[100px] px-5 md:px-12 mt-20">
@@ -421,37 +377,6 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* ===== TESTIMONIALS ===== */}
-      <section className="py-14 md:py-[100px] px-5 md:px-12">
-        <div className="flex justify-between items-end mb-14">
-          <div>
-            <h2 className="font-serif text-[clamp(32px,3.5vw,52px)] font-light leading-[1.1]">What Our Customers Say</h2>
-            <p className="text-sm text-warm-gray mt-3 max-w-[400px]">Real reviews from the ALMAS community</p>
-          </div>
-          <Link
-            to="/shop"
-            className="font-sans text-[11px] tracking-[0.15em] uppercase text-black no-underline border-b border-black pb-1 transition-opacity duration-300 hover:opacity-50 shrink-0"
-          >
-            All Reviews
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t) => (
-            <div
-              key={t.author}
-              className="p-10 border border-black/[0.06] transition-colors duration-300 hover:border-black/[0.15]"
-            >
-              <div className="text-[13px] tracking-[3px] mb-5 text-black">
-                {Array.from({length: t.stars}, (_, i) => (
-                  <span key={i}>{'★'}</span>
-                ))}
-              </div>
-              <p className="font-serif text-lg font-normal italic leading-[1.5] mb-6">&ldquo;{t.quote}&rdquo;</p>
-              <p className="text-[11px] tracking-[0.1em] uppercase text-warm-gray">{t.author}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ===== NEWSLETTER ===== */}
       <section className="bg-light-gray py-14 md:py-[100px] px-5 md:px-12 text-center">

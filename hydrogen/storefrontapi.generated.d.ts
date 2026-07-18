@@ -106,6 +106,7 @@ export type ProductFullFragment = Pick<
   longevity?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
   sillage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
   bestFor?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  reviews?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
 };
 
 export type MoneyFragment = Pick<
@@ -985,6 +986,7 @@ export type ProductByHandleQuery = {
       longevity?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
       sillage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
       bestFor?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+      reviews?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
     }
   >;
 };
@@ -996,41 +998,6 @@ export type RelatedProductsQueryVariables = StorefrontAPI.Exact<{
 
 export type RelatedProductsQuery = {
   products: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Product,
-        'id' | 'handle' | 'title' | 'description' | 'tags'
-      > & {
-        featuredImage?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
-        >;
-        variants: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.ProductVariant,
-              'id' | 'title' | 'availableForSale'
-            > & {price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>}
-          >;
-        };
-        inspiredBy?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Metafield, 'value'>
-        >;
-        accords?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
-        notes?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
-        blurb?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
-      }
-    >;
-  };
-};
-
-export type SearchProductsQueryVariables = StorefrontAPI.Exact<{
-  q: StorefrontAPI.Scalars['String']['input'];
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type SearchProductsQuery = {
-  search: {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
@@ -1145,17 +1112,13 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment ProductFull on Product {\n    id\n    handle\n    title\n    description\n    tags\n    featuredImage { url altText width height }\n    images(first: 5) { nodes { url altText width height } }\n    variants(first: 10) {\n      nodes { id title availableForSale price { amount currencyCode } }\n    }\n    sellingPlanGroups(first: 2) {\n      nodes {\n        name\n        sellingPlans(first: 5) {\n          nodes {\n            id\n            name\n            priceAdjustments { adjustmentValue { ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage } } }\n          }\n        }\n      }\n    }\n    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }\n    accords: metafield(namespace: "almas", key: "accords") { value }\n    notes: metafield(namespace: "almas", key: "notes") { value }\n    blurb: metafield(namespace: "almas", key: "short_description") { value }\n    longevity: metafield(namespace: "almas", key: "longevity") { value }\n    sillage: metafield(namespace: "almas", key: "sillage") { value }\n    bestFor: metafield(namespace: "almas", key: "best_for") { value }\n  }\n\n  query ProductByHandle($handle: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) { ...ProductFull }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment ProductFull on Product {\n    id\n    handle\n    title\n    description\n    tags\n    featuredImage { url altText width height }\n    images(first: 5) { nodes { url altText width height } }\n    variants(first: 10) {\n      nodes { id title availableForSale price { amount currencyCode } }\n    }\n    sellingPlanGroups(first: 2) {\n      nodes {\n        name\n        sellingPlans(first: 5) {\n          nodes {\n            id\n            name\n            priceAdjustments { adjustmentValue { ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage } } }\n          }\n        }\n      }\n    }\n    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }\n    accords: metafield(namespace: "almas", key: "accords") { value }\n    notes: metafield(namespace: "almas", key: "notes") { value }\n    blurb: metafield(namespace: "almas", key: "short_description") { value }\n    longevity: metafield(namespace: "almas", key: "longevity") { value }\n    sillage: metafield(namespace: "almas", key: "sillage") { value }\n    bestFor: metafield(namespace: "almas", key: "best_for") { value }\n    reviews: metafield(namespace: "almas", key: "reviews") { value }\n  }\n\n  query ProductByHandle($handle: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    product(handle: $handle) { ...ProductFull }\n  }\n': {
     return: ProductByHandleQuery;
     variables: ProductByHandleQueryVariables;
   };
   '#graphql\n  #graphql\n  fragment ProductCard on Product {\n    id\n    handle\n    title\n    description\n    tags\n    featuredImage { url altText width height }\n    variants(first: 10) {\n      nodes { id title availableForSale price { amount currencyCode } }\n    }\n    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }\n    accords: metafield(namespace: "almas", key: "accords") { value }\n    notes: metafield(namespace: "almas", key: "notes") { value }\n    blurb: metafield(namespace: "almas", key: "short_description") { value }\n  }\n\n  query RelatedProducts($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 8, sortKey: BEST_SELLING) { nodes { ...ProductCard } }\n  }\n': {
     return: RelatedProductsQuery;
     variables: RelatedProductsQueryVariables;
-  };
-  '#graphql\n  #graphql\n  fragment ProductCard on Product {\n    id\n    handle\n    title\n    description\n    tags\n    featuredImage { url altText width height }\n    variants(first: 10) {\n      nodes { id title availableForSale price { amount currencyCode } }\n    }\n    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }\n    accords: metafield(namespace: "almas", key: "accords") { value }\n    notes: metafield(namespace: "almas", key: "notes") { value }\n    blurb: metafield(namespace: "almas", key: "short_description") { value }\n  }\n\n  query SearchProducts($q: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    search(query: $q, first: 50, types: PRODUCT) {\n      nodes { ...on Product { ...ProductCard } }\n    }\n  }\n': {
-    return: SearchProductsQuery;
-    variables: SearchProductsQueryVariables;
   };
   '#graphql\n  #graphql\n  fragment ProductCard on Product {\n    id\n    handle\n    title\n    description\n    tags\n    featuredImage { url altText width height }\n    variants(first: 10) {\n      nodes { id title availableForSale price { amount currencyCode } }\n    }\n    inspiredBy: metafield(namespace: "almas", key: "inspired_by") { value }\n    accords: metafield(namespace: "almas", key: "accords") { value }\n    notes: metafield(namespace: "almas", key: "notes") { value }\n    blurb: metafield(namespace: "almas", key: "short_description") { value }\n  }\n\n  query SubscribableProducts($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 8, sortKey: BEST_SELLING) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n': {
     return: SubscribableProductsQuery;
