@@ -19,11 +19,8 @@ export default function ProductCard({product}) {
     .sort((a, b) => (b.strength || 0) - (a.strength || 0))
     .slice(0, 5);
 
-  // Derive hue rotation from dominant accord for liquid tint
-  const dominantColor =
-    accords.length > 0
-      ? accords.reduce((a, b) => (a.strength > b.strength ? a : b)).color
-      : '#C4A882';
+  // Liquid tint follows the STRONGEST accord (accords are sorted desc above)
+  const dominantColor = accords[0]?.color ?? '#C4A882';
 
   const hexToHue = (hex) => {
     const h = hex.replace('#', '');
@@ -87,10 +84,10 @@ export default function ProductCard({product}) {
               src="/images/bottle-transparent.png"
               alt={product.name}
               className="h-full w-auto object-contain scale-[1.14] transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.18]"
-              style={{filter: `sepia(0.4) hue-rotate(${hueRotation}deg) saturate(0.8)`}}
+              style={{filter: `sepia(0.55) hue-rotate(${hueRotation}deg) saturate(1.15)`}}
             />
           </div>
-          <div className="w-[40%] flex flex-col gap-2 items-end pr-4 pl-1">
+          <div className="w-[40%] flex flex-col gap-2 items-start pr-4 pl-1">
             {accords.map((a, i) => {
               // Rank-stepped widths: a clear staircase from strongest to
               // weakest (strengths are too close together to read visually).
