@@ -1000,7 +1000,7 @@ function ProductBottleImage({product, bottleShadow}) {
   return (
     <div className="relative w-full">
       <img
-        src="/images/bottle-neutral.png"
+        src="/images/bottle-neutral-v2.png"
         alt={product.name}
         className="w-full h-auto object-contain"
         style={{filter: `drop-shadow(0 12px 30px ${bottleShadow})`}}
