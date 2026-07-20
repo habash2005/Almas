@@ -215,9 +215,15 @@ export default function Homepage() {
             <Link
               key={brand.q}
               to={`/search?q=${encodeURIComponent(brand.q)}`}
-              className="flex items-center justify-center h-14 no-underline text-black opacity-70 hover:opacity-100 transition-opacity duration-300"
+              className="group relative flex items-center justify-center h-14 no-underline text-black opacity-70 hover:opacity-100 transition-opacity duration-300"
             >
-              <span className={brand.className}>{brand.label}</span>
+              <span
+                className={`${brand.className} transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1 group-hover:scale-[1.06]`}
+              >
+                {brand.label}
+              </span>
+              {/* gold underline grows from center on hover */}
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-0 bg-[#C4A882] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-12" />
             </Link>
           ))}
         </div>
