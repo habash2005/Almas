@@ -37,6 +37,21 @@ const scentNotes = [
   },
 ];
 
+const INSPIRED_ICONS = [
+  {q: 'Creed', label: 'CREED', className: 'font-serif text-[22px] tracking-[0.28em] font-semibold'},
+  {q: 'Tom Ford', label: 'TOM FORD', className: 'font-sans text-[20px] tracking-[0.02em] font-bold'},
+  {q: 'Dior', label: 'Dior', className: 'font-serif text-[26px] tracking-[0.06em]'},
+  {q: 'Chanel', label: 'CHANEL', className: 'font-sans text-[19px] tracking-[0.22em] font-semibold'},
+  {q: 'MFK', label: 'MAISON FRANCIS KURKDJIAN', className: 'font-sans text-[10px] tracking-[0.3em] font-medium text-center leading-relaxed'},
+  {q: 'YSL', label: 'YVES SAINT LAURENT', className: 'font-serif text-[13px] tracking-[0.24em] text-center leading-relaxed'},
+  {q: 'Gucci', label: 'GUCCI', className: 'font-serif text-[21px] tracking-[0.3em]'},
+  {q: 'Xerjoff', label: 'XERJOFF', className: 'font-sans text-[19px] tracking-[0.14em] font-bold'},
+  {q: 'Amouage', label: 'AMOUAGE', className: 'font-serif text-[19px] tracking-[0.2em]'},
+  {q: 'Versace', label: 'VERSACE', className: 'font-sans text-[18px] tracking-[0.26em] font-medium'},
+  {q: 'Prada', label: 'PRADA', className: 'font-serif text-[21px] tracking-[0.18em] font-semibold'},
+  {q: 'Louis Vuitton', label: 'LOUIS VUITTON', className: 'font-sans text-[15px] tracking-[0.16em] font-semibold'},
+];
+
 export const meta = () => {
   return pageMeta({
     fullTitle: 'ALMAS Scent — Luxury-Inspired Perfumes & Fragrances | Official Site',
@@ -189,33 +204,24 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* ===== DUAL BANNERS — Row 1 ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 px-5 md:px-12">
-        {/* Summer Collection */}
-        <Link to="/shop" className="relative aspect-video overflow-hidden bg-stone cursor-pointer group no-underline">
-          <img src="/images/spring-collection.webp" alt="Summer Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
-            <span className="text-[9px] tracking-[0.15em] uppercase text-white/70 mb-2.5">Limited Edition</span>
-            <h3 className="font-serif text-[26px] font-light mb-1.5">Summer Collection 2026</h3>
-            <span className="text-[11px] tracking-[0.1em] uppercase text-white no-underline mt-3 inline-flex items-center gap-2">
-              Shop Now &rarr;
-            </span>
-          </div>
-        </Link>
-        {/* Best Sellers */}
-        <Link to="/shop" className="relative aspect-video overflow-hidden bg-black cursor-pointer group no-underline">
-          <img src="/images/lifestyle-spray.webp" alt="Best Sellers" className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-9 text-white">
-            <span className="text-[9px] tracking-[0.15em] uppercase text-white/50 mb-2.5">Most Loved</span>
-            <h3 className="font-serif text-[26px] font-light mb-1.5">Our Top 10 Best Sellers</h3>
-            <span className="text-[11px] tracking-[0.1em] uppercase text-white no-underline mt-3 inline-flex items-center gap-2">
-              Explore &rarr;
-            </span>
-          </div>
-        </Link>
-      </div>
+      {/* ===== INSPIRED ICONS — brand wordmarks linking to each collection ===== */}
+      <section className="py-14 md:py-20 px-5 md:px-12">
+        <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-light text-center mb-3">Inspired Icons</h2>
+        <p className="text-sm text-warm-gray text-center mb-12 max-w-[420px] mx-auto">
+          Explore our collections inspired by the world&rsquo;s most iconic houses.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10 max-w-6xl mx-auto items-center">
+          {INSPIRED_ICONS.map((brand) => (
+            <Link
+              key={brand.q}
+              to={`/search?q=${encodeURIComponent(brand.q)}`}
+              className="flex items-center justify-center h-14 no-underline text-black opacity-70 hover:opacity-100 transition-opacity duration-300"
+            >
+              <span className={brand.className}>{brand.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* ===== BEST SELLERS ===== */}
       <section className="py-14 md:py-[100px] px-5 md:px-12">
